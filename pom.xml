@@ -1,0 +1,185 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.terminological</groupId>
+	<artifactId>html2pdfr</artifactId>
+	<version>0.0.3-SNAPSHOT</version>
+	<description>R wrapper for OpenHTMLtoPDF java library</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Must be Java 8 for standard rJava implementation -->
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<r6.version>master-SNAPSHOT</r6.version>
+		<openhtml.version>1.0.10</openhtml.version>
+		<open.batik.version>1.14</open.batik.version>
+
+	    <!-- Please keep xmlgraphics-commons up to date with batik. -->
+	    <open.xmlgraphics.commons.version>2.6</open.xmlgraphics.commons.version>
+
+    	<!-- NOTE: Rhino is an optional dependency of Batik-Bridge. This version should match
+         the version specified by Batik-Bridge. -->
+    	<open.rhino.version>1.7.13</open.rhino.version>
+	</properties>
+
+	<name>Java html to pdf for R</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.github.terminological</groupId>
+			<artifactId>r6-generator-runtime</artifactId>
+			<version>${r6.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-core</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-pdfbox</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-rtl-support</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-svg-support</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+		<dependency>
+<!-- 			Rhino is included here just to make sure SVG scripts are NOT executed  -->
+<!-- 				when there is a script engine available. Rhino is only an optional dependency  -->
+<!-- 				for Batik so we have to include it explicitly. -->
+			<groupId>org.mozilla</groupId>
+			<artifactId>rhino</artifactId>
+			<version>${open.rhino.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-mathml-support</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-java2d</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-objects</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-latex-support</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.4.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.4.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.11.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.terminological</groupId>
+			<artifactId>fluentxml</artifactId>
+			<version>1.01</version>
+			<type>maven-plugin</type>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.22</version>
+		</dependency>
+	</dependencies>
+
+	<!-- Resolve runtime library on github -->
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
+	<!-- Resolve maven plugin on github -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19</version>
+				<configuration>
+					<argLine>-Xmx4096m</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.github.terminological</groupId>
+				<artifactId>r6-generator-maven-plugin</artifactId>
+				<version>${r6.version}</version>
+				<configuration>
+					<packageData>
+						<title>R wrapper for OpenHTMLtoPDF java library</title>
+						<version>0.01</version>
+						<debug>false</debug>
+						<usePkgdown>true</usePkgdown>
+						<useJavadoc>true</useJavadoc>
+<!-- 						<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->
+						<rjavaOpts>
+							<rjavaOpt>-Xmx4096M</rjavaOpt>
+						</rjavaOpts>
+						<packageName>html2pdfr</packageName>
+						<license>L-GPL</license>
+						<description>R wrapper for OpenHTMLtoPDF java library.</description>
+						<maintainerName>Rob</maintainerName>
+						<maintainerFamilyName>Challen</maintainerFamilyName>
+						<maintainerEmail>rob.challen@bristol.ac.uk</maintainerEmail>
+						<maintainerOrganisation>University of Bristol</maintainerOrganisation>
+						<maintainerORCID>0000-0002-5504-7768</maintainerORCID>
+					</packageData>
+					<outputDirectory>${project.basedir}/r-library</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-r-library</id>
+						<goals>
+							<goal>generate-r-library</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
