@@ -29,6 +29,10 @@ import javax.imageio.stream.ImageOutputStream;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+//import org.htmlcleaner.CleanerProperties;
+//import org.htmlcleaner.HtmlCleaner;
+//import org.htmlcleaner.SimpleXmlSerializer;
+//import org.htmlcleaner.TagNode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Document.OutputSettings;
@@ -122,13 +126,36 @@ public class HtmlConverter {
 		return doc2;
 	}
 	
+//	private Document shrinkWrap(Document doc, URI htmlBaseUrl, int maxWidth, int maxHeight, int padding) {
+//		// figure out dimensions on full page.
+//		Document doc2 = resizeHtml(doc, maxWidth, maxHeight, padding);
+//		PdfRendererBuilder builder = configuredBuilder();
+//		Element shrinkWrap = doc2.body().appendElement("div").attr("style","width: "+maxWidth+"px;");
+//		shrinkWrap.siblingElements().forEach(el -> el.appendTo(shrinkWrap));
+//		builder.withHtmlContent(doc.outerHtml(), htmlBaseUrl == null ? null : htmlBaseUrl.toString());
+//		PdfBoxRenderer renderer = builder.buildPdfRenderer();
+//		renderer.layout();
+//		// The root box is <html>, the first child is <body>, then shrinkWrap <div>.
+//		if (renderer.getPdfDocument().getNumberOfPages() == 1) {
+//			newHeight = maxHeight-(int) Math.floor(renderer.getLastContentBottom()/PDF_DOTS_PER_PIXEL);
+//		}
+//		Box box = renderer.getRootBox().getChild(0).getChild(0);
+//		int boxWidth = (int) Math.ceil(1.0*box.getBoxDimensions().getContentWidth()/PDF_DOTS_PER_PIXEL);
+//		int boxHeight = (int) Math.ceil(1.0*box.getBoxDimensions().getHeight()/PDF_DOTS_PER_PIXEL);
+//		int newWidth = Math.min(boxWidth+2*padding+1,maxWidth);
+//		int newHeight = Math.min(boxHeight+2*padding+1,maxHeight);
+//		renderer.close();
+//		// shrink image to fit rendered size (plus padding)
+//		return resizeHtml(doc,newWidth,newHeight,padding); 
+//	}
+	
 	private Document shrinkWrap(Document doc, URI htmlBaseUrl, int maxWidth, int maxHeight, int padding) {
 		// figure out dimensions on full page.
 		Document doc2 = resizeHtml(doc, maxWidth, maxHeight, padding);
 		PdfRendererBuilder builder = configuredBuilder();
 		Element shrinkWrap = doc2.body().appendElement("div").attr("style","display: inline-block;");
 		shrinkWrap.siblingElements().forEach(el -> el.appendTo(shrinkWrap));
-		builder.withHtmlContent(doc.outerHtml(), htmlBaseUrl == null ? null : htmlBaseUrl.toString());
+		builder.withHtmlContent(doc2.outerHtml(), htmlBaseUrl == null ? null : htmlBaseUrl.toString());
 		PdfBoxRenderer renderer = builder.buildPdfRenderer();
 		renderer.layout();
 		// The root box is <html>, the first child is <body>, then shrinkWrap <div>.
@@ -222,6 +249,23 @@ public class HtmlConverter {
 		// clean up html
 		Document doc = Jsoup.parse(html);
 		doc.outputSettings(new OutputSettings().syntax(Syntax.xml));
+		
+//		TODO: 
+//		com.openhtmltopdf.util.XRRuntimeException: Can't load the XML resource (using TRaX transformer). org.xml.sax.SAXParseException; lineNumber: 19; columnNumber: 55; The entity name must immediately follow the '&' in the entity reference.
+//		HtmlCleaner cleaner = new HtmlCleaner();
+//		CleanerProperties props = cleaner.getProperties();
+//		props.setNamespacesAware(true);
+//		TagNode node;
+//		try {
+//			node = cleaner.clean(html);
+//			String xml = new SimpleXmlSerializer(props).getAsString(node);
+//			
+//			log.debug("Cleaning complete");
+//			return dom;
+//		} catch (IOException e) {
+//			throw new XmlException("HtmlCleaner could not process HTML input stream",e);
+//		}
+		
 		// System.out.println(doc.outerHtml());
 		List<String> saved = new ArrayList<String>();
 		
@@ -286,11 +330,14 @@ public class HtmlConverter {
 			write = true;
 		} 
 		
+		pdfdoc.close();
+		pdfrender.close();
+		
 		if (!write) {
 			throw new IOException("Formats not supported: "+Stream.of(formats).collect(Collectors.joining(", ")));
 		}
 		
-		pdfrender.close();
+		
 		return saved;
 	}
 

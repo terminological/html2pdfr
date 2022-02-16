@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import uk.co.terminological.fluentxml.XmlException;
 import uk.co.terminological.html2pdfr.AutoFont;
 import uk.co.terminological.html2pdfr.AutoFont.CSSFont;
 import uk.co.terminological.html2pdfr.HtmlConverter;
@@ -45,7 +44,7 @@ class HtmlConverterTest {
 	}
 
 	@Test
-	final void testPdfRender() throws IOException, XmlException {
+	final void testPdfRender() throws IOException {
 		String html = getContent(4);
 		HtmlConverter cov = new HtmlConverter(
 				new String[] {
@@ -55,7 +54,17 @@ class HtmlConverterTest {
 	}
 	
 	@Test
-	final void testStringToPdf() throws IOException, XmlException {
+	final void testPdfRender2() throws IOException {
+		String html = getContent(6);
+		HtmlConverter cov = new HtmlConverter(
+				new String[] {
+						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
+						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
+		cov.fitIntoPage(html, "/home/terminological/tmp/test6", 5.9, 8.0, new String[] {"pdf","png"}, 300);
+	}
+	
+	@Test
+	final void testStringToPdf() throws IOException {
 		String html = getContent(2);
 		HtmlConverter cov = new HtmlConverter(
 				new String[] {
@@ -65,7 +74,7 @@ class HtmlConverterTest {
 	}
 	
 	@Test
-	final void testSvgToPdf() throws IOException, XmlException {
+	final void testSvgToPdf() throws IOException {
 		String html = getContent("/svgTest.svg");
 		HtmlConverter cov = new HtmlConverter(
 				new String[] {

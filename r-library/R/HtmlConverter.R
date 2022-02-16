@@ -10,7 +10,7 @@
 #' 
 #' Version: 0.01
 #' 
-#' Generated: 2022-02-15T20:55:56.413
+#' Generated: 2022-02-16T15:07:21.873
 #'
 #' @details
 	#' no details
@@ -32,7 +32,7 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 	#' @return A new HtmlConverter object.
 	#' @examples
 	#' J = html2pdfr::JavaApi$get();
-	#' instance = J$HtmlConverter$new(fontfiles=  "extrafont::fonttable()$fontfile)
+	#' instance = J$HtmlConverter$new(fontfiles=extrafont::fonttable()$fontfile)
 	initialize = function(jobj,api){
 		self$.jobj = jobj;
 		self$.api = api;
