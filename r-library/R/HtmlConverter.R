@@ -10,7 +10,7 @@
 #' 
 #' Version: 0.01
 #' 
-#' Generated: 2022-02-16T15:07:21.873
+#' Generated: 2022-02-17T17:34:48.647
 #'
 #' @details
 	#' no details
@@ -165,7 +165,11 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 	
 	#' @description Allow this object to be garbage collected.
 	finalize = function() {
-		try(.jcall(self$.jobj, returnSig = "V", method="close"))
+		if(!is.null(self$.jobj)) {
+			try({
+				.jcall(self$.jobj, returnSig = "V", method="close")
+			})
+		}
 		self$.jobj = .jnull("uk/co/terminological/html2pdfr/HtmlConverter")
 		self$.jobj = NULL
 		.jgc(R.gc = FALSE)

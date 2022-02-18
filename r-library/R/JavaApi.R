@@ -6,7 +6,7 @@
 #'
 #' Version: 0.01
 #'
-#' Generated: 2022-02-16T15:07:21.838
+#' Generated: 2022-02-17T17:34:48.613
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -65,7 +65,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R wrapper for OpenHTMLtoPDF java library")
  		message("Version: 0.01")
-		message("Generated: 2022-02-16T15:07:21.839")
+		message("Generated: 2022-02-17T17:34:48.613")
  	
 		if (!.jniInitialized) 
 	        .jinit(parameters=getOption("java.parameters"),silent = TRUE, force.init = FALSE)
@@ -86,7 +86,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
     	self$.log = .jcall("org/slf4j/LoggerFactory", returnSig = "Lorg/slf4j/Logger;", method = "getLogger", "html2pdfr");
     	.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","Version: 0.01");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-02-16T15:07:21.839");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-02-17T17:34:48.614");
 		# .jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
 		self$printMessages()
@@ -140,20 +140,20 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				tmpLabel = levels(rObj)[[tmp]]
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RFactor',tmp, tmpLabel))
 			},
-			RLogicalVector=function(rObj) {
-				if (is.null(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RLogicalVector'))
-				if (!is.logical(rObj)) stop('expected a vector of logicals')
-				tmp = as.integer(rObj)
-				return(rJava::.jnew('uk/co/terminological/rjava/types/RLogicalVector',rJava::.jarray(tmp)))
+			RNull=function(rObj) {
+				if (!is.null(rObj)) stop('input expected to be NULL')
+				return(rJava::.jnew('uk/co/terminological/rjava/types/RNull'))
 			},
 			RCharacter=function(rObj) {
 				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter'))
 				tmp = as.character(rObj)[[1]]
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter',tmp))
 			},
-			RNull=function(rObj) {
-				if (!is.null(rObj)) stop('input expected to be NULL')
-				return(rJava::.jnew('uk/co/terminological/rjava/types/RNull'))
+			RLogicalVector=function(rObj) {
+				if (is.null(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RLogicalVector'))
+				if (!is.logical(rObj)) stop('expected a vector of logicals')
+				tmp = as.integer(rObj)
+				return(rJava::.jnew('uk/co/terminological/rjava/types/RLogicalVector',rJava::.jarray(tmp)))
 			},
 			String=function(rObj) return(as.character(rObj)),
 			HtmlConverter=function(rObj) return(rObj$.jobj),
@@ -209,6 +209,13 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			    if (!is.logical(rObj)) stop('not a logical')
 			    return(as.logical(rObj[[1]]))
 			},
+			RInteger=function(rObj) {
+				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger'))
+				if (length(rObj) > 1) stop('input too long')
+				tmp = as.integer(rObj)[[1]]
+				if (rObj[[1]]!=tmp) stop('cannot cast to integer: ',rObj)
+				return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger',tmp))
+			},
 			RBoundDataframe=function(rObj) {
 				jout = rJava::.jnew('uk/co/terminological/rjava/types/RDataframe')
 				lapply(colnames(rObj), function(x) {
@@ -224,13 +231,6 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				})
 				rJava::.jcall(jout,returnSig='Luk/co/terminological/rjava/types/RDataframe;',method='groupBy',rJava::.jarray(dplyr::group_vars(rObj)))
 				return(jout)
-			},
-			RInteger=function(rObj) {
-				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger'))
-				if (length(rObj) > 1) stop('input too long')
-				tmp = as.integer(rObj)[[1]]
-				if (rObj[[1]]!=tmp) stop('cannot cast to integer: ',rObj)
-				return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger',tmp))
 			},
 			RDataframe=function(rObj) {
 				jout = rJava::.jnew('uk/co/terminological/rjava/types/RDataframe')
@@ -308,9 +308,9 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			RNumeric=function(jObj) as.numeric(rJava::.jcall(jObj,returnSig='D',method='rPrimitive')),
 			RLogical=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='I',method='rPrimitive')),
 			RFactor=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rLabel')),
-			RLogicalVector=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='[I',method='rPrimitive')),
-			RCharacter=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rPrimitive')),
 			RNull=function(jObj) return(NULL),
+			RCharacter=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rPrimitive')),
+			RLogicalVector=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='[I',method='rPrimitive')),
 			String=function(jObj) return(as.character(jObj)),
 			HtmlConverter=function(jObj) return(jObj),
 			void=function(jObj) invisible(NULL),
@@ -322,12 +322,12 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			RNumericVector=function(jObj) as.numeric(rJava::.jcall(jObj,returnSig='[D',method='rPrimitive')),
 			int=function(jObj) return(as.integer(jObj)),
 			boolean=function(jObj) return(as.logical(jObj)),
+			RInteger=function(jObj) as.integer(rJava::.jcall(jObj,returnSig='I',method='rPrimitive')),
 			RBoundDataframe=function(jObj) {
 				convDf = eval(parse(text=rJava::.jcall(jObj,'rConversion', returnSig='Ljava/lang/String;')))
 				groups = rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='getGroups')
 				return(dplyr::group_by(convDf(jObj),!!!sapply(groups,as.symbol)))
 			},
-			RInteger=function(jObj) as.integer(rJava::.jcall(jObj,returnSig='I',method='rPrimitive')),
 			RDataframe=function(jObj) {
 				convDf = eval(parse(text=rJava::.jcall(jObj,'rConversion', returnSig='Ljava/lang/String;')))
 				groups = rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='getGroups')

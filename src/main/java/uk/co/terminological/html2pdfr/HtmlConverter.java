@@ -149,7 +149,7 @@ public class HtmlConverter {
 //		return resizeHtml(doc,newWidth,newHeight,padding); 
 //	}
 	
-	private Document shrinkWrap(Document doc, URI htmlBaseUrl, int maxWidth, int maxHeight, int padding) {
+	private Document shrinkWrap(Document doc, URI htmlBaseUrl, int maxWidth, int maxHeight, int padding) throws IOException {
 		// figure out dimensions on full page.
 		Document doc2 = resizeHtml(doc, maxWidth, maxHeight, padding);
 		PdfRendererBuilder builder = configuredBuilder();
@@ -164,6 +164,10 @@ public class HtmlConverter {
 		int boxHeight = (int) Math.ceil(1.0*box.getHeight()/PDF_DOTS_PER_PIXEL);
 		int newWidth = Math.min(boxWidth+2*padding+1,maxWidth);
 		int newHeight = Math.min(boxHeight+2*padding+1,maxHeight);
+		// doing this to try and make sure resources are closed.
+		renderer.createPDFWithoutClosing();
+		PDDocument pdfdoc = renderer.getPdfDocument();
+		pdfdoc.close();
 		renderer.close();
 		// shrink image to fit rendered size (plus padding)
 		return resizeHtml(doc,newWidth,newHeight,padding); 
