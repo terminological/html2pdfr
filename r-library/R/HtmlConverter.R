@@ -10,7 +10,7 @@
 #' 
 #' Version: 0.01
 #' 
-#' Generated: 2022-02-17T17:34:48.647
+#' Generated: 2022-03-10T16:36:41.016
 #'
 #' @details
 	#' no details
@@ -104,7 +104,7 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 	#' @param outFile - (java expects a String)
 	#' @param maxWidthInches - (java expects a double)
 	#' @param maxHeightInches - (java expects a double)
-	#' @param formats - (java expects a String)
+	#' @param formats - (java expects a RCharacterVector)
 	#' @param pngDpi - (java expects a double)
 	#' @return RCharacterVector: 
 	#' 
@@ -114,7 +114,7 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 		tmp_outFile = self$.api$.toJava$String(outFile);
 		tmp_maxWidthInches = self$.api$.toJava$double(maxWidthInches);
 		tmp_maxHeightInches = self$.api$.toJava$double(maxHeightInches);
-		tmp_formats = self$.api$.toJava$String(formats);
+		tmp_formats = self$.api$.toJava$RCharacterVector(formats);
 		tmp_pngDpi = self$.api$.toJava$double(pngDpi);
 		# execute method call
 		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="fitIntoPage" , tmp_htmlFragment, tmp_outFile, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi); 
@@ -131,16 +131,18 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 	#' @param outFile - (java expects a String)
 	#' @param xMarginInInches - (java expects a double)
 	#' @param yMarginInInches - (java expects a double)
+	#' @param formats - (java expects a RCharacterVector)
 	#' @return RCharacterVector: 
 	#' 
-	fitIntoA4 = function(htmlFragment, outFile, xMarginInInches=1.0, yMarginInInches=1.0) {
+	fitIntoA4 = function(htmlFragment, outFile, xMarginInInches=1.0, yMarginInInches=1.0, formats=c('pdf','png')) {
 		# copy parameters
 		tmp_htmlFragment = self$.api$.toJava$String(htmlFragment);
 		tmp_outFile = self$.api$.toJava$String(outFile);
 		tmp_xMarginInInches = self$.api$.toJava$double(xMarginInInches);
 		tmp_yMarginInInches = self$.api$.toJava$double(yMarginInInches);
+		tmp_formats = self$.api$.toJava$RCharacterVector(formats);
 		# execute method call
-		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="fitIntoA4" , tmp_htmlFragment, tmp_outFile, tmp_xMarginInInches, tmp_yMarginInInches); 
+		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="fitIntoA4" , tmp_htmlFragment, tmp_outFile, tmp_xMarginInInches, tmp_yMarginInInches, tmp_formats); 
 		# convert java object back to R
 		out = self$.api$.fromJava$RCharacterVector(tmp_out);
 		self$.api$printMessages()

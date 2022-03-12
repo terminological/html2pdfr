@@ -18,6 +18,7 @@ import uk.co.terminological.html2pdfr.AutoFont;
 import uk.co.terminological.html2pdfr.AutoFont.CSSFont;
 import uk.co.terminological.html2pdfr.HtmlConverter;
 import uk.co.terminological.rjava.types.RCharacter;
+import uk.co.terminological.rjava.types.RCharacterVector;
 
 class HtmlConverterTest {
 
@@ -60,7 +61,7 @@ class HtmlConverterTest {
 				new String[] {
 						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
 						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
-		cov.fitIntoPage(html, "/home/terminological/tmp/test6", 5.9, 8.0, new String[] {"pdf","png"}, 300);
+		cov.fitIntoPage(html, "/home/terminological/tmp/test6", 5.9, 8.0, RCharacterVector.with("pdf","png"), 300);
 	}
 	
 	@Test

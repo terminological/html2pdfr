@@ -216,10 +216,10 @@ public class HtmlConverter {
 			String outFile, 
 			@RDefault(rCode = "6.25") double maxWidthInches, 
 			@RDefault(rCode = "9.75") double maxHeightInches,
-			@RDefault(rCode = "c('pdf','png')") String[] formats,
+			@RDefault(rCode = "c('pdf','png')") RCharacterVector formats,
 			@RDefault(rCode = "300") double pngDpi
 	) throws IOException {
-		List<String> saved = renderHtml(htmlFragment, null, outFile, formats, true, maxWidthInches, maxHeightInches, 1.0/16, true, pngDpi);
+		List<String> saved = renderHtml(htmlFragment, null, outFile, formats.rPrimitive(), true, maxWidthInches, maxHeightInches, 1.0/16, true, pngDpi);
 		return saved.stream().collect(RConverter.stringCollector());
 	}
 	
@@ -228,9 +228,10 @@ public class HtmlConverter {
 			String htmlFragment, 
 			String outFile, 
 			@RDefault(rCode = "1.0") double xMarginInInches, 
-			@RDefault(rCode = "1.0") double yMarginInInches
+			@RDefault(rCode = "1.0") double yMarginInInches,
+			@RDefault(rCode = "c('pdf','png')") RCharacterVector formats
 	) throws IOException {
-		List<String> saved = renderHtml(htmlFragment, null, outFile, new String[] {"pdf","png"}, true, A4_INCH_WIDTH-2*xMarginInInches, A4_INCH_HEIGHT-2*yMarginInInches, 1.0/16, true, 300D);
+		List<String> saved = renderHtml(htmlFragment, null, outFile, formats.rPrimitive(), true, A4_INCH_WIDTH-2*xMarginInInches, A4_INCH_HEIGHT-2*yMarginInInches, 1.0/16, true, 300D);
 		return saved.stream().collect(RConverter.stringCollector());
 	}
 	

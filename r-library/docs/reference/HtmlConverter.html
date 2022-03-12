@@ -42,7 +42,7 @@
 <meta property="og:title" content="HtmlConverter — HtmlConverter" />
 <meta property="og:description" content="missing description
 Version: 0.01
-Generated: 2022-02-17T17:34:48.642" />
+Generated: 2022-03-10T16:36:41.011" />
 
 
 
@@ -113,7 +113,7 @@ Generated: 2022-02-17T17:34:48.642" />
     <div class="ref-description">
     <p>missing description</p>
 <p>Version: 0.01</p>
-<p>Generated: 2022-02-17T17:34:48.642</p>
+<p>Generated: 2022-03-10T16:36:41.011</p>
     </div>
 
 
@@ -143,7 +143,7 @@ Generated: 2022-02-17T17:34:48.642" />
 <li><p><a href='#method-fileToPdf'><code>instance$fileToPdf(inFile, outFile)</code></a></p></li>
 <li><p><a href='#method-stringToPdf'><code>instance$stringToPdf(html, outFile, baseUri)</code></a></p></li>
 <li><p><a href='#method-fitIntoPage'><code>instance$fitIntoPage(htmlFragment, outFile, maxWidthInches, maxHeightInches, formats, pngDpi)</code></a></p></li>
-<li><p><a href='#method-fitIntoA4'><code>instance$fitIntoA4(htmlFragment, outFile, xMarginInInches, yMarginInInches)</code></a></p></li>
+<li><p><a href='#method-fitIntoA4'><code>instance$fitIntoA4(htmlFragment, outFile, xMarginInInches, yMarginInInches, formats)</code></a></p></li>
 <li><p><code>instance$clone()</code></p></li>
 <li><p><code>instance$print()</code></p></li>
 </ul><p></p>
@@ -261,7 +261,7 @@ not available
 <li><p>outFile - (java expects a String)</p></li>
 <li><p>maxWidthInches - (java expects a double)</p></li>
 <li><p>maxHeightInches - (java expects a double)</p></li>
-<li><p>formats - (java expects a String)</p></li>
+<li><p>formats - (java expects a RCharacterVector)</p></li>
 <li><p>pngDpi - (java expects a double)</p></li>
 </ul><p></div></p>
 
@@ -280,7 +280,7 @@ not available
 <p><div class="r"></p><pre>
 <span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>instance</span> <span class='op'>=</span> <span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>;
-<span class='va'>instance</span><span class='op'>$</span><span class='fu'>fitIntoA4</span><span class='op'>(</span><span class='va'>htmlFragment</span>, <span class='va'>outFile</span>, <span class='va'>xMarginInInches</span>, <span class='va'>yMarginInInches</span><span class='op'>)</span>
+<span class='va'>instance</span><span class='op'>$</span><span class='fu'>fitIntoA4</span><span class='op'>(</span><span class='va'>htmlFragment</span>, <span class='va'>outFile</span>, <span class='va'>xMarginInInches</span>, <span class='va'>yMarginInInches</span>, <span class='va'>formats</span><span class='op'>)</span>
         </pre><p></div></p>
 	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
@@ -289,6 +289,7 @@ not available
 <li><p>outFile - (java expects a String)</p></li>
 <li><p>xMarginInInches - (java expects a double)</p></li>
 <li><p>yMarginInInches - (java expects a double)</p></li>
+<li><p>formats - (java expects a RCharacterVector)</p></li>
 </ul><p></div></p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>

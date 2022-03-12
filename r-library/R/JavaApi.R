@@ -6,7 +6,7 @@
 #'
 #' Version: 0.01
 #'
-#' Generated: 2022-02-17T17:34:48.613
+#' Generated: 2022-03-10T16:36:40.978
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -65,7 +65,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R wrapper for OpenHTMLtoPDF java library")
  		message("Version: 0.01")
-		message("Generated: 2022-02-17T17:34:48.613")
+		message("Generated: 2022-03-10T16:36:40.979")
  	
 		if (!.jniInitialized) 
 	        .jinit(parameters=getOption("java.parameters"),silent = TRUE, force.init = FALSE)
@@ -86,7 +86,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
     	self$.log = .jcall("org/slf4j/LoggerFactory", returnSig = "Lorg/slf4j/Logger;", method = "getLogger", "html2pdfr");
     	.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","Version: 0.01");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-02-17T17:34:48.614");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-03-10T16:36:40.979");
 		# .jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
 		self$printMessages()
@@ -209,13 +209,6 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			    if (!is.logical(rObj)) stop('not a logical')
 			    return(as.logical(rObj[[1]]))
 			},
-			RInteger=function(rObj) {
-				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger'))
-				if (length(rObj) > 1) stop('input too long')
-				tmp = as.integer(rObj)[[1]]
-				if (rObj[[1]]!=tmp) stop('cannot cast to integer: ',rObj)
-				return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger',tmp))
-			},
 			RBoundDataframe=function(rObj) {
 				jout = rJava::.jnew('uk/co/terminological/rjava/types/RDataframe')
 				lapply(colnames(rObj), function(x) {
@@ -231,6 +224,13 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				})
 				rJava::.jcall(jout,returnSig='Luk/co/terminological/rjava/types/RDataframe;',method='groupBy',rJava::.jarray(dplyr::group_vars(rObj)))
 				return(jout)
+			},
+			RInteger=function(rObj) {
+				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger'))
+				if (length(rObj) > 1) stop('input too long')
+				tmp = as.integer(rObj)[[1]]
+				if (rObj[[1]]!=tmp) stop('cannot cast to integer: ',rObj)
+				return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger',tmp))
 			},
 			RDataframe=function(rObj) {
 				jout = rJava::.jnew('uk/co/terminological/rjava/types/RDataframe')
@@ -322,12 +322,12 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			RNumericVector=function(jObj) as.numeric(rJava::.jcall(jObj,returnSig='[D',method='rPrimitive')),
 			int=function(jObj) return(as.integer(jObj)),
 			boolean=function(jObj) return(as.logical(jObj)),
-			RInteger=function(jObj) as.integer(rJava::.jcall(jObj,returnSig='I',method='rPrimitive')),
 			RBoundDataframe=function(jObj) {
 				convDf = eval(parse(text=rJava::.jcall(jObj,'rConversion', returnSig='Ljava/lang/String;')))
 				groups = rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='getGroups')
 				return(dplyr::group_by(convDf(jObj),!!!sapply(groups,as.symbol)))
 			},
+			RInteger=function(jObj) as.integer(rJava::.jcall(jObj,returnSig='I',method='rPrimitive')),
 			RDataframe=function(jObj) {
 				convDf = eval(parse(text=rJava::.jcall(jObj,'rConversion', returnSig='Ljava/lang/String;')))
 				groups = rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='getGroups')

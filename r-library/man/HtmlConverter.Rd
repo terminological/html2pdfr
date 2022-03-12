@@ -18,7 +18,7 @@ missing description
 
 Version: 0.01
 
-Generated: 2022-02-17T17:34:48.642
+Generated: 2022-03-10T16:36:41.011
 }
 
 \details{
@@ -70,7 +70,7 @@ instance = J$HtmlConverter$new(fontfiles)
 			\item \href{#method-fileToPdf}{\code{instance$fileToPdf(inFile, outFile)}}
 			\item \href{#method-stringToPdf}{\code{instance$stringToPdf(html, outFile, baseUri)}}
 			\item \href{#method-fitIntoPage}{\code{instance$fitIntoPage(htmlFragment, outFile, maxWidthInches, maxHeightInches, formats, pngDpi)}}
-			\item \href{#method-fitIntoA4}{\code{instance$fitIntoA4(htmlFragment, outFile, xMarginInInches, yMarginInInches)}}
+			\item \href{#method-fitIntoA4}{\code{instance$fitIntoA4(htmlFragment, outFile, xMarginInInches, yMarginInInches, formats)}}
 			\item \code{instance$clone()}
 			\item \code{instance$print()}
 		}
@@ -251,7 +251,7 @@ instance$fitIntoPage(htmlFragment, outFile, maxWidthInches, maxHeightInches, for
 				\item{outFile}{ - (java expects a String)}
 				\item{maxWidthInches}{ - (java expects a double)}
 				\item{maxHeightInches}{ - (java expects a double)}
-				\item{formats}{ - (java expects a String)}
+				\item{formats}{ - (java expects a RCharacterVector)}
 				\item{pngDpi}{ - (java expects a double)}
 			}
 			\if{html}{\out{</div>}}
@@ -281,7 +281,7 @@ not available
 			\preformatted{
 J = html2pdfr::JavaApi$get()
 instance = J$HtmlConverter$new(...);
-instance$fitIntoA4(htmlFragment, outFile, xMarginInInches, yMarginInInches)
+instance$fitIntoA4(htmlFragment, outFile, xMarginInInches, yMarginInInches, formats)
   			}
 			\if{html}{\out{</div>}}
 		}
@@ -293,6 +293,7 @@ instance$fitIntoA4(htmlFragment, outFile, xMarginInInches, yMarginInInches)
 				\item{outFile}{ - (java expects a String)}
 				\item{xMarginInInches}{ - (java expects a double)}
 				\item{yMarginInInches}{ - (java expects a double)}
+				\item{formats}{ - (java expects a RCharacterVector)}
 			}
 			\if{html}{\out{</div>}}
 		}
