@@ -61,7 +61,7 @@ conv$fitIntoPage(htmlFragment = irisHtml,maxWidthInches = 4,maxHeightInches = 4,
   
 ```
 
-And [the resulting pdf](example-output.pdf) of the generated HTML is here. This document (which will not be beautiful) should be no more than 4 inches high. The width in this case is determined by the content. If there was very wide content, the converter would wrap cells to stay within the specified bounding box size. This means that we can insert it into a latex document simply.
+And [the resulting pdf](example-output-2.pdf) of the generated HTML is here. This document (which will not be beautiful) should be no more than 4 inches high. The width in this case is determined by the content. If there was very wide content, the converter would wrap cells to stay within the specified bounding box size. This means that we can insert it into a latex document simply.
 
 The layout engine should support simple SVG and MathML content. However it does not execute javascript so may not be able to lay out D3 content. If this is somnething you need then using webshot2, which wraps a whole Chrome instance, may be a better option. 
 
@@ -78,3 +78,5 @@ conv$urlToPdf(
 )
  
 ```
+
+[The resulting mathml](example-mathml.pdf) 

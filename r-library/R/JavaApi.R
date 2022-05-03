@@ -6,7 +6,7 @@
 #'
 #' Version: 0.01
 #'
-#' Generated: 2022-05-03T13:24:29.506
+#' Generated: 2022-05-03T13:28:39.814
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -65,7 +65,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R wrapper for OpenHTMLtoPDF java library")
  		message("Version: 0.01")
-		message("Generated: 2022-05-03T13:24:29.506")
+		message("Generated: 2022-05-03T13:28:39.815")
  	
 		if (!.jniInitialized) 
 	        .jinit(parameters=getOption("java.parameters"),silent = TRUE, force.init = FALSE)
@@ -87,7 +87,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
     	self$.log = .jcall("org/slf4j/LoggerFactory", returnSig = "Lorg/slf4j/Logger;", method = "getLogger", "html2pdfr");
     	.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","Version: 0.01");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-05-03T13:24:29.506");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-05-03T13:28:39.815");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
 		self$printMessages()
@@ -103,18 +103,18 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				tmpDim = dim(rObj)
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RNumericArray',rJava::.jarray(tmpVec),rJava::.jarray(tmpDim)))
 			},
-			RDateVector=function(rObj) {
-				if (is.null(rObj)) return(rJava::.new('uk/co/terminological/rjava/types/RDateVector'))
-				if (any(na.omit(rObj)<'0001-01-01')) message('dates smaller than 0001-01-01 will be converted to NA')
-				tmp = as.character(rObj,format='%C%y-%m-%d')
-				return(rJava::.jnew('uk/co/terminological/rjava/types/RDateVector',rJava::.jarray(tmp)))
-			},
 			RDate=function(rObj) {
 				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RDate'))
 				if (length(rObj) > 1) stop('input too long')
 			   if (rObj<'0001-01-01') message('dates smaller than 0001-01-01 will be converted to NA')
 				tmp = as.character(rObj,format='%C%y-%m-%d')[[1]]
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RDate',tmp))
+			},
+			RDateVector=function(rObj) {
+				if (is.null(rObj)) return(rJava::.new('uk/co/terminological/rjava/types/RDateVector'))
+				if (any(na.omit(rObj)<'0001-01-01')) message('dates smaller than 0001-01-01 will be converted to NA')
+				tmp = as.character(rObj,format='%C%y-%m-%d')
+				return(rJava::.jnew('uk/co/terminological/rjava/types/RDateVector',rJava::.jarray(tmp)))
 			},
 			RCharacterVector=function(rObj) {
 				if (is.null(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacterVector'))
@@ -142,16 +142,16 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				tmpLabel = levels(rObj)[[tmp]]
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RFactor',tmp, tmpLabel))
 			},
+			RCharacter=function(rObj) {
+				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter'))
+				tmp = as.character(rObj)[[1]]
+				return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter',tmp))
+			},
 			RLogicalVector=function(rObj) {
 				if (is.null(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RLogicalVector'))
 				if (!is.logical(rObj)) stop('expected a vector of logicals')
 				tmp = as.integer(rObj)
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RLogicalVector',rJava::.jarray(tmp)))
-			},
-			RCharacter=function(rObj) {
-				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter'))
-				tmp = as.character(rObj)[[1]]
-				return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter',tmp))
 			},
 			RNull=function(rObj) {
 				if (!is.null(rObj)) stop('input expected to be NULL')
@@ -211,13 +211,6 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			    if (!is.logical(rObj)) stop('not a logical')
 			    return(as.logical(rObj[[1]]))
 			},
-			RInteger=function(rObj) {
-				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger'))
-				if (length(rObj) > 1) stop('input too long')
-				tmp = as.integer(rObj)[[1]]
-				if (rObj[[1]]!=tmp) stop('cannot cast to integer: ',rObj)
-				return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger',tmp))
-			},
 			RBoundDataframe=function(rObj) {
 				jout = rJava::.jnew('uk/co/terminological/rjava/types/RDataframe')
 				lapply(colnames(rObj), function(x) {
@@ -233,6 +226,13 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				})
 				rJava::.jcall(jout,returnSig='Luk/co/terminological/rjava/types/RDataframe;',method='groupBy',rJava::.jarray(dplyr::group_vars(rObj)))
 				return(jout)
+			},
+			RInteger=function(rObj) {
+				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger'))
+				if (length(rObj) > 1) stop('input too long')
+				tmp = as.integer(rObj)[[1]]
+				if (rObj[[1]]!=tmp) stop('cannot cast to integer: ',rObj)
+				return(rJava::.jnew('uk/co/terminological/rjava/types/RInteger',tmp))
 			},
 			RDataframe=function(rObj) {
 				jout = rJava::.jnew('uk/co/terminological/rjava/types/RDataframe')
@@ -304,14 +304,14 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			   if (length(tmpDim)==2) return(matrix(tmpVec,tmpDim))
 				return(array(tmpVec,tmpDim))
 			},
-			RDateVector=function(jObj) as.Date(rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='rPrimitive'),'%Y-%m-%d'),
 			RDate=function(jObj) as.Date(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rPrimitive'),'%Y-%m-%d'),
+			RDateVector=function(jObj) as.Date(rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='rPrimitive'),'%Y-%m-%d'),
 			RCharacterVector=function(jObj) as.character(rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='rPrimitive')),
 			RNumeric=function(jObj) as.numeric(rJava::.jcall(jObj,returnSig='D',method='rPrimitive')),
 			RLogical=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='I',method='rPrimitive')),
 			RFactor=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rLabel')),
-			RLogicalVector=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='[I',method='rPrimitive')),
 			RCharacter=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rPrimitive')),
+			RLogicalVector=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='[I',method='rPrimitive')),
 			RNull=function(jObj) return(NULL),
 			String=function(jObj) return(as.character(jObj)),
 			HtmlConverter=function(jObj) return(jObj),
@@ -324,12 +324,12 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			RNumericVector=function(jObj) as.numeric(rJava::.jcall(jObj,returnSig='[D',method='rPrimitive')),
 			int=function(jObj) return(as.integer(jObj)),
 			boolean=function(jObj) return(as.logical(jObj)),
-			RInteger=function(jObj) as.integer(rJava::.jcall(jObj,returnSig='I',method='rPrimitive')),
 			RBoundDataframe=function(jObj) {
 				convDf = eval(parse(text=rJava::.jcall(jObj,'rConversion', returnSig='Ljava/lang/String;')))
 				groups = rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='getGroups')
 				return(dplyr::group_by(convDf(jObj),!!!sapply(groups,as.symbol)))
 			},
+			RInteger=function(jObj) as.integer(rJava::.jcall(jObj,returnSig='I',method='rPrimitive')),
 			RDataframe=function(jObj) {
 				convDf = eval(parse(text=rJava::.jcall(jObj,'rConversion', returnSig='Ljava/lang/String;')))
 				groups = rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='getGroups')
