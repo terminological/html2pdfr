@@ -142,12 +142,12 @@ public class AutoFont {
         public final Path path;
         public final String family;
 
-        /**
+        /*
          * WARNING: Heuristics are used to determine if a font is bold (700) or normal (400) weight.
          */
         public final int weight;
 
-        /**
+        /*
          * WARNING: Heuristics are used to determine if a font is italic or normal style.
          */
         public final FontStyle style;
@@ -159,9 +159,6 @@ public class AutoFont {
             this.style = style;
         }
 
-        /**
-         * WARNING: Basic escaping, may not be robust to attack.
-         */
         public String familyCssEscaped() {
             return this.family.replace("'", "\\'");
         }

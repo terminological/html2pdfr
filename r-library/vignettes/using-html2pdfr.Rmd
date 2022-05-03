@@ -76,5 +76,5 @@ conv$urlToPdf(
   htmlUrl = "https://fred-wang.github.io/MathFonts/mozilla_mathml_test/",
   outFile = here::here("docs/articles/example-mathml.pdf")
 )
-
+ 
 ```

@@ -84,7 +84,6 @@ public class HtmlConverter {
 		this(fontfiles.rPrimitive());
 		XRLog.setLoggerImpl(new Slf4jLogger());
 		XRLog.setLoggingEnabled(false);
-		XRLog.setLevel(XRLog.CSS_PARSE, Level.SEVERE);
 	}
 	
 	public HtmlConverter(String[] fontfiles) throws IOException {
