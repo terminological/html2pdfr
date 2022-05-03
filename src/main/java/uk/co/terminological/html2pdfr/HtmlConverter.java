@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +36,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 //import org.htmlcleaner.SimpleXmlSerializer;
 //import org.htmlcleaner.TagNode;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Document.OutputSettings;
 import org.jsoup.nodes.Document.OutputSettings.Syntax;
@@ -49,7 +52,9 @@ import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder;
 import com.openhtmltopdf.pdfboxout.PdfBoxRenderer;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.openhtmltopdf.render.Box;
+import com.openhtmltopdf.slf4j.Slf4jLogger;
 import com.openhtmltopdf.svgsupport.BatikSVGDrawer;
+import com.openhtmltopdf.util.XRLog;
 
 import uk.co.terminological.html2pdfr.AutoFont.CSSFont;
 import uk.co.terminological.rjava.RClass;
@@ -60,16 +65,26 @@ import uk.co.terminological.rjava.RMethod;
 import uk.co.terminological.rjava.types.RCharacter;
 import uk.co.terminological.rjava.types.RCharacterVector;
 
-@RClass(imports = {"extrafont"})
+@RClass(imports = {"extrafont"},suggests= {"here"})
 public class HtmlConverter {
 
 	List<CSSFont> fonts = null;
 	SVGDrawer svg = new BatikSVGDrawer();
 	SVGDrawer mathMl = new MathMLDrawer();
+	W3CDom w3cDom = new W3CDom();
 
+	/**
+	 * Create a new HtmlConverter for creating PDF and PNG files from HTML.
+	 * 
+	 * @param fontfiles - a character vector of font files that will be imported into the converter.
+	 * @throws IOException  -If the font files cannot be opened
+	 */
 	@RMethod
 	public HtmlConverter(@RDefault(rCode = "extrafont::fonttable()$fontfile") RCharacterVector fontfiles) throws IOException {
-		this(fontfiles.rPrimitive());		
+		this(fontfiles.rPrimitive());
+		XRLog.setLoggerImpl(new Slf4jLogger());
+		XRLog.setLoggingEnabled(false);
+		XRLog.setLevel(XRLog.CSS_PARSE, Level.SEVERE);
 	}
 	
 	public HtmlConverter(String[] fontfiles) throws IOException {
@@ -126,29 +141,10 @@ public class HtmlConverter {
 		return doc2;
 	}
 	
-//	private Document shrinkWrap(Document doc, URI htmlBaseUrl, int maxWidth, int maxHeight, int padding) {
-//		// figure out dimensions on full page.
-//		Document doc2 = resizeHtml(doc, maxWidth, maxHeight, padding);
-//		PdfRendererBuilder builder = configuredBuilder();
-//		Element shrinkWrap = doc2.body().appendElement("div").attr("style","width: "+maxWidth+"px;");
-//		shrinkWrap.siblingElements().forEach(el -> el.appendTo(shrinkWrap));
-//		builder.withHtmlContent(doc.outerHtml(), htmlBaseUrl == null ? null : htmlBaseUrl.toString());
-//		PdfBoxRenderer renderer = builder.buildPdfRenderer();
-//		renderer.layout();
-//		// The root box is <html>, the first child is <body>, then shrinkWrap <div>.
-//		if (renderer.getPdfDocument().getNumberOfPages() == 1) {
-//			newHeight = maxHeight-(int) Math.floor(renderer.getLastContentBottom()/PDF_DOTS_PER_PIXEL);
-//		}
-//		Box box = renderer.getRootBox().getChild(0).getChild(0);
-//		int boxWidth = (int) Math.ceil(1.0*box.getBoxDimensions().getContentWidth()/PDF_DOTS_PER_PIXEL);
-//		int boxHeight = (int) Math.ceil(1.0*box.getBoxDimensions().getHeight()/PDF_DOTS_PER_PIXEL);
-//		int newWidth = Math.min(boxWidth+2*padding+1,maxWidth);
-//		int newHeight = Math.min(boxHeight+2*padding+1,maxHeight);
-//		renderer.close();
-//		// shrink image to fit rendered size (plus padding)
-//		return resizeHtml(doc,newWidth,newHeight,padding); 
-//	}
-	
+	// Shrinks HTML content so that it is smaller that maxWidth, and shorter than (or equal to) maxWidth by paging when it gets too long.
+	// This will basically shirink to content unless that gets bigger than outer box.
+	// The result is guaranteed to be no larger than maxWidth and no one page longer than maxHeight.
+	// Content will overflow to fill multiple pages.
 	private Document shrinkWrap(Document doc, URI htmlBaseUrl, int maxWidth, int maxHeight, int padding) throws IOException {
 		// figure out dimensions on full page.
 		Document doc2 = resizeHtml(doc, maxWidth, maxHeight, padding);
@@ -178,6 +174,13 @@ public class HtmlConverter {
 		return renderHtml(html, null, outFile, new String[] {"pdf","png"}, true, A4_INCH_WIDTH-2*marginInInches, A4_INCH_HEIGHT-2*marginInInches, 1.0/16, true, 300D);
 	}
 	
+	/**
+	 * Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.
+	 * @param htmlUrl the URL 
+	 * @param outFile the full path of the output file 
+	 * @return the filename written to (with extension '.pdf' if outFile did not have an extension).
+	 * @throws IOException if the output file cannot be written
+	 */
 	@RMethod
 	public RCharacter urlToPdf(String htmlUrl, String outFile) throws IOException {
 		Scanner s = new Scanner(new URL(htmlUrl).openStream(), "UTF-8");
@@ -187,6 +190,30 @@ public class HtmlConverter {
 		return RConverter.convert(saved.get(0));
 	}
 	
+	/**
+	 * Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.
+	 * @param htmlUrl the URL 
+	 * @param outFile the full path of the output file
+	 * @param cssSelector the part of the page you want to convert to PDF. 
+	 * @return the filename written to (with extension '.pdf' if outFile did not have an extension).
+	 * @throws IOException if the output file cannot be written
+	 */
+	@RMethod
+	public RCharacter urlComponentToPdf(String htmlUrl, String outFile, String cssSelector) throws IOException {
+		Scanner s = new Scanner(new URL(htmlUrl).openStream(), "UTF-8");
+		String html = s.useDelimiter("\\A").next();
+		s.close();
+		List<String> saved = renderHtmlWithSelector(html, URI.create(htmlUrl), outFile, new String[] {"pdf"}, false, 0D, 0D, 0D, false, 300D, cssSelector);
+		return RConverter.convert(saved.get(0));
+	}
+	
+	/**
+	 * Convert HTML from a local file to a PDF file. PDF size will be controlled by page media directives within the html.
+	 * @param inFile the full path to an input HTML file
+	 * @param outFile the full path to the output pdf file. (N.B. this function can also output PNG if specified in the filename extension)
+	 * @return the filename written to (with extension '.pdf' if outFile did not have an extension).
+	 * @throws IOException if the output file cannot be written
+	 */
 	@RMethod
 	public RCharacter fileToPdf(String inFile, String outFile) throws IOException {
 		Scanner s = new Scanner(new FileInputStream(new File(inFile)), "UTF-8");
@@ -197,19 +224,38 @@ public class HtmlConverter {
 		return RConverter.convert(saved.get(0));
 	}
 	
-	//N.b. can output png by specifying this in filename extension
+	//
+	/**
+	 * @param html the HTML string
+	 * @param outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)
+	 * @param baseUri optionally the base URI of the HTML string for resolving relative URLs in the HTML (e.g. CSS files).
+	 * @return the filename written to (with extension '.pdf' if outFile did not have an extension).
+	 * @throws IOException if the output file cannot be written
+	 */
 	@RMethod
 	public RCharacter stringToPdf(String html, String outFile, @RDefault(rCode = "NA_character_") RCharacter baseUri) throws IOException {
 		URI directory;
 		if (baseUri.isNa()) {
 			directory = null;
 		} else {
-			directory = Paths.get(baseUri.get()).getParent().toUri(); 
+			directory = URI.create(baseUri.get()); 
 		}
 		List<String> saved = renderHtml(html, directory, outFile, new String[] {"pdf"}, false, 0D, 0D, 0D, false, 300D);
 		return RConverter.convert(saved.get(0));
 	}
 	
+	/**
+	 * Render HTML string to fit into a page,
+	 * 
+	 * @param htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML 
+	 * @param outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)
+	 * @param maxWidthInches what is the maximum allowable width?
+	 * @param maxHeightInches what is the maximium allowable height? (if the content is larger than this then it will overflow to another page)
+	 * @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both.
+	 * @param pngDpi if outputting a PNG the dpi will determine the dimensions of the image.
+	 * @return the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).
+	 * @throws IOException if the output file cannot be written
+	 */
 	@RMethod
 	public RCharacterVector fitIntoPage(
 			String htmlFragment, 
@@ -223,6 +269,18 @@ public class HtmlConverter {
 		return saved.stream().collect(RConverter.stringCollector());
 	}
 	
+	
+	/**
+	 * Render HTML string to fit into an A4 page,
+	 * 
+	 * @param htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML 
+	 * @param outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)
+	 * @param xMarginInInches page margins
+	 * @param yMarginInInches page margins
+	 * @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both.
+	 * @return the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).
+	 * @throws IOException if the output file cannot be written
+	 */
 	@RMethod
 	public RCharacterVector fitIntoA4(
 			String htmlFragment, 
@@ -247,31 +305,24 @@ public class HtmlConverter {
 		return builder;
 	}
 	
-	
-	// main function
 	public List<String> renderHtml(String html, URI htmlBaseUrl, String outFile, String[] formats, boolean resize,  double widthInches, double heightInches, double paddingInches, boolean shrinkWrap, double pngDotsPerInch) throws IOException {
+		return renderHtmlWithSelector(html, htmlBaseUrl, outFile, formats, resize, widthInches, heightInches, paddingInches, shrinkWrap, pngDotsPerInch, null);
+	}
+	// main function 
+	public List<String> renderHtmlWithSelector(String html, URI htmlBaseUrl, String outFile, String[] formats, boolean resize,  double widthInches, double heightInches, double paddingInches, boolean shrinkWrap, double pngDotsPerInch, String cssSelector) throws IOException {
 		
 		// clean up html
+
 		Document doc = Jsoup.parse(html);
 		doc.outputSettings(new OutputSettings().syntax(Syntax.xml));
-		
-//		TODO: 
-//		com.openhtmltopdf.util.XRRuntimeException: Can't load the XML resource (using TRaX transformer). org.xml.sax.SAXParseException; lineNumber: 19; columnNumber: 55; The entity name must immediately follow the '&' in the entity reference.
-//		HtmlCleaner cleaner = new HtmlCleaner();
-//		CleanerProperties props = cleaner.getProperties();
-//		props.setNamespacesAware(true);
-//		TagNode node;
-//		try {
-//			node = cleaner.clean(html);
-//			String xml = new SimpleXmlSerializer(props).getAsString(node);
-//			
-//			log.debug("Cleaning complete");
-//			return dom;
-//		} catch (IOException e) {
-//			throw new XmlException("HtmlCleaner could not process HTML input stream",e);
-//		}
-		
-		// System.out.println(doc.outerHtml());
+		if (cssSelector != null) {
+			Elements els = doc.select(cssSelector);
+			Document tmp = Document.createShell(htmlBaseUrl.toString());
+			doc.head().children().forEach(el -> el.clone().appendTo(tmp.head()));
+			els.forEach(el -> el.clone().appendTo(tmp.body()));
+			doc = tmp;
+		}
+
 		List<String> saved = new ArrayList<String>();
 		
 		
@@ -296,12 +347,20 @@ public class HtmlConverter {
 		if(extn != "") formats = new String[] {extn};
 		outFile = FilenameUtils.removeExtension(outFile);
 		
+		Files.createDirectories(Paths.get(outFile).getParent());
+		
 		PdfRendererBuilder builder = configuredBuilder();
-		builder.withHtmlContent(doc2.outerHtml(), htmlBaseUrl == null ? null : htmlBaseUrl.toString());
+		
+		builder.withW3cDocument(w3cDom.fromJsoup(doc2), htmlBaseUrl == null ? null : htmlBaseUrl.toString());
+		// builder.withHtmlContent(doc2.outerHtml(), htmlBaseUrl == null ? null : htmlBaseUrl.toString());
 		
 		PdfBoxRenderer pdfrender = builder.buildPdfRenderer();
 		pdfrender.layout();
-		pdfrender.createPDFWithoutClosing();
+		try {
+			pdfrender.createPDFWithoutClosing();
+		} catch (Exception e) {
+			throw new IOException("HTML renderer did not complete normally. This usually means the HTML contains unsupported features, (e.g. some types of form fields.)",e);
+		}
 		
 		PDDocument pdfdoc = pdfrender.getPdfDocument();
 		boolean write = false;

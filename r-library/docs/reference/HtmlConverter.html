@@ -42,7 +42,7 @@
 <meta property="og:title" content="HtmlConverter — HtmlConverter" />
 <meta property="og:description" content="missing description
 Version: 0.01
-Generated: 2022-03-10T16:36:41.011" />
+Generated: 2022-05-03T13:08:40.553" />
 
 
 
@@ -89,6 +89,18 @@ Generated: 2022-03-10T16:36:41.011" />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/using-html2pdfr.html">Using html2pdfr</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -113,7 +125,7 @@ Generated: 2022-03-10T16:36:41.011" />
     <div class="ref-description">
     <p>missing description</p>
 <p>Version: 0.01</p>
-<p>Generated: 2022-03-10T16:36:41.011</p>
+<p>Generated: 2022-05-03T13:08:40.553</p>
     </div>
 
 
@@ -122,7 +134,7 @@ Generated: 2022-03-10T16:36:41.011" />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fontfiles</th>
-      <td><p>fontfiles - (java expects a RCharacterVector)</p></td>
+      <td><p>fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to   "extrafont::fonttable()$fontfile") - (java expects a RCharacterVector)</p></td>
     </tr>
     </table>
 
@@ -140,6 +152,7 @@ Generated: 2022-03-10T16:36:41.011" />
 </ul><p></p><p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Instance methods</h3>
 <p></p><ul>
 <li><p><a href='#method-urlToPdf'><code>instance$urlToPdf(htmlUrl, outFile)</code></a></p></li>
+<li><p><a href='#method-urlComponentToPdf'><code>instance$urlComponentToPdf(htmlUrl, outFile, cssSelector)</code></a></p></li>
 <li><p><a href='#method-fileToPdf'><code>instance$fileToPdf(inFile, outFile)</code></a></p></li>
 <li><p><a href='#method-stringToPdf'><code>instance$stringToPdf(html, outFile, baseUri)</code></a></p></li>
 <li><p><a href='#method-fitIntoPage'><code>instance$fitIntoPage(htmlFragment, outFile, maxWidthInches, maxHeightInches, formats, pngDpi)</code></a></p></li>
@@ -151,7 +164,7 @@ Generated: 2022-03-10T16:36:41.011" />
 <p><hr>
 	<a id="method-new"></a></p>	
 <p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
-<p>the default no-args constructor</p>	
+<p>Create a new HtmlConverter for creating PDF and PNG files from HTML.</p>	
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre>
@@ -161,7 +174,7 @@ Generated: 2022-03-10T16:36:41.011" />
 	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><ul>
-<li><p>fontfiles - (java expects a RCharacterVector)</p></li>
+<li><p>fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to   "extrafont::fonttable()$fontfile") - (java expects a RCharacterVector)</p></li>
 </ul><p></div></p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
@@ -173,7 +186,7 @@ not available
 			</pre><p></div></p><p></p><p><hr>
 	<a id="method-urlToPdf"></a></p>	
 <p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>urlToPdf()</code></h3>
-<p>no description</p>	
+<p>Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.</p>	
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre>
@@ -184,12 +197,37 @@ not available
 	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><ul>
-<li><p>htmlUrl - (java expects a String)</p></li>
-<li><p>outFile - (java expects a String)</p></li>
+<li><p>htmlUrl the URL - (java expects a String)</p></li>
+<li><p>outFile the full path of the output file - (java expects a String)</p></li>
 </ul><p></div></p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>RCharacter:</p>
+<p>RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).</p>
+
+<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
+<p><div class="r example copy"></p><pre>
+not available
+			</pre><p></div></p><p></p><p><hr>
+	<a id="method-urlComponentToPdf"></a></p>	
+<p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>urlComponentToPdf()</code></h3>
+<p>Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.</p>	
+
+<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre>
+<span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>instance</span> <span class='op'>=</span> <span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>;
+<span class='va'>instance</span><span class='op'>$</span><span class='fu'>urlComponentToPdf</span><span class='op'>(</span><span class='va'>htmlUrl</span>, <span class='va'>outFile</span>, <span class='va'>cssSelector</span><span class='op'>)</span>
+        </pre><p></div></p>
+	
+<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><ul>
+<li><p>htmlUrl the URL - (java expects a String)</p></li>
+<li><p>outFile the full path of the output file - (java expects a String)</p></li>
+<li><p>cssSelector the part of the page you want to convert to PDF. - (java expects a String)</p></li>
+</ul><p></div></p>
+
+<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).</p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>
@@ -197,7 +235,7 @@ not available
 			</pre><p></div></p><p></p><p><hr>
 	<a id="method-fileToPdf"></a></p>	
 <p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>fileToPdf()</code></h3>
-<p>no description</p>	
+<p>Convert HTML from a local file to a PDF file. PDF size will be controlled by page media directives within the html.</p>	
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre>
@@ -208,12 +246,12 @@ not available
 	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><ul>
-<li><p>inFile - (java expects a String)</p></li>
-<li><p>outFile - (java expects a String)</p></li>
+<li><p>inFile the full path to an input HTML file - (java expects a String)</p></li>
+<li><p>outFile the full path to the output pdf file. (N.B. this function can also output PNG if specified in the filename extension) - (java expects a String)</p></li>
 </ul><p></div></p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>RCharacter:</p>
+<p>RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).</p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>
@@ -232,13 +270,13 @@ not available
 	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><ul>
-<li><p>html - (java expects a String)</p></li>
-<li><p>outFile - (java expects a String)</p></li>
-<li><p>baseUri - (java expects a RCharacter)</p></li>
+<li><p>html the HTML string - (java expects a String)</p></li>
+<li><p>outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension) - (java expects a String)</p></li>
+<li><p>baseUri optionally the base URI of the HTML string for resolving relative URLs in the HTML (e.g. CSS files). - (defaulting to "NA_character_") - (java expects a RCharacter)</p></li>
 </ul><p></div></p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>RCharacter:</p>
+<p>RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).</p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>
@@ -246,7 +284,7 @@ not available
 			</pre><p></div></p><p></p><p><hr>
 	<a id="method-fitIntoPage"></a></p>	
 <p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>fitIntoPage()</code></h3>
-<p>no description</p>	
+<p>Render HTML string to fit into a page,</p>	
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre>
@@ -257,16 +295,16 @@ not available
 	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><ul>
-<li><p>htmlFragment - (java expects a String)</p></li>
-<li><p>outFile - (java expects a String)</p></li>
-<li><p>maxWidthInches - (java expects a double)</p></li>
-<li><p>maxHeightInches - (java expects a double)</p></li>
-<li><p>formats - (java expects a RCharacterVector)</p></li>
-<li><p>pngDpi - (java expects a double)</p></li>
+<li><p>htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML - (java expects a String)</p></li>
+<li><p>outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension) - (java expects a String)</p></li>
+<li><p>maxWidthInches what is the maximum allowable width? - (defaulting to "6.25") - (java expects a double)</p></li>
+<li><p>maxHeightInches what is the maximium allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to "9.75") - (java expects a double)</p></li>
+<li><p>formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to "c('pdf','png')") - (java expects a RCharacterVector)</p></li>
+<li><p>pngDpi if outputting a PNG the dpi will determine the dimensions of the image. - (defaulting to "300") - (java expects a double)</p></li>
 </ul><p></div></p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>RCharacterVector:</p>
+<p>RCharacterVector: the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).</p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>
@@ -274,7 +312,7 @@ not available
 			</pre><p></div></p><p></p><p><hr>
 	<a id="method-fitIntoA4"></a></p>	
 <p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>fitIntoA4()</code></h3>
-<p>no description</p>	
+<p>Render HTML string to fit into an A4 page,</p>	
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre>
@@ -285,15 +323,15 @@ not available
 	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><ul>
-<li><p>htmlFragment - (java expects a String)</p></li>
-<li><p>outFile - (java expects a String)</p></li>
-<li><p>xMarginInInches - (java expects a double)</p></li>
-<li><p>yMarginInInches - (java expects a double)</p></li>
-<li><p>formats - (java expects a RCharacterVector)</p></li>
+<li><p>htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML - (java expects a String)</p></li>
+<li><p>outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension) - (java expects a String)</p></li>
+<li><p>xMarginInInches page margins - (defaulting to "1.0") - (java expects a double)</p></li>
+<li><p>yMarginInInches page margins - (defaulting to "1.0") - (java expects a double)</p></li>
+<li><p>formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to "c('pdf','png')") - (java expects a RCharacterVector)</p></li>
 </ul><p></div></p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>RCharacterVector:</p>
+<p>RCharacterVector: the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).</p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>
@@ -308,6 +346,10 @@ not available
 
 <span class='co'>## -----------------------------------</span>
 <span class='co'>## Method `HtmlConverter$urlToPdf`</span>
+<span class='co'>## -----------------------------------</span>
+
+<span class='co'>## -----------------------------------</span>
+<span class='co'>## Method `HtmlConverter$urlComponentToPdf`</span>
 <span class='co'>## -----------------------------------</span>
 
 <span class='co'>## -----------------------------------</span>

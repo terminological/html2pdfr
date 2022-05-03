@@ -52,6 +52,7 @@
 			<artifactId>openhtmltopdf-svg-support</artifactId>
 			<version>${openhtml.version}</version>
 		</dependency>
+
 		<dependency>
 <!-- 			Rhino is included here just to make sure SVG scripts are NOT executed  -->
 <!-- 				when there is a script engine available. Rhino is only an optional dependency  -->
@@ -108,6 +109,12 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.22</version>
 		</dependency>
+		<!--  intercept openhtml2pdfs use of commons-logging -->
+		<dependency>
+		    <groupId>com.openhtmltopdf</groupId>
+		    <artifactId>openhtmltopdf-slf4j</artifactId>
+		    <version>${openhtml.version}</version>
+		</dependency>
 	</dependencies>
 
 	<!-- Resolve runtime library on github -->
@@ -160,8 +167,16 @@
 							<rjavaOpt>-Xmx4096M</rjavaOpt>
 						</rjavaOpts>
 						<packageName>html2pdfr</packageName>
+						<defaultLogLevel>WARN</defaultLogLevel>
 						<license>L-GPL</license>
-						<description>R wrapper for OpenHTMLtoPDF java library.</description>
+						<description>
+This library is really designed to help get PDF or PNG formats of HTML tables, with layout determined by page size and control of styling determined by CSS. This allows use of HTML table layout within latex documents. 
+Although tabular content should be allowed to grow up to the page dimensions, we don't want to force table layout to be a set width, but preventing it from overflowing bounding boxes is 
+also essential.
+
+Although the focus is on tables, any basic HTML content can be rendered including SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf). This does not for example
+include javascript which would be required for D3 content.
+</description>
 						<maintainerName>Rob</maintainerName>
 						<maintainerFamilyName>Challen</maintainerFamilyName>
 						<maintainerEmail>rob.challen@bristol.ac.uk</maintainerEmail>

@@ -10,7 +10,7 @@
 #' 
 #' Version: 0.01
 #' 
-#' Generated: 2022-03-10T16:36:41.016
+#' Generated: 2022-05-03T13:08:40.560
 #'
 #' @details
 	#' no details
@@ -40,11 +40,11 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 	
 	#' @description 
 	#' urlToPdf: 
-	#' no description
-	#' @param htmlUrl - (java expects a String)
-	#' @param outFile - (java expects a String)
+	#' Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.
+	#' @param htmlUrl the URL - (java expects a String)
+	#' @param outFile the full path of the output file - (java expects a String)
 	#' @return RCharacter: 
-	#' 
+	#' the filename written to (with extension '.pdf' if outFile did not have an extension).
 	urlToPdf = function(htmlUrl, outFile) {
 		# copy parameters
 		tmp_htmlUrl = self$.api$.toJava$String(htmlUrl);
@@ -58,12 +58,33 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 		return(out);
 	},
 	#' @description 
-	#' fileToPdf: 
-	#' no description
-	#' @param inFile - (java expects a String)
-	#' @param outFile - (java expects a String)
+	#' urlComponentToPdf: 
+	#' Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.
+	#' @param htmlUrl the URL - (java expects a String)
+	#' @param outFile the full path of the output file - (java expects a String)
+	#' @param cssSelector the part of the page you want to convert to PDF. - (java expects a String)
 	#' @return RCharacter: 
-	#' 
+	#' the filename written to (with extension '.pdf' if outFile did not have an extension).
+	urlComponentToPdf = function(htmlUrl, outFile, cssSelector) {
+		# copy parameters
+		tmp_htmlUrl = self$.api$.toJava$String(htmlUrl);
+		tmp_outFile = self$.api$.toJava$String(outFile);
+		tmp_cssSelector = self$.api$.toJava$String(cssSelector);
+		# execute method call
+		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacter;", method="urlComponentToPdf" , tmp_htmlUrl, tmp_outFile, tmp_cssSelector); 
+		# convert java object back to R
+		out = self$.api$.fromJava$RCharacter(tmp_out);
+		self$.api$printMessages()
+		if(is.null(out)) return(invisible(out))
+		return(out);
+	},
+	#' @description 
+	#' fileToPdf: 
+	#' Convert HTML from a local file to a PDF file. PDF size will be controlled by page media directives within the html.
+	#' @param inFile the full path to an input HTML file - (java expects a String)
+	#' @param outFile the full path to the output pdf file. (N.B. this function can also output PNG if specified in the filename extension) - (java expects a String)
+	#' @return RCharacter: 
+	#' the filename written to (with extension '.pdf' if outFile did not have an extension).
 	fileToPdf = function(inFile, outFile) {
 		# copy parameters
 		tmp_inFile = self$.api$.toJava$String(inFile);
@@ -79,11 +100,11 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 	#' @description 
 	#' stringToPdf: 
 	#' no description
-	#' @param html - (java expects a String)
-	#' @param outFile - (java expects a String)
-	#' @param baseUri - (java expects a RCharacter)
+	#' @param html the HTML string - (java expects a String)
+	#' @param outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension) - (java expects a String)
+	#' @param baseUri optionally the base URI of the HTML string for resolving relative URLs in the HTML (e.g. CSS files). - (defaulting to "NA_character_") - (java expects a RCharacter)
 	#' @return RCharacter: 
-	#' 
+	#' the filename written to (with extension '.pdf' if outFile did not have an extension).
 	stringToPdf = function(html, outFile, baseUri=NA_character_) {
 		# copy parameters
 		tmp_html = self$.api$.toJava$String(html);
@@ -99,15 +120,15 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 	},
 	#' @description 
 	#' fitIntoPage: 
-	#' no description
-	#' @param htmlFragment - (java expects a String)
-	#' @param outFile - (java expects a String)
-	#' @param maxWidthInches - (java expects a double)
-	#' @param maxHeightInches - (java expects a double)
-	#' @param formats - (java expects a RCharacterVector)
-	#' @param pngDpi - (java expects a double)
+	#' Render HTML string to fit into a page,
+	#' @param htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML - (java expects a String)
+	#' @param outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension) - (java expects a String)
+	#' @param maxWidthInches what is the maximum allowable width? - (defaulting to "6.25") - (java expects a double)
+	#' @param maxHeightInches what is the maximium allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to "9.75") - (java expects a double)
+	#' @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to "c('pdf','png')") - (java expects a RCharacterVector)
+	#' @param pngDpi if outputting a PNG the dpi will determine the dimensions of the image. - (defaulting to "300") - (java expects a double)
 	#' @return RCharacterVector: 
-	#' 
+	#' the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).
 	fitIntoPage = function(htmlFragment, outFile, maxWidthInches=6.25, maxHeightInches=9.75, formats=c('pdf','png'), pngDpi=300) {
 		# copy parameters
 		tmp_htmlFragment = self$.api$.toJava$String(htmlFragment);
@@ -126,14 +147,14 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 	},
 	#' @description 
 	#' fitIntoA4: 
-	#' no description
-	#' @param htmlFragment - (java expects a String)
-	#' @param outFile - (java expects a String)
-	#' @param xMarginInInches - (java expects a double)
-	#' @param yMarginInInches - (java expects a double)
-	#' @param formats - (java expects a RCharacterVector)
+	#' Render HTML string to fit into an A4 page,
+	#' @param htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML - (java expects a String)
+	#' @param outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension) - (java expects a String)
+	#' @param xMarginInInches page margins - (defaulting to "1.0") - (java expects a double)
+	#' @param yMarginInInches page margins - (defaulting to "1.0") - (java expects a double)
+	#' @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to "c('pdf','png')") - (java expects a RCharacterVector)
 	#' @return RCharacterVector: 
-	#' 
+	#' the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).
 	fitIntoA4 = function(htmlFragment, outFile, xMarginInInches=1.0, yMarginInInches=1.0, formats=c('pdf','png')) {
 		# copy parameters
 		tmp_htmlFragment = self$.api$.toJava$String(htmlFragment);

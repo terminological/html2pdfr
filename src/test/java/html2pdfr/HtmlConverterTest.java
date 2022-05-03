@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import uk.co.terminological.html2pdfr.AutoFont;
 import uk.co.terminological.html2pdfr.AutoFont.CSSFont;
 import uk.co.terminological.html2pdfr.HtmlConverter;
+import uk.co.terminological.rjava.RConverter;
 import uk.co.terminological.rjava.types.RCharacter;
 import uk.co.terminological.rjava.types.RCharacterVector;
 
@@ -85,6 +86,37 @@ class HtmlConverterTest {
 	}
 	
 	@Test
+	final void testUrlToPdf() throws IOException {
+		String html = getContent("/testDocument.html");
+		HtmlConverter cov = new HtmlConverter(
+				new String[] {
+						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
+						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
+		cov.stringToPdf(html, "/home/terminological/tmp/testUrl.pdf", RConverter.convert("http://www.w3.org/People/mimasa/test/xhtml/media-types/test.html"));
+	}
+	
+	@Test
+	final void testUrlToPdf2() throws IOException {
+		// String html = "http://www.w3.org/People/mimasa/test/xhtml/media-types/test.html";
+		String html = "https://cran.r-project.org/banner.shtml";
+		HtmlConverter cov = new HtmlConverter(
+				new String[] {
+						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
+						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
+		cov.urlToPdf(html, "/home/terminological/tmp/testUrl2.pdf");
+	}
+	
+	@Test
+	final void testUrlToPdf3() throws IOException {
+		String html = "https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Getting_Started";
+		HtmlConverter cov = new HtmlConverter(
+				new String[] {
+						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
+						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
+		cov.urlComponentToPdf(html, "/home/terminological/tmp/testUrl3.pdf", "#content");
+	}
+	
+	@Test
 	final void testFonts() throws IOException {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Font[] fonts = ge.getAllFonts();
@@ -109,5 +141,10 @@ class HtmlConverterTest {
         
         System.getProperties().forEach((x,y) -> System.out.println(x+":"+y));
         
+	}
+	
+	public static void main(String[] args) throws IOException {
+		HtmlConverterTest tmp = new HtmlConverterTest();
+		tmp.testUrlToPdf();
 	}
 }

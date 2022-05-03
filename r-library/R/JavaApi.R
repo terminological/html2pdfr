@@ -6,7 +6,7 @@
 #'
 #' Version: 0.01
 #'
-#' Generated: 2022-03-10T16:36:40.978
+#' Generated: 2022-05-03T13:08:40.516
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -54,18 +54,18 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	#### constructor ----
  	#' @description
  	#' Create the R6 api library class. This is the entry point to all Java related classes and methods in this package.
-    #' @param logLevel A string such as "DEBUG", "INFO", "WARN" (defaults to "INFO")
+    #' @param logLevel One of "OFF", "FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE", "ALL". (defaults to "WARN") 
     #' @examples
     #' \dontrun{
     #' J = html2pdfr::JavaApi$get();
 	#' }
     #' @return nothing
- 	initialize = function(logLevel = "INFO") {
- 		if (!is.null(JavaApi$singleton)) stop("Startup the java api with JavaApi$get() rather than using this constructor directly")
+ 	initialize = function(logLevel = "WARN") {
+ 		if (is.null(JavaApi$singleton)) stop("Startup the java api with JavaApi$get() rather than using this constructor directly")
  	
  		message("Initialising R wrapper for OpenHTMLtoPDF java library")
  		message("Version: 0.01")
-		message("Generated: 2022-03-10T16:36:40.979")
+		message("Generated: 2022-05-03T13:08:40.516")
  	
 		if (!.jniInitialized) 
 	        .jinit(parameters=getOption("java.parameters"),silent = TRUE, force.init = FALSE)
@@ -78,18 +78,20 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 	        message(paste0("Adding to classpath: ",jars,collapse='\n'))
 	        .jaddClassPath(jars)
 	    }
- 	
+	    
+	    # configure logging
  		.jcall("uk/co/terminological/rjava/LogController", returnSig = "V", method = "setupRConsole")
  		.jcall("uk/co/terminological/rjava/LogController", returnSig = "V", method = "configureLog" , logLevel)
  		# TODO: this is the library build date code byut it requires testing
- 		# buildDate = .jcall("uk/co/terminological/rjava/LogController", returnSig = "S", method = "getClassBuildTime")
+ 		buildDate = .jcall("uk/co/terminological/rjava/LogController", returnSig = "S", method = "getClassBuildTime")
     	self$.log = .jcall("org/slf4j/LoggerFactory", returnSig = "Lorg/slf4j/Logger;", method = "getLogger", "html2pdfr");
     	.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","Version: 0.01");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-03-10T16:36:40.979");
-		# .jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-05-03T13:08:40.516");
+		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
 		self$printMessages()
+		
 		# initialise type conversion functions
 		
 		self$.toJava = list(
@@ -144,16 +146,16 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				if (!is.null(rObj)) stop('input expected to be NULL')
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RNull'))
 			},
-			RCharacter=function(rObj) {
-				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter'))
-				tmp = as.character(rObj)[[1]]
-				return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter',tmp))
-			},
 			RLogicalVector=function(rObj) {
 				if (is.null(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RLogicalVector'))
 				if (!is.logical(rObj)) stop('expected a vector of logicals')
 				tmp = as.integer(rObj)
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RLogicalVector',rJava::.jarray(tmp)))
+			},
+			RCharacter=function(rObj) {
+				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter'))
+				tmp = as.character(rObj)[[1]]
+				return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter',tmp))
 			},
 			String=function(rObj) return(as.character(rObj)),
 			HtmlConverter=function(rObj) return(rObj$.jobj),
@@ -309,8 +311,8 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			RLogical=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='I',method='rPrimitive')),
 			RFactor=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rLabel')),
 			RNull=function(jObj) return(NULL),
-			RCharacter=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rPrimitive')),
 			RLogicalVector=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='[I',method='rPrimitive')),
+			RCharacter=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rPrimitive')),
 			String=function(jObj) return(as.character(jObj)),
 			HtmlConverter=function(jObj) return(jObj),
 			void=function(jObj) invisible(NULL),
@@ -368,8 +370,10 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 
 JavaApi$singleton = NULL
 
-JavaApi$get = function(logLevel = "INFO") {
+JavaApi$get = function(logLevel = "WARN") {
 	if (is.null(JavaApi$singleton)) {
+		# set to non-null so that R6 constructor will work
+		JavaApi$singleton = FALSE 
 		JavaApi$singleton = JavaApi$new(logLevel)
 	}
 	return(JavaApi$singleton)

@@ -8,7 +8,7 @@
 
 \arguments{
 	\if{html}{\out{<div class="arguments">}}
-	\item{fontfiles}{fontfiles - (java expects a RCharacterVector)}
+	\item{fontfiles}{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to   "extrafont::fonttable()$fontfile") - (java expects a RCharacterVector)}
 	\if{html}{\out{</div>}}
 }
 
@@ -18,7 +18,7 @@ missing description
 
 Version: 0.01
 
-Generated: 2022-03-10T16:36:41.011
+Generated: 2022-05-03T13:08:40.553
 }
 
 \details{
@@ -31,6 +31,10 @@ instance = J$HtmlConverter$new(fontfiles)
 
 ## -----------------------------------
 ## Method `HtmlConverter$urlToPdf`
+## -----------------------------------
+
+## -----------------------------------
+## Method `HtmlConverter$urlComponentToPdf`
 ## -----------------------------------
 
 ## -----------------------------------
@@ -67,6 +71,7 @@ instance = J$HtmlConverter$new(fontfiles)
 	\subsection{Instance methods}{
 		\itemize{
 			\item \href{#method-urlToPdf}{\code{instance$urlToPdf(htmlUrl, outFile)}}
+			\item \href{#method-urlComponentToPdf}{\code{instance$urlComponentToPdf(htmlUrl, outFile, cssSelector)}}
 			\item \href{#method-fileToPdf}{\code{instance$fileToPdf(inFile, outFile)}}
 			\item \href{#method-stringToPdf}{\code{instance$stringToPdf(html, outFile, baseUri)}}
 			\item \href{#method-fitIntoPage}{\code{instance$fitIntoPage(htmlFragment, outFile, maxWidthInches, maxHeightInches, formats, pngDpi)}}
@@ -80,7 +85,7 @@ instance = J$HtmlConverter$new(fontfiles)
 	\if{html}{\out{<a id="method-new"></a>}}
 	
 	\subsection{Method \code{new()}}{
-		the default no-args constructor
+		Create a new HtmlConverter for creating PDF and PNG files from HTML.
 	
 
 		\subsection{Usage}{
@@ -95,7 +100,7 @@ J$HtmlConverter$new(fontfiles)
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{fontfiles}{ - (java expects a RCharacterVector)}
+				\item{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to   "extrafont::fonttable()$fontfile")}{ - (java expects a RCharacterVector)}
 			}
 			\if{html}{\out{</div>}}
 		}
@@ -116,7 +121,7 @@ not available
 	\if{html}{\out{<a id="method-urlToPdf"></a>}}
 	
 	\subsection{Method \code{urlToPdf()}}{
-		no description
+		Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.
 	
 
 		\subsection{Usage}{
@@ -132,14 +137,53 @@ instance$urlToPdf(htmlUrl, outFile)
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{htmlUrl}{ - (java expects a String)}
-				\item{outFile}{ - (java expects a String)}
+				\item{htmlUrl the URL}{ - (java expects a String)}
+				\item{outFile the full path of the output file}{ - (java expects a String)}
 			}
 			\if{html}{\out{</div>}}
 		}
 
 		\subsection{Returns}{
-			RCharacter: 
+			RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).
+		}
+
+		\subsection{Examples}{
+			\if{html}{\out{<div class="r example copy">}}
+			\preformatted{
+not available
+			}
+			\if{html}{\out{</div>}}
+		}
+	}
+	\if{html}{\out{<hr>}}
+	\if{html}{\out{<a id="method-urlComponentToPdf"></a>}}
+	
+	\subsection{Method \code{urlComponentToPdf()}}{
+		Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.
+	
+
+		\subsection{Usage}{
+			\if{html}{\out{<div class="r">}}
+			\preformatted{
+J = html2pdfr::JavaApi$get()
+instance = J$HtmlConverter$new(...);
+instance$urlComponentToPdf(htmlUrl, outFile, cssSelector)
+  			}
+			\if{html}{\out{</div>}}
+		}
+	
+		\subsection{Arguments}{
+			\if{html}{\out{<div class="arguments">}}
+			\itemize{
+				\item{htmlUrl the URL}{ - (java expects a String)}
+				\item{outFile the full path of the output file}{ - (java expects a String)}
+				\item{cssSelector the part of the page you want to convert to PDF.}{ - (java expects a String)}
+			}
+			\if{html}{\out{</div>}}
+		}
+
+		\subsection{Returns}{
+			RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).
 		}
 
 		\subsection{Examples}{
@@ -154,7 +198,7 @@ not available
 	\if{html}{\out{<a id="method-fileToPdf"></a>}}
 	
 	\subsection{Method \code{fileToPdf()}}{
-		no description
+		Convert HTML from a local file to a PDF file. PDF size will be controlled by page media directives within the html.
 	
 
 		\subsection{Usage}{
@@ -170,14 +214,14 @@ instance$fileToPdf(inFile, outFile)
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{inFile}{ - (java expects a String)}
-				\item{outFile}{ - (java expects a String)}
+				\item{inFile the full path to an input HTML file}{ - (java expects a String)}
+				\item{outFile the full path to the output pdf file. (N.B. this function can also output PNG if specified in the filename extension)}{ - (java expects a String)}
 			}
 			\if{html}{\out{</div>}}
 		}
 
 		\subsection{Returns}{
-			RCharacter: 
+			RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).
 		}
 
 		\subsection{Examples}{
@@ -208,15 +252,15 @@ instance$stringToPdf(html, outFile, baseUri)
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{html}{ - (java expects a String)}
-				\item{outFile}{ - (java expects a String)}
-				\item{baseUri}{ - (java expects a RCharacter)}
+				\item{html the HTML string}{ - (java expects a String)}
+				\item{outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)}{ - (java expects a String)}
+				\item{baseUri optionally the base URI of the HTML string for resolving relative URLs in the HTML (e.g. CSS files). - (defaulting to "NA_character_")}{ - (java expects a RCharacter)}
 			}
 			\if{html}{\out{</div>}}
 		}
 
 		\subsection{Returns}{
-			RCharacter: 
+			RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).
 		}
 
 		\subsection{Examples}{
@@ -231,7 +275,7 @@ not available
 	\if{html}{\out{<a id="method-fitIntoPage"></a>}}
 	
 	\subsection{Method \code{fitIntoPage()}}{
-		no description
+		Render HTML string to fit into a page,
 	
 
 		\subsection{Usage}{
@@ -247,18 +291,18 @@ instance$fitIntoPage(htmlFragment, outFile, maxWidthInches, maxHeightInches, for
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{htmlFragment}{ - (java expects a String)}
-				\item{outFile}{ - (java expects a String)}
-				\item{maxWidthInches}{ - (java expects a double)}
-				\item{maxHeightInches}{ - (java expects a double)}
-				\item{formats}{ - (java expects a RCharacterVector)}
-				\item{pngDpi}{ - (java expects a double)}
+				\item{htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML}{ - (java expects a String)}
+				\item{outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)}{ - (java expects a String)}
+				\item{maxWidthInches what is the maximum allowable width? - (defaulting to "6.25")}{ - (java expects a double)}
+				\item{maxHeightInches what is the maximium allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to "9.75")}{ - (java expects a double)}
+				\item{formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to "c('pdf','png')")}{ - (java expects a RCharacterVector)}
+				\item{pngDpi if outputting a PNG the dpi will determine the dimensions of the image. - (defaulting to "300")}{ - (java expects a double)}
 			}
 			\if{html}{\out{</div>}}
 		}
 
 		\subsection{Returns}{
-			RCharacterVector: 
+			RCharacterVector: the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).
 		}
 
 		\subsection{Examples}{
@@ -273,7 +317,7 @@ not available
 	\if{html}{\out{<a id="method-fitIntoA4"></a>}}
 	
 	\subsection{Method \code{fitIntoA4()}}{
-		no description
+		Render HTML string to fit into an A4 page,
 	
 
 		\subsection{Usage}{
@@ -289,17 +333,17 @@ instance$fitIntoA4(htmlFragment, outFile, xMarginInInches, yMarginInInches, form
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{htmlFragment}{ - (java expects a String)}
-				\item{outFile}{ - (java expects a String)}
-				\item{xMarginInInches}{ - (java expects a double)}
-				\item{yMarginInInches}{ - (java expects a double)}
-				\item{formats}{ - (java expects a RCharacterVector)}
+				\item{htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML}{ - (java expects a String)}
+				\item{outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)}{ - (java expects a String)}
+				\item{xMarginInInches page margins - (defaulting to "1.0")}{ - (java expects a double)}
+				\item{yMarginInInches page margins - (defaulting to "1.0")}{ - (java expects a double)}
+				\item{formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to "c('pdf','png')")}{ - (java expects a RCharacterVector)}
 			}
 			\if{html}{\out{</div>}}
 		}
 
 		\subsection{Returns}{
-			RCharacterVector: 
+			RCharacterVector: the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).
 		}
 
 		\subsection{Examples}{

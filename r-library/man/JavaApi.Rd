@@ -23,11 +23,11 @@
 }
 
 \description{
-R wrapper for OpenHTMLtoPDF java library.
+This library is really designed to help get PDF or PNG formats of HTML tables, with layout determined by page size and control of styling determined by CSS. This allows use of HTML table layout within latex documents. Although tabular content should be allowed to grow up to the page dimensions, we don't want to force table layout to be a set width, but preventing it from overflowing bounding boxes is also essential. Although the focus is on tables, any basic HTML content can be rendered including SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf). This does not for example include javascript which would be required for D3 content.
 
 Version: 0.01
 
-Generated: 2022-03-10T16:36:40.964
+Generated: 2022-05-03T13:08:40.492
 }
 
 \author{\email{rob.challen@bristol.ac.uk}}
@@ -45,7 +45,7 @@ Generated: 2022-03-10T16:36:40.964
 	\if{html}{\out{<a id="method-HtmlConverter-new"></a>}}
 	
 	\subsection{Method \code{HtmlConverter$new()}}{
-		the default no-args constructor
+		Create a new HtmlConverter for creating PDF and PNG files from HTML.
 	
 		\subsection{Usage}{
 			\if{html}{\out{<div class="r">}}
@@ -60,7 +60,7 @@ J$HtmlConverter$new(fontfiles)
 			\if{html}{\out{<div class="arguments">}}
 			\describe{
 				\itemize{
-					\item{fontfiles}{ - (java expects a RCharacterVector)}
+					\item{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to   "extrafont::fonttable()$fontfile")}{ - (java expects a RCharacterVector)}
 				}
 			}
 			\if{html}{\out{</div>}}

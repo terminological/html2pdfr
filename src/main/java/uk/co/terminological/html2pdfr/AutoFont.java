@@ -18,7 +18,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,11 +73,12 @@ public class AutoFont {
     /**
      * Returns a list of fonts in a given directory.
      * NOTE: Should not be used repeatedly as each font found is parsed to get the family name.
-     *
+     * @param directory the directory to browse
      * @param validFileExtensions list of file extensions that are fonts - usually Collections.singletonList("ttf")
      * @param recurse whether to look in sub-directories recursively
      * @param followLinks whether to follow symbolic links in the file system
      * @return a list of fonts.
+     * @throws IOException - If any files cannot be read.
      */
     public static List<CSSFont> findFontsInDirectory(
         Path directory, List<String> validFileExtensions, boolean recurse, boolean followLinks) throws IOException {
@@ -97,28 +97,22 @@ public class AutoFont {
      * Returns a list of fonts in a given directory. Recursively searches directory and
      * sub-directories for .ttf files. Follows symbolic links.
      * NOTE: Should not be used repeatedly as each font found is parsed to get the family name.
+     * @param directory the directory to browse
+     * @return a list of fonts.
+     * @throws IOException - If any files cannot be read.
      */
     public static List<CSSFont> findFontsInDirectory(Path directory) throws IOException {
         return findFontsInDirectory(directory, Collections.singletonList("ttf"), true, true);
     }
 
-    /**
-     * Get a string containing added font families (duplicates removed) in a format suitable
-     * for the CSS font-family property.
-     * 
-     * WARNING: Basic escaping, may not be robust to attack.
-     */
-    public static String toCSSEscapedFontFamily(List<CSSFont> fontsList) {
-        return fontsList.stream()
-           .map(fnt -> '\'' + fnt.familyCssEscaped() + '\'')
-           .distinct()
-           .collect(Collectors.joining(", "));
-    }
+//    private static String toCSSEscapedFontFamily(List<CSSFont> fontsList) {
+//        return fontsList.stream()
+//           .map(fnt -> '\'' + fnt.familyCssEscaped() + '\'')
+//           .distinct()
+//           .collect(Collectors.joining(", "));
+//    }
 
-    /**
-     * Adds all fonts in the list to the builder.
-     */
-    public static void toBuilder(BaseRendererBuilder<?,?> builder, List<CSSFont> fonts) {
+    protected static void toBuilder(BaseRendererBuilder<?,?> builder, List<CSSFont> fonts) {
         for (CSSFont font : fonts) {
             builder.useFont(font.path.toFile(), font.family, font.weight, font.style, true);
         }

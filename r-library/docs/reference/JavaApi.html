@@ -40,9 +40,9 @@
 
 
 <meta property="og:title" content="R wrapper for OpenHTMLtoPDF java library — JavaApi" />
-<meta property="og:description" content="R wrapper for OpenHTMLtoPDF java library.
+<meta property="og:description" content="This library is really designed to help get PDF or PNG formats of HTML tables, with layout determined by page size and control of styling determined by CSS. This allows use of HTML table layout within latex documents. Although tabular content should be allowed to grow up to the page dimensions, we don't want to force table layout to be a set width, but preventing it from overflowing bounding boxes is also essential. Although the focus is on tables, any basic HTML content can be rendered including SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf). This does not for example include javascript which would be required for D3 content.
 Version: 0.01
-Generated: 2022-03-10T16:36:40.964" />
+Generated: 2022-05-03T13:08:40.492" />
 
 
 
@@ -89,6 +89,18 @@ Generated: 2022-03-10T16:36:40.964" />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/using-html2pdfr.html">Using html2pdfr</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -111,9 +123,9 @@ Generated: 2022-03-10T16:36:40.964" />
     </div>
 
     <div class="ref-description">
-    <p>R wrapper for OpenHTMLtoPDF java library.</p>
+    <p>This library is really designed to help get PDF or PNG formats of HTML tables, with layout determined by page size and control of styling determined by CSS. This allows use of HTML table layout within latex documents. Although tabular content should be allowed to grow up to the page dimensions, we don't want to force table layout to be a set width, but preventing it from overflowing bounding boxes is also essential. Although the focus is on tables, any basic HTML content can be rendered including SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf). This does not for example include javascript which would be required for D3 content.</p>
 <p>Version: 0.01</p>
-<p>Generated: 2022-03-10T16:36:40.964</p>
+<p>Generated: 2022-05-03T13:08:40.492</p>
     </div>
 
 
@@ -147,7 +159,7 @@ Generated: 2022-03-10T16:36:40.964" />
 <p><hr>
 	<a id="method-HtmlConverter-new"></a></p>	
 <p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>HtmlConverter$new()</code></h3>
-<p>the default no-args constructor</p>	
+<p>Create a new HtmlConverter for creating PDF and PNG files from HTML.</p>	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre>
 <span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'>JavaApi</span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
@@ -157,7 +169,7 @@ Generated: 2022-03-10T16:36:40.964" />
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 				
-					fontfiles - (java expects a RCharacterVector)
+					fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to   "extrafont::fonttable()$fontfile") - (java expects a RCharacterVector)
 				
 			
 </dl><p></div></p>

@@ -6,7 +6,7 @@
 \title{html2pdfr: R wrapper for OpenHTMLtoPDF java library}
 \description{
 \if{html}{\figure{logo.png}{options: align='right'}}
-R wrapper for OpenHTMLtoPDF java library.
+This library is really designed to help get PDF or PNG formats of HTML tables, with layout determined by page size and control of styling determined by CSS. This allows use of HTML table layout within latex documents. Although tabular content should be allowed to grow up to the page dimensions, we don't want to force table layout to be a set width, but preventing it from overflowing bounding boxes is also essential. Although the focus is on tables, any basic HTML content can be rendered including SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf). This does not for example include javascript which would be required for D3 content.
 
 Version: 0.01
 
