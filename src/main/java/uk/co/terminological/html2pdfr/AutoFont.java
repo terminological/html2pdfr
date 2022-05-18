@@ -126,8 +126,40 @@ public class AutoFont {
             // Short of parsing the font ourselves there doesn't seem to be a way
             // of getting the font properties, so we use heuristics based on font name.
             String name = f.getFontName(Locale.US).toLowerCase(Locale.US);
-            int weight = name.contains("bold") ? 700 : 400;
-            FontStyle style = name.contains("italic") ? FontStyle.ITALIC : FontStyle.NORMAL;
+            
+            int weight = 
+            		name.contains("ultrathin") ? 100 :
+            		name.contains("extrathin") ? 100 :
+            		name.contains("thin") ? 100 :
+            		name.contains("extralite") ? 250 :
+            		name.contains("lite") ? 300 :
+            		name.contains("light") ? 300 :
+            		name.contains("book") ? 350 :
+            		name.contains("text") ? 375 :
+            		name.contains("normal") ? 400 :
+            		name.contains("regular") ? 400 :
+            		
+            		name.contains("medium") ? 500 :
+            		name.contains("extrathick ") ? 500 :
+            		name.contains("thick") ? 500 :
+            		
+            		name.contains("semibold") ? 600 :
+            		name.contains("extradark") ? 600 :
+            		name.contains("dark") ? 600 :
+            		
+            		name.contains("extrabold") ? 700 :
+            		name.contains("ultrabold") ? 700 :
+            		name.contains("bold") ? 700 :
+            		
+            		name.contains("extrablack") ? 900 :
+            		name.contains("ultrablack") ? 999 :
+            		name.contains("black") ? 900 :
+            		400;
+            
+            FontStyle style = 
+            		name.contains("italic") ? FontStyle.ITALIC : 
+            		name.contains("slanted") ? FontStyle.OBLIQUE :
+            		FontStyle.NORMAL;
 
             CSSFont fnt = new CSSFont(Paths.get(ttfFile), family, weight, style);
 

@@ -9,7 +9,7 @@ Html2pdfr is a basic replacement for webshot which does not require any external
 html2pdfr is not on cran yet. Installation from this repo can be done as follows:
 
 ```R
-devtools::install_github("terminological/html2pdfr", subdir="r-library")
+devtools::install_github("terminological/html2pdfr")
 ```
 
 [Visit the docs](https://terminological.github.io/html2pdfr/) for more info.

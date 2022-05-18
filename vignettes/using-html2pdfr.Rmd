@@ -1,0 +1,82 @@
+---
+title: "Using html2pdfr"
+author: "Rob Challen"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using html2pdfr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Html2pdfr is a basic replacement for webshot which does not require any external dependencies, and would suit running on a headless server. Its aim is to support the minimally useful layout and conversion of static HTML to PDF. The general purpose is to generate a static version of HTML tables, created by libraries such as huxtable, that can be included in latex documents, or presentations. It can convert other simple HTML, you'll just have to try it to see whether it works. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  collapse = TRUE
+)
+
+# devtools::load_all("~/Git/html2pdfr/r-library/")
+here::i_am("vignettes/using-html2pdfr.Rmd")
+```
+
+## Initialising the library
+
+The following basic initialisation code gives you a default converter:
+
+```{r}
+J = html2pdfr::JavaApi$get()
+conv = J$HtmlConverter$new()
+```
+
+## Generating a pdf from a URL
+
+Pulling in a URL and converting it to PDF is done like so:
+
+```{r}
+conv$urlToPdf(
+  htmlUrl = "https://cran.r-project.org/banner.shtml",
+  outFile = here::here("docs/articles/example-output.pdf")
+)
+
+```
+
+[The resulting pdf](example-output.pdf) is here, Your mileage will vary as complex web pages are not supported by the underlying engine. THe focus is on simpler static web content and not your usual content (it also does not support frames).
+
+## Generating a pdf from HTML content
+
+In the following, more usual, example the HTML is generated within R (as you might find from a tabular data library such as huxtable or gtables) and passed to the converter with some target page dimensions. The converter will lay out the table within the confines of the maximum space available, overflowing to new pages.
+
+```{r}
+irisHtml = paste0(
+  "<table>",
+  paste0(
+    "<tr><td style='border-style: solid; border-width: 0.5pt; padding: 1pt; font-weight: normal; font-family: Roboto; font-size: 8pt;'>",
+    apply(as.matrix(iris),MARGIN = 1,FUN = paste0, collapse="</td><td style='border-style: solid; border-width: 0.5pt; padding: 1pt; font-weight: normal; font-family: Roboto; font-size: 8pt;'>"),
+    "</td></tr>\n",
+  collapse=""),
+  "</table>")
+
+conv$fitIntoPage(htmlFragment = irisHtml,maxWidthInches = 4,maxHeightInches = 4,outFile = here::here("docs/articles/example-output-2.pdf"))
+  
+```
+
+And [the resulting pdf](example-output-2.pdf) of the generated HTML is here. This document (which will not be beautiful) should be no more than 4 inches high. The width in this case is determined by the content. If there was very wide content, the converter would wrap cells to stay within the specified bounding box size. This means that we can insert it into a latex document simply.
+
+The layout engine should support simple SVG and MathML content. However it does not execute javascript so may not be able to lay out D3 content. If this is somnething you need then using webshot2, which wraps a whole Chrome instance, may be a better option. 
+
+```{r}
+# Javascript Does not work:
+# conv$urlToPdf(
+#   htmlUrl = "https://bl.ocks.org/mbostock/raw/1389927/?raw=true",
+#   outFile = here::here("docs/articles/example-d3.pdf")
+# )
+
+conv$urlToPdf(
+  htmlUrl = "https://fred-wang.github.io/MathFonts/mozilla_mathml_test/",
+  outFile = here::here("docs/articles/example-mathml.pdf")
+)
+ 
+```
+
+[The resulting mathml](example-mathml.pdf) 
