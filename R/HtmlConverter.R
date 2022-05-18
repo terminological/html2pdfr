@@ -10,7 +10,7 @@
 #' 
 #' Version: 0.01
 #' 
-#' Generated: 2022-05-18T16:31:39.970
+#' Generated: 2022-05-18T23:44:13.667548
 #'
 #' @details
 	#' no details
@@ -50,10 +50,12 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 		tmp_htmlUrl = self$.api$.toJava$String(htmlUrl);
 		tmp_outFile = self$.api$.toJava$String(outFile);
 		# execute method call
-		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacter;", method="urlToPdf" , tmp_htmlUrl, tmp_outFile); 
+		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacter;", method="urlToPdf" , tmp_htmlUrl, tmp_outFile, check=FALSE);
+		self$.api$printMessages()
+		# check for exceptions and rethrow them
+		.jcheck()
 		# convert java object back to R
 		out = self$.api$.fromJava$RCharacter(tmp_out);
-		self$.api$printMessages()
 		if(is.null(out)) return(invisible(out))
 		return(out);
 	},
@@ -71,10 +73,12 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 		tmp_outFile = self$.api$.toJava$String(outFile);
 		tmp_cssSelector = self$.api$.toJava$String(cssSelector);
 		# execute method call
-		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacter;", method="urlComponentToPdf" , tmp_htmlUrl, tmp_outFile, tmp_cssSelector); 
+		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacter;", method="urlComponentToPdf" , tmp_htmlUrl, tmp_outFile, tmp_cssSelector, check=FALSE);
+		self$.api$printMessages()
+		# check for exceptions and rethrow them
+		.jcheck()
 		# convert java object back to R
 		out = self$.api$.fromJava$RCharacter(tmp_out);
-		self$.api$printMessages()
 		if(is.null(out)) return(invisible(out))
 		return(out);
 	},
@@ -90,10 +94,12 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 		tmp_inFile = self$.api$.toJava$String(inFile);
 		tmp_outFile = self$.api$.toJava$String(outFile);
 		# execute method call
-		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacter;", method="fileToPdf" , tmp_inFile, tmp_outFile); 
+		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacter;", method="fileToPdf" , tmp_inFile, tmp_outFile, check=FALSE);
+		self$.api$printMessages()
+		# check for exceptions and rethrow them
+		.jcheck()
 		# convert java object back to R
 		out = self$.api$.fromJava$RCharacter(tmp_out);
-		self$.api$printMessages()
 		if(is.null(out)) return(invisible(out))
 		return(out);
 	},
@@ -111,10 +117,12 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 		tmp_outFile = self$.api$.toJava$String(outFile);
 		tmp_baseUri = self$.api$.toJava$RCharacter(baseUri);
 		# execute method call
-		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacter;", method="stringToPdf" , tmp_html, tmp_outFile, tmp_baseUri); 
+		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacter;", method="stringToPdf" , tmp_html, tmp_outFile, tmp_baseUri, check=FALSE);
+		self$.api$printMessages()
+		# check for exceptions and rethrow them
+		.jcheck()
 		# convert java object back to R
 		out = self$.api$.fromJava$RCharacter(tmp_out);
-		self$.api$printMessages()
 		if(is.null(out)) return(invisible(out))
 		return(out);
 	},
@@ -138,10 +146,12 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 		tmp_formats = self$.api$.toJava$RCharacterVector(formats);
 		tmp_pngDpi = self$.api$.toJava$double(pngDpi);
 		# execute method call
-		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="fitIntoPage" , tmp_htmlFragment, tmp_outFile, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi); 
+		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="fitIntoPage" , tmp_htmlFragment, tmp_outFile, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi, check=FALSE);
+		self$.api$printMessages()
+		# check for exceptions and rethrow them
+		.jcheck()
 		# convert java object back to R
 		out = self$.api$.fromJava$RCharacterVector(tmp_out);
-		self$.api$printMessages()
 		if(is.null(out)) return(invisible(out))
 		return(out);
 	},
@@ -163,10 +173,12 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 		tmp_yMarginInInches = self$.api$.toJava$double(yMarginInInches);
 		tmp_formats = self$.api$.toJava$RCharacterVector(formats);
 		# execute method call
-		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="fitIntoA4" , tmp_htmlFragment, tmp_outFile, tmp_xMarginInInches, tmp_yMarginInInches, tmp_formats); 
+		tmp_out = .jcall(self$.jobj, returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="fitIntoA4" , tmp_htmlFragment, tmp_outFile, tmp_xMarginInInches, tmp_yMarginInInches, tmp_formats, check=FALSE);
+		self$.api$printMessages()
+		# check for exceptions and rethrow them
+		.jcheck()
 		# convert java object back to R
 		out = self$.api$.fromJava$RCharacterVector(tmp_out);
-		self$.api$printMessages()
 		if(is.null(out)) return(invisible(out))
 		return(out);
 	},
@@ -189,9 +201,12 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 	#' @description Allow this object to be garbage collected.
 	finalize = function() {
 		if(!is.null(self$.jobj)) {
-			try({
-				.jcall(self$.jobj, returnSig = "V", method="close")
-			})
+			.jcall(self$.jobj, returnSig = "V", method="close", check=FALSE)
+			e = .jgetEx(clear=TRUE)
+			if (!is.null(e)) {
+				self$.api$.log$error(e$getMessage())
+			}
+			self$.api$printMessages() 
 		}
 		self$.jobj = .jnull("uk/co/terminological/html2pdfr/HtmlConverter")
 		self$.jobj = NULL

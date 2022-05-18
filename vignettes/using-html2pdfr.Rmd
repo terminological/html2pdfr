@@ -16,13 +16,13 @@ knitr::opts_chunk$set(
   collapse = TRUE
 )
 
-# devtools::load_all("~/Git/html2pdfr/r-library/")
+# devtools::load_all("~/Git/html2pdfr/")
 here::i_am("vignettes/using-html2pdfr.Rmd")
 ```
 
 ## Initialising the library
 
-The following basic initialisation code gives you a default converter:
+The following basic initialization code gives you a default converter:
 
 ```{r}
 J = html2pdfr::JavaApi$get()
@@ -63,7 +63,7 @@ conv$fitIntoPage(htmlFragment = irisHtml,maxWidthInches = 4,maxHeightInches = 4,
 
 And [the resulting pdf](example-output-2.pdf) of the generated HTML is here. This document (which will not be beautiful) should be no more than 4 inches high. The width in this case is determined by the content. If there was very wide content, the converter would wrap cells to stay within the specified bounding box size. This means that we can insert it into a latex document simply.
 
-The layout engine should support simple SVG and MathML content. However it does not execute javascript so may not be able to lay out D3 content. If this is somnething you need then using webshot2, which wraps a whole Chrome instance, may be a better option. 
+The layout engine should support simple SVG and MathML content. However it does not execute javascript so may not be able to lay out D3 content. If this is something you need then using webshot2, which wraps a whole Chrome instance, may be a better option. 
 
 ```{r}
 # Javascript Does not work:
