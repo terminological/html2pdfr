@@ -10,3 +10,4 @@
 pom.xml
 .classpath
 index.html
+^.github$
