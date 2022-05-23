@@ -11,3 +11,5 @@ pom.xml
 .classpath
 index.html
 ^.github$
+# created in rJava setup on github workflow.
+^reconf.sh$
