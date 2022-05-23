@@ -67,7 +67,7 @@ import uk.co.terminological.rjava.types.RCharacterVector;
 @RClass(imports = {"extrafont"},suggests= {"here"})
 public class HtmlConverter {
 
-	List<CSSFont> fonts = null;
+	List<CSSFont> fonts = new ArrayList<>();
 	SVGDrawer svg = new BatikSVGDrawer();
 	SVGDrawer mathMl = new MathMLDrawer();
 	W3CDom w3cDom = new W3CDom();
@@ -86,7 +86,7 @@ public class HtmlConverter {
 	}
 	
 	public HtmlConverter(String[] fontfiles) throws IOException {
-
+		
 		try {
 			
 			// Get bundled fronts in pre Java 11 version
