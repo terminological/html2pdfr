@@ -1,6 +1,6 @@
 # html2pdfr
 
-![R-CMD-check](https://github.com/terminological/htm2pdfr/actions/workflows/R-CMD-check/badge.svg)
+[![R-CMD-check](https://github.com/terminological/htm2pdfr/workflows/R-CMD-check/badge.svg)](https://github.com/terminological/htm2pdfr/actions)
 
 R wrapper for OpenHTMLtoPDF java library.
 
