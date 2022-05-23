@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 
 # devtools::load_all("~/Git/html2pdfr/")
-here::i_am("vignettes/using-html2pdfr.Rmd")
+here::i_am("vignettes/html2pdfr.Rmd")
 ```
 
 ## Initialising the library

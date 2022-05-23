@@ -42,7 +42,7 @@
 <meta property="og:title" content="html2pdfr: R wrapper for OpenHTMLtoPDF java library — html2pdfr-package" />
 <meta property="og:description" content="
 This library is really designed to help get PDF or PNG formats of HTML tables, with layout determined by page size and control of styling determined by CSS. This allows use of HTML table layout within latex documents. Although tabular content should be allowed to grow up to the page dimensions, we don't want to force table layout to be a set width, but preventing it from overflowing bounding boxes is also essential. This automatic calculation of the output size up to set limits, is one of the differentiators between this and other options. This library also has no other dependencies making it suitable for server installations. Although the focus is on tables, any basic HTML content can be rendered including SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf). This does not for example include javascript which would be required for D3 content or rendering shiny apps, and for which webshot or webshot2 would be a better option. For correct handling of fonts the paths to local .ttf files must be supplied, but if this is set up we should be able to render all fonts correctly.
-Version: 0.01
+Version: 0.1.0
 Classes:
 JavaApi
 HtmlConverter
@@ -79,7 +79,7 @@ HtmlConverter
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">html2pdfr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.01</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -92,19 +92,10 @@ HtmlConverter
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/html2pdfr.html">Get started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/using-html2pdfr.html">Using html2pdfr</a>
-    </li>
-  </ul>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -130,7 +121,7 @@ HtmlConverter
     <div class="ref-description">
     <p><img src='figures/logo.png' align='right' />
 This library is really designed to help get PDF or PNG formats of HTML tables, with layout determined by page size and control of styling determined by CSS. This allows use of HTML table layout within latex documents. Although tabular content should be allowed to grow up to the page dimensions, we don't want to force table layout to be a set width, but preventing it from overflowing bounding boxes is also essential. This automatic calculation of the output size up to set limits, is one of the differentiators between this and other options. This library also has no other dependencies making it suitable for server installations. Although the focus is on tables, any basic HTML content can be rendered including SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf). This does not for example include javascript which would be required for D3 content or rendering shiny apps, and for which webshot or webshot2 would be a better option. For correct handling of fonts the paths to local .ttf files must be supplied, but if this is set up we should be able to render all fonts correctly.</p>
-<p>Version: 0.01</p>
+<p>Version: 0.1.0</p>
 <p>Classes:</p><ul>
 <li><p><code>JavaApi</code></p></li>
 <li><p><code>HtmlConverter</code></p></li>

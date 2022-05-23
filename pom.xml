@@ -158,7 +158,7 @@
 				<configuration>
 					<packageData>
 						<title>R wrapper for OpenHTMLtoPDF java library</title>
-						<version>0.01</version>
+						<version>0.1.0</version>
 						<debug>false</debug>
 						<usePkgdown>true</usePkgdown>
 						<useJavadoc>true</useJavadoc>
