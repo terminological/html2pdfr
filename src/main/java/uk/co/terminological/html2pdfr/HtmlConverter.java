@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -88,9 +87,17 @@ public class HtmlConverter {
 	
 	public HtmlConverter(String[] fontfiles) throws IOException {
 
-		Path systemFontDirectory = Paths.get(System.getProperty("java.home"), "lib","fonts");
-				
-		fonts = AutoFont.findFontsInDirectory(systemFontDirectory);
+		try {
+			
+			// Get bundled fronts in pre Java 11 version
+			Path systemFontDirectory = Paths.get(System.getProperty("java.home"), "lib","fonts");
+			fonts = AutoFont.findFontsInDirectory(systemFontDirectory);
+			
+		} catch (java.nio.file.NoSuchFileException e) {
+			
+			// JDKs don't have fonts bundled. We can skip this safely if it fails. 
+			
+		}
 
 		Arrays.asList(fontfiles).stream()
 			.flatMap(ff -> AutoFont.fromFontFile(ff).map(o -> Stream.of(o)).orElse(Stream.empty()))

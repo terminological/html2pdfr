@@ -6,7 +6,7 @@
 #'
 #' Version: 0.1.0
 #'
-#' Generated: 2022-05-23T12:38:26.023
+#' Generated: 2022-05-23T12:57:59.053
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -66,7 +66,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R wrapper for OpenHTMLtoPDF java library")
  		message("Version: 0.1.0")
-		message("Generated: 2022-05-23T12:38:26.024")
+		message("Generated: 2022-05-23T12:57:59.054")
  	
  	
 		if (!.jniInitialized) 
@@ -89,7 +89,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
     	self$.log = .jcall("org/slf4j/LoggerFactory", returnSig = "Lorg/slf4j/Logger;", method = "getLogger", "html2pdfr");
     	.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","Version: 0.1.0");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-05-23T12:38:26.024");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-05-23T12:57:59.054");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
 		self$printMessages()
@@ -130,19 +130,19 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				tmp = as.numeric(rObj)[[1]]
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RNumeric',tmp))
 			},
-			RFactor=function(rObj) {
-				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RFactor'))
-				if (length(rObj) > 1) stop('input too long')
-				tmp = as.integer(rObj)[[1]]
-				tmpLabel = levels(rObj)[[tmp]]
-				return(rJava::.jnew('uk/co/terminological/rjava/types/RFactor',tmp, tmpLabel))
-			},
 			RLogical=function(rObj) {
 				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RLogical'))
 				if (length(rObj) > 1) stop('input too long')
 				if (!is.logical(rObj)) stop('expected a logical')
 				tmp = as.integer(rObj)[[1]]
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RLogical',tmp))
+			},
+			RFactor=function(rObj) {
+				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RFactor'))
+				if (length(rObj) > 1) stop('input too long')
+				tmp = as.integer(rObj)[[1]]
+				tmpLabel = levels(rObj)[[tmp]]
+				return(rJava::.jnew('uk/co/terminological/rjava/types/RFactor',tmp, tmpLabel))
 			},
 			RCharacter=function(rObj) {
 				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RCharacter'))
@@ -310,8 +310,8 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			RDateVector=function(jObj) as.Date(rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='rPrimitive'),'%Y-%m-%d'),
 			RCharacterVector=function(jObj) as.character(rJava::.jcall(jObj,returnSig='[Ljava/lang/String;',method='rPrimitive')),
 			RNumeric=function(jObj) as.numeric(rJava::.jcall(jObj,returnSig='D',method='rPrimitive')),
-			RFactor=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rLabel')),
 			RLogical=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='I',method='rPrimitive')),
+			RFactor=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rLabel')),
 			RCharacter=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rPrimitive')),
 			RNull=function(jObj) return(NULL),
 			RLogicalVector=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='[I',method='rPrimitive')),
