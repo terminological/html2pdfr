@@ -160,6 +160,8 @@
 						<title>R wrapper for OpenHTMLtoPDF java library</title>
 						<version>0.1.0</version>
 						<debug>false</debug>
+						<url>https://terminological.github.io/html2pdfr/docs/index.html</url>
+						<doi>10.5281/zenodo.6576088</doi>
 						<usePkgdown>true</usePkgdown>
 						<useJavadoc>true</useJavadoc>
 <!-- 						<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->
