@@ -60,7 +60,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="html2pdfr_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using html2pdfr</h1>
@@ -74,24 +74,24 @@
 
     
     
-<p>Html2pdfr is a basic replacement for webshot which does not require any external dependencies, and would suit running on a headless server. Its aim is to support the minimally useful layout and conversion of static HTML to PDF. The general purpose is to generate a static version of HTML tables, created by libraries such as huxtable, that can be included in latex documents, or presentations. It can convert other simple HTML, with variable success rates, you'll just have to try it to see whether it works.</p>
+<p>Html2pdfr is a basic replacement for webshot which does not require any external dependencies, and would suit running on a headless server. Its aim is to support the minimally useful layout and conversion of static HTML to PDF. The general purpose is to generate a static version of HTML tables, created by libraries such as huxtable, that can be included in latex documents, or presentations. It can convert other simple HTML, with variable success rates, you’ll just have to try it to see whether it works.</p>
 <div id="initialising-the-library" class="section level2">
 <h2 class="hasAnchor">
 <a href="#initialising-the-library" class="anchor"></a>Initialising the library</h2>
 <p>The following basic initialization code gives you a default converter:</p>
-<div class="sourceCode"><pre class="downlit">
+<div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="va">J</span> <span class="op">=</span> <span class="fu">html2pdfr</span><span class="fu">::</span><span class="va"><a href="../reference/JavaApi.html">JavaApi</a></span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
 <span class="co">## Initialising R wrapper for OpenHTMLtoPDF java library</span>
 <span class="co">## Version: 0.1.0</span>
 <span class="co">## Generated: 2022-05-24T11:50:20.654</span>
-<span class="co">## Adding to classpath: /tmp/RtmpMhDjef/temp_libpath38ee37dd6948/html2pdfr/java/html2pdfr-0.0.3-SNAPSHOT-jar-with-dependencies.jar</span>
+<span class="co">## Adding to classpath: /tmp/RtmpPujXKO/temp_libpath573142cee778/html2pdfr/java/html2pdfr-0.0.3-SNAPSHOT-jar-with-dependencies.jar</span>
 <span class="va">conv</span> <span class="op">=</span> <span class="va">J</span><span class="op">$</span><span class="va">HtmlConverter</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></pre></div>
 </div>
 <div id="generating-a-pdf-from-a-url" class="section level2">
 <h2 class="hasAnchor">
 <a href="#generating-a-pdf-from-a-url" class="anchor"></a>Generating a pdf from a URL</h2>
 <p>Pulling in a URL and converting it to PDF is done like so:</p>
-<div class="sourceCode"><pre class="downlit">
+<div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="va">conv</span><span class="op">$</span><span class="fu">urlToPdf</span><span class="op">(</span>
   htmlUrl <span class="op">=</span> <span class="st">"https://cran.r-project.org/banner.shtml"</span>,
   outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output.pdf"</span><span class="op">)</span>
@@ -103,7 +103,7 @@
 <h2 class="hasAnchor">
 <a href="#generating-a-pdf-from-html-content" class="anchor"></a>Generating a pdf from HTML content</h2>
 <p>In the following, more usual, example the HTML is generated within R (as you might find from a tabular data library such as huxtable or gtables) and passed to the converter with some target page dimensions. The converter will lay out the table within the confines of the maximum space available, overflowing to new pages.</p>
-<div class="sourceCode"><pre class="downlit">
+<div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="va">irisHtml</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span>
   <span class="st">"&lt;table&gt;"</span>,
   <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span>
@@ -117,7 +117,7 @@
 <span class="co">## [1] "/media/data/Git/html2pdfr/docs/articles/example-output-2.pdf"</span></pre></div>
 <p>And <a href="example-output-2.pdf">the resulting pdf</a> of the generated HTML is here. This document (which will not be beautiful) should be no more than 4 inches high. The width in this case is determined by the content. If there was very wide content, the converter would wrap cells to stay within the specified bounding box size. This means that we can insert it into a latex document simply.</p>
 <p>The layout engine should support simple SVG and MathML content. However it does not execute javascript so may not be able to lay out D3 content. If this is something you need then using webshot2, which wraps a whole Chrome instance, may be a better option.</p>
-<div class="sourceCode"><pre class="downlit">
+<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="co"># Javascript Does not work:</span>
 <span class="co"># conv$urlToPdf(</span>
 <span class="co">#   htmlUrl = "https://bl.ocks.org/mbostock/raw/1389927/?raw=true",</span>

@@ -66,14 +66,21 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#html2pdfr" class="anchor"></a>html2pdfr</h1></div>
 
+<p><a href="https://zenodo.org/badge/latestdoi/459091655"><img src="https://zenodo.org/badge/459091655.svg" alt="DOI"></a></p>
 <p>R wrapper for OpenHTMLtoPDF java library.</p>
-<p>Html2pdfr is a basic replacement for webshot which does not require any external dependencies, and would suit running on a headless server. Its aim is to support the minimally useful layout and conversion of static HTML to PDF. The general purpose is to generate a static version of HTML tables, created by libraries such as huxtable, that can be included in latex documents, or presentations. It can convert other simple HTML, you’ll just have to try it to see whether it works.</p>
+<p><code>html2pdfr</code> is a basic replacement for <code>webshot</code> which does not require any external dependencies, and would suit running on a headless server. Its aim is to support the minimally useful layout and conversion of static HTML to PDF. The general purpose is to generate a static version of HTML tables, created by libraries such as <code>huxtable</code>, that can be included in latex documents, or presentations. It can convert other simple HTML, you’ll just have to try it to see whether it works.</p>
 <div id="installation-instructions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation-instructions" class="anchor"></a>Installation instructions</h2>
-<p>html2pdfr is not on cran yet. Installation from this repo can be done as follows:</p>
-<div class="sourceCode"><pre class="downlit">
+<p><code>html2pdfr</code> is based on a java library and must have a working version of <code>Java</code> and <code>rJava</code> installed. The following commands can ensure that your <code>rJava</code> installation is working.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"rJava"</span><span class="op">)</span>
+<span class="fu">rJava</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rJava/man/jinit.html">.jinit</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu">rJava</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rJava/man/J.html">J</a></span><span class="op">(</span><span class="st">"java.lang.System"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProperty</span><span class="op">(</span><span class="st">"java.version"</span><span class="op">)</span></pre></div>
+<p><code>html2pdfr</code> is not on cran yet. Installation from this repo can be done as follows:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"terminological/html2pdfr"</span><span class="op">)</span></pre></div>
+<p>Sadly due to the constraints on library size on CRAN submission of <code>html2pdfr</code> will most likely not be possible.</p>
 <p><a href="https://terminological.github.io/html2pdfr/">Visit the docs</a> for more info.</p>
 </div>
 </div>
