@@ -16,4 +16,5 @@ Suggests:
 Imports:
 	extrafont,
 	rJava,
-	R6
+	R6,
+	fs
