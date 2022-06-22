@@ -6,7 +6,7 @@
 #'
 #' Version: 0.3.0
 #'
-#' Generated: 2022-06-22T14:06:39.177954
+#' Generated: 2022-06-22T14:10:15.892679
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -48,7 +48,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 	#' @return nothing
 	printMessages = function() {
 		# check = FALSE here to stop exceptions being cleared from the stack.
-		cat(.jcall("uk/co/terminological/rjava/LogController", returnSig = "Ljava/lang/String;", method = "getSystemMessages", check=FALSE))
+		message(.jcall("uk/co/terminological/rjava/LogController", returnSig = "Ljava/lang/String;", method = "getSystemMessages", check=FALSE))
 		invisible(NULL)
 	},
 	
@@ -66,7 +66,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R wrapper for OpenHTMLtoPDF java library")
  		message("Version: 0.3.0")
-		message("Generated: 2022-06-22T14:06:39.178483")
+		message("Generated: 2022-06-22T14:10:15.893005")
  	
  	
 		if (!.jniInitialized) 
@@ -74,8 +74,6 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		
 		# Java dependencies
 		jars = .checkDependencies(quiet = TRUE)
-		
-		message(paste0("Adding to classpath: ",jars,collapse='\n'))
 		.jaddClassPath(jars)
 		
 		# configure logging
@@ -84,9 +82,13 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  		# TODO: this is the library build date code but it requires testing
  		buildDate = .jcall("uk/co/terminological/rjava/LogController", returnSig = "S", method = "getClassBuildTime")
 		self$.log = .jcall("org/slf4j/LoggerFactory", returnSig = "Lorg/slf4j/Logger;", method = "getLogger", "html2pdfr");
+		.jcall(self$.log,returnSig = "V",method = "debug", "Adding to classpath: ")
+		for (jar in jars) {
+		  .jcall(self$.log,returnSig = "V",method = "debug", jar)
+		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.3.0");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-22T14:06:39.178617");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-22T14:10:15.893126");
 		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: com.github.terminological:html2pdfr:main-SNAPSHOT");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
@@ -474,7 +476,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 	as.POSIXct(file.info(original)$mtime) < as.POSIXct(file.info(test)$mtime)
 }
 
-# gets the pom.xml file for com.github.terminological:html2pdfr:main-SNAPSHOT from a  
+# gets the pom.xml file for com.github.terminological:html2pdfr:main-SNAPSHOT from a thin jar
 .extractPom = function() {
 	dir = .workingDir()
 	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-main-SNAPSHOT\\.jar", full.names = TRUE)
