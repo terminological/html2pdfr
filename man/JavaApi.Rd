@@ -27,7 +27,7 @@ This library is really designed to help get PDF or PNG formats of HTML tables, w
 
 Version: 0.3.0
 
-Generated: 2022-06-23T00:05:54.004365
+Generated: 2022-06-23T00:41:30.896689
 }
 
 \author{\email{rob.challen@bristol.ac.uk}}
