@@ -6,7 +6,7 @@
 #'
 #' Version: 0.3.0
 #'
-#' Generated: 2022-06-23T00:41:30.919679
+#' Generated: 2022-06-23T00:48:49.607565
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -66,7 +66,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R wrapper for OpenHTMLtoPDF java library")
  		message("Version: 0.3.0")
-		message("Generated: 2022-06-23T00:41:30.919975")
+		message("Generated: 2022-06-23T00:48:49.608065")
  	
  	
 		if (!.jniInitialized) 
@@ -88,7 +88,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.3.0");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-23T00:41:30.920087");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-23T00:48:49.608194");
 		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: com.github.terminological:html2pdfr:main-SNAPSHOT");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
