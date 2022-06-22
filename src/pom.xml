@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.terminological</groupId>
 	<artifactId>html2pdfr</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>main-SNAPSHOT</version>
 	<description>R wrapper for OpenHTMLtoPDF java library</description>
 
 	<properties>
@@ -12,7 +12,7 @@
 		<!-- Must be Java 8 for standard rJava implementation -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<r6.version>0.3.1</r6.version>
+		<r6.version>0.4.0</r6.version>
 		<openhtml.version>1.0.10</openhtml.version>
 		<open.batik.version>1.14</open.batik.version>
 
@@ -52,6 +52,11 @@
 			<artifactId>openhtmltopdf-svg-support</artifactId>
 			<version>${openhtml.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.11.3</version>
+		</dependency>
 
 		<dependency>
 <!-- 			Rhino is included here just to make sure SVG scripts are NOT executed  -->
@@ -83,6 +88,19 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.22</version>
+		</dependency>
+		<!--  intercept openhtml2pdfs use of commons-logging -->
+		<dependency>
+		    <groupId>com.openhtmltopdf</groupId>
+		    <artifactId>openhtmltopdf-slf4j</artifactId>
+		    <version>${openhtml.version}</version>
+		</dependency>
+
+		<!-- tests -->
+		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>5.4.0</version>
@@ -94,27 +112,7 @@
 			<version>5.4.0</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>1.11.3</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.htmlcleaner</groupId>
-			<artifactId>htmlcleaner</artifactId>
-			<version>2.6.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.22</version>
-		</dependency>
-		<!--  intercept openhtml2pdfs use of commons-logging -->
-		<dependency>
-		    <groupId>com.openhtmltopdf</groupId>
-		    <artifactId>openhtmltopdf-slf4j</artifactId>
-		    <version>${openhtml.version}</version>
-		</dependency>
+		
 	</dependencies>
 
 	
@@ -144,7 +142,8 @@
 				<configuration>
 					<packageData>
 						<title>R wrapper for OpenHTMLtoPDF java library</title>
-						<version>0.1.0</version>
+						<version>0.3.0</version>
+<!-- 						<version>${version}</version> needs plugin new version-->
 						<debug>false</debug>
 						<url>https://terminological.github.io/html2pdfr/docs/index.html</url>
 						<doi>10.5281/zenodo.6576088</doi>
@@ -157,6 +156,8 @@
 						<packageName>html2pdfr</packageName>
 						<defaultLogLevel>WARN</defaultLogLevel>
 						<license>LGPL</license>
+						<preCompileBinary>true</preCompileBinary>
+						<packageAllDependencies>false</packageAllDependencies>
 						<description>
 This library is really designed to help get PDF or PNG formats of HTML tables, with layout determined by page size and control of styling determined by CSS. This allows use of HTML table layout within latex documents. 
 Although tabular content should be allowed to grow up to the page dimensions, we don't want to force table layout to be a set width, but preventing it from overflowing bounding boxes is 
@@ -166,7 +167,7 @@ Although the focus is on tables, any basic HTML content can be rendered includin
 include javascript which would be required for D3 content or rendering shiny apps, and for which webshot or webshot2 would be a better option. 
 
 For correct handling of fonts the paths to local .ttf files must be supplied, but if this is set up we should be able to render all fonts correctly.  
-</description>
+						</description>
 						<maintainerName>Rob</maintainerName>
 						<maintainerFamilyName>Challen</maintainerFamilyName>
 						<maintainerEmail>rob.challen@bristol.ac.uk</maintainerEmail>
@@ -176,12 +177,6 @@ For correct handling of fonts the paths to local .ttf files must be supplied, bu
 					<outputDirectory>${project.basedir}/..</outputDirectory>
 				</configuration>
 				<executions>
-					<execution>
-						<id>compile-java-library</id>
-						<goals>
-							<goal>compile-java-library</goal>
-						</goals>
-					</execution>
 					<execution>
 						<id>generate-r-library</id>
 						<goals>

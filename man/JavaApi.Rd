@@ -25,9 +25,9 @@
 \description{
 This library is really designed to help get PDF or PNG formats of HTML tables, with layout determined by page size and control of styling determined by CSS. This allows use of HTML table layout within latex documents. Although tabular content should be allowed to grow up to the page dimensions, we don't want to force table layout to be a set width, but preventing it from overflowing bounding boxes is also essential. This automatic calculation of the output size up to set limits, is one of the differentiators between this and other options. This library also has no other dependencies making it suitable for server installations. Although the focus is on tables, any basic HTML content can be rendered including SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf). This does not for example include javascript which would be required for D3 content or rendering shiny apps, and for which webshot or webshot2 would be a better option. For correct handling of fonts the paths to local .ttf files must be supplied, but if this is set up we should be able to render all fonts correctly.
 
-Version: 0.1.0
+Version: 0.3.0
 
-Generated: 2022-06-17T23:54:56.891
+Generated: 2022-06-22T12:07:59.082574
 }
 
 \author{\email{rob.challen@bristol.ac.uk}}

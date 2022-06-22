@@ -6,7 +6,7 @@
 
 R wrapper for OpenHTMLtoPDF java library.
 
-`html2pdfr` is a basic replacement for `webshot` which does not require any external dependencies, and would suit running on a headless server. Its aim is to support the minimally useful layout and conversion of static HTML to PDF. The general purpose is to generate a static version of HTML tables, created by libraries such as `huxtable`, that can be included in latex documents, or presentations. It can convert other simple HTML, you'll just have to try it to see whether it works. 
+`html2pdfr` is a basic replacement for `webshot` which does not require any external dependencies, and would suit running on a headless server. Its aim is to support the minimally useful layout and conversion of static HTML to PDF. The general purpose is to generate a static version of HTML tables, created by libraries such as `huxtable`, that can be included in latex documents, or presentations. To facilitate this a focus of `html2pdfr` is automatically laying out and rendering content within pre-specified bounding boxes. `html2pdfr` can convert a range of simple HTML, including some SVG and MathML, you'll just have to try it to see whether it works. 
 
 ## Installation instructions
 
@@ -24,6 +24,6 @@ rJava::J("java.lang.System")$getProperty("java.version")
 devtools::install_github("terminological/html2pdfr")
 ```
 
-Sadly due to the constraints on library size on CRAN submission of `html2pdfr` will most likely not be possible.
+Submission to CRAN is planned shortly.
 
-[Visit the docs](https://terminological.github.io/html2pdfr/) for more info.
+[Visit the docs](https://terminological.github.io/html2pdfr/) for usage info.

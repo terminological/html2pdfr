@@ -8,7 +8,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Html2pdfr is a basic replacement for webshot which does not require any external dependencies, and would suit running on a headless server. Its aim is to support the minimally useful layout and conversion of static HTML to PDF. The general purpose is to generate a static version of HTML tables, created by libraries such as huxtable, that can be included in latex documents, or presentations. It can convert other simple HTML, with variable success rates, you'll just have to try it to see whether it works. 
+
+[![R-CMD-check](https://github.com/terminological/html2pdfr/workflows/R-CMD-check/badge.svg)](https://github.com/terminological/html2pdfr/actions)
+
+[![DOI](https://zenodo.org/badge/459091655.svg)](https://zenodo.org/badge/latestdoi/459091655)
+
+`html2pdfr` is a basic replacement for `webshot` which does not require any external dependencies, and would suit running on a headless server. Its aim is to support the minimally useful layout and conversion of static HTML to PDF. The general purpose is to generate a static version of HTML tables, created by libraries such as `huxtable`, that can be included in latex documents, or presentations. To make PDF files from HTML work well within other latex files it is important to be able to specify the dimensions of a bounding box within which the HTML content will be rendered, before the content is included in a latex document. The control of output size is the specific purpose of this library. Although focussed on tabular content, `html2pdfr` can convert other simple HTML, including SVG and MathML content, with variable success rates, you'll just have to try it to see whether it works. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -20,17 +25,30 @@ knitr::opts_chunk$set(
 here::i_am("vignettes/html2pdfr.Rmd")
 ```
 
+## Installing the library
+
+`html2pdfr` is not on cran yet. Installation from this repo can be done as follows:
+
+```R
+devtools::install_github("terminological/html2pdfr")
+```
+
 ## Initialising the library
 
-The following basic initialization code gives you a default converter:
+On first use the major Java library dependencies of this project must be downloaded and cached. This can take some time but only needs to be done once. The following basic initialization code sets up the library:
 
 ```{r}
 J = html2pdfr::JavaApi$get()
+# this produces a verbose output which can be hidden with:
+# J = suppressMessages(html2pdfr::JavaApi$get())
 conv = J$HtmlConverter$new()
 ```
 
-## Generating a pdf from a URL
+Once this is complete the `conv` object provides the useful functions of the package.
 
+## Generating a PDF
+
+PDF rendering of HTML can be done direct from a URL, or from a locally stored HTML file.
 Pulling in a URL and converting it to PDF is done like so:
 
 ```{r}
@@ -41,11 +59,11 @@ conv$urlToPdf(
 
 ```
 
-[The resulting pdf](example-output.pdf) is here, Your mileage will vary as complex web pages are not supported by the underlying engine. THe focus is on simpler static web content and not your usual content (it also does not support frames).
+[The resulting pdf](example-output.pdf) is here, Your success rendering HTML will vary as complex web pages (including in this example, frames) are not supported by the underlying engine. The focus of `html2pdfr` is on simpler static web content and not complex web content, for which alternatives already exist.
 
 ## Generating a pdf from HTML content
 
-In the following, more usual, example the HTML is generated within R (as you might find from a tabular data library such as huxtable or gtables) and passed to the converter with some target page dimensions. The converter will lay out the table within the confines of the maximum space available, overflowing to new pages.
+In the following, more usual, example the HTML is generated within R (as you might find from a tabular data library such as `huxtable` or `gtables`) and passed to the converter with some target page dimensions. The converter will lay out the table within the confines of the maximum space available, overflowing to new pages, where-ever required.
 
 ```{r}
 irisHtml = paste0(
@@ -57,13 +75,13 @@ irisHtml = paste0(
   collapse=""),
   "</table>")
 
-conv$fitIntoPage(htmlFragment = irisHtml,maxWidthInches = 4,maxHeightInches = 4,outFile = here::here("docs/articles/example-output-2.pdf"))
+conv$fitIntoPage(htmlFragment = irisHtml, maxWidthInches = 4, maxHeightInches = 4, outFile = here::here("docs/articles/example-output-2.pdf"))
   
 ```
 
-And [the resulting pdf](example-output-2.pdf) of the generated HTML is here. This document (which will not be beautiful) should be no more than 4 inches high. The width in this case is determined by the content. If there was very wide content, the converter would wrap cells to stay within the specified bounding box size. This means that we can insert it into a latex document simply.
+And [the resulting pdf](example-output-2.pdf) of the generated HTML is here. This document (which will not be beautiful) should be no more than 4 inches high. The width in this case is determined by the content, which is much less wide than the maximum specified 4 inches. If there was very wide content, the converter would wrap content within cells to stay within the specified bounding box size. This bounding box behaviour means that we can insert the generated pdf into a latex document simply without risk of overfull boxes.
 
-The layout engine should support simple SVG and MathML content. However it does not execute javascript so may not be able to lay out D3 content. If this is something you need then using webshot2, which wraps a whole Chrome instance, may be a better option. 
+The layout engine should support simple SVG and MathML content. However it does not execute javascript so is not be able to lay out D3 content. If this is something you need then using `webshot2`, which wraps a whole Chrome instance, may be a better option. 
 
 ```{r}
 # Javascript Does not work:
@@ -72,6 +90,7 @@ The layout engine should support simple SVG and MathML content. However it does 
 #   outFile = here::here("docs/articles/example-d3.pdf")
 # )
 
+# MathML does work.
 conv$urlToPdf(
   htmlUrl = "https://fred-wang.github.io/MathFonts/mozilla_mathml_test/",
   outFile = here::here("docs/articles/example-mathml.pdf")
@@ -80,3 +99,4 @@ conv$urlToPdf(
 ```
 
 [The resulting mathml](example-mathml.pdf) 
+

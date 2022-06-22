@@ -4,24 +4,33 @@
 
 # N.B. this is only true is you have uncommented the correct lines in github actions workflow files
 (via GitHub actions)
-* ubuntu-latest; R-release 
-* windows-latest, oldrel-1
-* windows-latest, release
-* windows-latest, devel
-* macOS-latest, oldrel-1
-* macOS-latest, release
-* macOS-latest, devel
-* ubuntu-latest, oldrel-1
-* ubuntu-latest, devel
+ 
+* os: windows-latest, R: oldrel-1
+* os: windows-latest, R: release
+* os: windows-latest, R: devel
+* os: macOS-latest, R: oldrel-1
+* os: macOS-latest, R: release
+* os: macOS-latest, R: devel
+* os: ubuntu-latest; R: release
+* os: ubuntu-latest, R: oldrel-1
+* os: ubuntu-latest, R: devel
+
+for each environment the tests are run with both Java 8 and Java 11. 
 
 ## R CMD check results
 # TODO: insert R CMD check results here before submission
 
 
 ## CRAN notes justifications
-  
-* This library includes a precompiled java binary file. This often will exceed the 5Mb CRAN limits. Unfortunately the 
-alternative of building the library from source code causes a `R CMD check` warning due to inclusion of dependency management
-configuration `pom.xml` files. 
-* R6 is a build time dependency so appears unused when it is in fact not.
+
+* This project contains a Java library.
+
+* The Java code that is specific to the package has been compiled and is distributed with the package, but not the source code. External dependencies
+from public repositories, will be fetched independently during the first use of this package, which is only possible if the java library only uses public dependencies. 
+This is managed by Java's standard package management system, Maven, which is itself downloaded automatically. This reduces the need for libraries to be distributed 
+with the R package, minimising the footprint of the R package, but downloading and installing the dependencies is a potential point of failure, and may take quite some time on first use of the library. 
+This is mitigated as much as possible by using battle tested standard Java tooling for dependency management, which will only download libraries it has not already used.
+
+* The R6 package is a build time dependency. The note that it is unused can be safely ignored.
+
 * This is a new release.
