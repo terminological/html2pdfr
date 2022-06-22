@@ -26,6 +26,25 @@
 
 	<name>Java html to pdf for R</name>
 
+  	<!-- REPOSITORIES_START -->
+	<!-- Resolve runtime library on sonatype OSSRH -->
+	<!-- not needed if you plan to use a stable version of the r6-generator-runtime and r6-generator-maven-plugin  -->
+	<repositories>
+		<repository>
+		    <id>Sonatype OSSRH</id>
+		    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
+
+	<!-- Resolve maven plugin on sonatype OSSRH -->
+	<pluginRepositories>
+		<pluginRepository>
+		    <id>Sonatype OSSRH</id>
+		    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<!-- REPOSITORIES_END -->
+
 	<dependencies>
 		<dependency>
 			<groupId>io.github.terminological</groupId>
