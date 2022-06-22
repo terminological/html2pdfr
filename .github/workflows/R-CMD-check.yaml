@@ -60,7 +60,8 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          dependencies: '"all"'
+          extra-packages: any::rcmdcheck, local::.
           needs: check
       
       - name: Setup R Java support

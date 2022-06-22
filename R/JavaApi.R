@@ -6,7 +6,7 @@
 #'
 #' Version: 0.3.0
 #'
-#' Generated: 2022-06-22T23:08:07.499351
+#' Generated: 2022-06-22T23:39:47.226344
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -66,7 +66,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R wrapper for OpenHTMLtoPDF java library")
  		message("Version: 0.3.0")
-		message("Generated: 2022-06-22T23:08:07.500204")
+		message("Generated: 2022-06-22T23:39:47.227452")
  	
  	
 		if (!.jniInitialized) 
@@ -88,7 +88,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.3.0");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-22T23:08:07.500359");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-22T23:39:47.227626");
 		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: com.github.terminological:html2pdfr:main-SNAPSHOT");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
@@ -552,9 +552,9 @@ JavaApi$rebuildDependencies = function( ... ) {
 	}
 	
 	if(.Platform$OS.type == "windows") {
-	  classpathString = unique(scan(classpathLoc, what = "character", sep=":", quiet=TRUE))
-	} else {
 	  classpathString = unique(scan(classpathLoc, what = "character", sep=";", quiet=TRUE))
+	} else {
+	  classpathString = unique(scan(classpathLoc, what = "character", sep=":", quiet=TRUE))
 	}
 	
 	if (!all(file.exists(classpathString))) 
