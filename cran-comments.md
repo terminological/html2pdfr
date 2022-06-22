@@ -5,14 +5,14 @@
 N.B. this is only true is you have uncommented the correct lines in github actions workflow files
 (via GitHub actions)
  
-* os: windows-latest, R: release
-* os: macOS-latest, R: release
-* os: ubuntu-latest; R: release
+* os: Windows Server 2022, R: 4.1.0
+* os: macOS Big Sur 11, R: 4.1.0
+* os: Ubuntu 20.04; R: 4.1.0
 for each environment the tests are run with both Java 8 and Java 11. 
 
-* os: windows-latest, R: oldrel-1
-* os: macOS-latest, R: oldrel-1
-* os: ubuntu-latest, R: oldrel-1
+* os: Ubuntu 20.04, R: 4.2.0
+* os: Ubuntu 20.04, R: 3.6.1
+
 
 ## R CMD check results
 # TODO: insert R CMD check results here before submission
