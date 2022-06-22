@@ -27,11 +27,13 @@ jobs:
         java: [ 8, 11 ]
         config:
           - {os: ubuntu-20.04, r: '4.1.0', fail: false, distribution: zulu}
-#          - {os: windows-2022, r: '4.1.0', fail: false, distribution: zulu}
           - {os: macOS-11, r: '4.1.0', fail: false, distribution: zulu}
+          - {os: ubuntu-20.04, r: '3.6.1', fail: true, distribution: zulu}
 ## uncomment this to run on multiple versions of R          
 #          - {os: ubuntu-20.04, r: '4.2.0', fail: true, distribution: zulu}
-          - {os: ubuntu-20.04, r: '3.6.1', fail: true, distribution: zulu}
+## R CMD check on windows is unreliable and more a test off how the machine is set up 
+# than the code's reliability
+#          - {os: windows-2022, r: '4.1.0', fail: false, distribution: zulu}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
