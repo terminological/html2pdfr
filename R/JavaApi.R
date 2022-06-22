@@ -552,9 +552,9 @@ JavaApi$rebuildDependencies = function( ... ) {
 	}
 	
 	if(.Platform$OS.type == "windows") {
-	  classpathString = unique(scan(classpathLoc, what = "character", sep=";", quiet=TRUE))
-	} else {
 	  classpathString = unique(scan(classpathLoc, what = "character", sep=":", quiet=TRUE))
+	} else {
+	  classpathString = unique(scan(classpathLoc, what = "character", sep=";", quiet=TRUE))
 	}
 	
 	if (!all(file.exists(classpathString))) 
