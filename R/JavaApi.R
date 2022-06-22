@@ -6,7 +6,7 @@
 #'
 #' Version: 0.3.0
 #'
-#' Generated: 2022-06-22T15:33:08.963991
+#' Generated: 2022-06-22T23:08:07.499351
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -66,7 +66,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R wrapper for OpenHTMLtoPDF java library")
  		message("Version: 0.3.0")
-		message("Generated: 2022-06-22T15:33:08.964418")
+		message("Generated: 2022-06-22T23:08:07.500204")
  	
  	
 		if (!.jniInitialized) 
@@ -88,7 +88,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.3.0");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-22T15:33:08.964586");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-22T23:08:07.500359");
 		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: com.github.terminological:html2pdfr:main-SNAPSHOT");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
@@ -543,15 +543,20 @@ JavaApi$rebuildDependencies = function( ... ) {
 			pomPath, 
 			goal = "dependency:build-classpath",		
 			opts = c(
-				paste0("-Dmdep.outputFile='",classpathLoc,"'"),
-				paste0("-Dmdep.pathSeparator='\n'"),
+				paste0("-Dmdep.outputFile=classpath.txt"),
 				paste0("-DincludeScope=runtime")
 			),
 			...
 		)
 		message("Dependencies updated")
 	}
-	classpathString = unique(readLines(classpathLoc,warn = FALSE))
+	
+	if(.Platform$OS.type == "windows") {
+	  classpathString = unique(scan(classpathLoc, what = "character", sep=";", quiet=TRUE))
+	} else {
+	  classpathString = unique(scan(classpathLoc, what = "character", sep=":", quiet=TRUE))
+	}
+	
 	if (!all(file.exists(classpathString))) 
 		stop("For some inexplicable reason, Maven cannot determine the classpaths of the dependencies of this library on this machine. You can try html2pdfr::JavaApi$rebuildDependencies()")
 	return(classpathString)
@@ -560,9 +565,15 @@ JavaApi$rebuildDependencies = function( ... ) {
 # executes a maven goal plus or minus info or debugging
 .executeMaven = function(pomPath, goal, opts = c(), quiet=TRUE, debug=FALSE, ...) {
 	mvnPath = .loadMavenWrapper()
-	args = c(goal, opts, paste0("-f '",pomPath,"'"))
+	args = c(goal, opts) #, paste0("-f '",pomPath,"'"))
 	if (quiet) args = c(args, "-q")
 	if (debug) args = c(args, "-X")
+	java_home = rJava::.jcall( 'java/lang/System', 'S', 'getProperty', 'java.home' )
+	Sys.setenv(JAVA_HOME=java_home)
+	# required due to an issue in Mvnw.cmd on windows.
+	wd = getwd()
+	setwd(.workingDir())
 	system2(mvnPath, args)
+	setwd(wd)
 }
 
