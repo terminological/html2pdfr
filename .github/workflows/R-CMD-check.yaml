@@ -26,12 +26,12 @@ jobs:
       matrix:
         java: [ 8, 11 ]
         config:
-          - {os: ubuntu-20.04, r: '4.1.0', fail: false}
-          - {os: windows-2022, r: '4.1.0', rtools-version: '42', fail: false}
-          - {os: macOS-11, r: '4.1.0', fail: false}
+          - {os: ubuntu-20.04, r: '4.1.0', fail: false, distribution: zulu}
+          - {os: windows-2022, r: '4.1.0', rtools-version: '42', fail: false, distribution: microsoft}
+          - {os: macOS-11, r: '4.1.0', fail: false, distribution: zulu}
 ## uncomment this to run on multiple versions of R          
-#          - {os: ubuntu-20.04, r: '4.2.0', fail: true}
-#          - {os: ubuntu-20.04, r: '3.6.1', fail: true}
+#          - {os: ubuntu-20.04, r: '4.2.0', fail: true, distribution: zulu}
+#          - {os: ubuntu-20.04, r: '3.6.1', fail: true, distribution: zulu}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -48,8 +48,10 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
+          distribution: ${{ matrix.config.distribution }}
           java-package: jdk
           architecture: x64
+          cache: 'maven'
 
       - name: Info
         run: "bash -c 'java -version && which java && echo $PATH && echo $JAVA_HOME'"
