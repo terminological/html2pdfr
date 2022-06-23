@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.terminological</groupId>
 	<artifactId>html2pdfr</artifactId>
-	<version>main-SNAPSHOT</version>
+	<version>0.3.0</version>
 	<description>R wrapper for OpenHTMLtoPDF java library</description>
 
 	<properties>
@@ -12,7 +12,7 @@
 		<!-- Must be Java 8 for standard rJava implementation -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<r6.version>main-SNAPSHOT</r6.version>
+		<r6.version>0.4.1</r6.version>
 		<openhtml.version>1.0.10</openhtml.version>
 		<open.batik.version>1.14</open.batik.version>
 
@@ -25,25 +25,6 @@
 	</properties>
 
 	<name>Java html to pdf for R</name>
-
-  	<!-- REPOSITORIES_START -->
-	<!-- Resolve runtime library on sonatype OSSRH -->
-	<!-- not needed if you plan to use a stable version of the r6-generator-runtime and r6-generator-maven-plugin  -->
-	<repositories>
-		<repository>
-		    <id>Sonatype OSSRH</id>
-		    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-		</repository>
-	</repositories>
-
-	<!-- Resolve maven plugin on sonatype OSSRH -->
-	<pluginRepositories>
-		<pluginRepository>
-		    <id>Sonatype OSSRH</id>
-		    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-		</pluginRepository>
-	</pluginRepositories>
-	<!-- REPOSITORIES_END -->
 
 	<dependencies>
 		<dependency>
@@ -161,14 +142,12 @@
 				<configuration>
 					<packageData>
 						<title>R wrapper for OpenHTMLtoPDF java library</title>
-						<version>0.3.0</version>
-<!-- 						<version>${version}</version> needs plugin new version-->
+						<version>${version}</version>
 						<debug>false</debug>
 						<url>https://terminological.github.io/html2pdfr/docs/index.html</url>
 						<doi>10.5281/zenodo.6576088</doi>
 						<usePkgdown>true</usePkgdown>
 						<useJavadoc>false</useJavadoc>
-<!-- 						<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->
 						<rjavaOpts>
 							<rjavaOpt>-Xmx4096M</rjavaOpt>
 						</rjavaOpts>

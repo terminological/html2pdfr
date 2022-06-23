@@ -6,7 +6,7 @@
 #'
 #' Version: 0.3.0
 #'
-#' Generated: 2022-06-23T00:52:49.544879
+#' Generated: 2022-06-23T16:30:06.814073
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -66,7 +66,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R wrapper for OpenHTMLtoPDF java library")
  		message("Version: 0.3.0")
-		message("Generated: 2022-06-23T00:52:49.545269")
+		message("Generated: 2022-06-23T16:30:06.814369")
  	
  	
 		if (!.jniInitialized) 
@@ -88,8 +88,8 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.3.0");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-23T00:52:49.546018");
-		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: com.github.terminological:html2pdfr:main-SNAPSHOT");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-23T16:30:06.814479");
+		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: com.github.terminological:html2pdfr:0.3.0");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
 		self$printMessages()
@@ -476,11 +476,11 @@ JavaApi$rebuildDependencies = function( ... ) {
 	as.POSIXct(file.info(original)$mtime) < as.POSIXct(file.info(test)$mtime)
 }
 
-# gets the pom.xml file for com.github.terminological:html2pdfr:main-SNAPSHOT from a thin jar
+# gets the pom.xml file for com.github.terminological:html2pdfr:0.3.0 from a thin jar
 .extractPom = function() {
 	dir = .workingDir()
-	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-main-SNAPSHOT\\.jar", full.names = TRUE)
-	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-main-SNAPSHOT")
+	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.3.0\\.jar", full.names = TRUE)
+	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.3.0")
 	jarLoc = jarLoc[[1]]
 	pomPath = paste0(dir,"/pom.xml")
 	if (!.fileNewer(jarLoc, pomPath)) {
@@ -490,13 +490,13 @@ JavaApi$rebuildDependencies = function( ... ) {
 	return(pomPath)
 }
 
-# gets the pom.xml file for com.github.terminological:html2pdfr:main-SNAPSHOT which is the library version we exepct to be bundled in the 
+# gets the pom.xml file for com.github.terminological:html2pdfr:0.3.0 which is the library version we exepct to be bundled in the 
 .extractSources = function() {
 	dir = .workingDir()
-	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-main-SNAPSHOT-src\\.jar", full.names = TRUE)
-	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-main-SNAPSHOT-src.jar")
+	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.3.0-src\\.jar", full.names = TRUE)
+	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.3.0-src.jar")
 	jarLoc = jarLoc[[1]]
-	pomPath = paste0(dir,"/html2pdfr-main-SNAPSHOT/pom.xml")
+	pomPath = paste0(dir,"/html2pdfr-0.3.0/pom.xml")
 	if (!.fileNewer(jarLoc, pomPath)) {
 		utils::unzip(jarLoc, exdir = dir)
 		if (!file.exists(pomPath)) stop("couldn't extract source files from ",jarLoc)
@@ -506,7 +506,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 
 # executes maven assembly plugin and relocates resulting fat jar into java library directory
 .compileFatJar = function(pomPath, ...) {
-	fatJarFinal = fs::path(.here("java"),"html2pdfr-main-SNAPSHOT-jar-with-dependencies.jar")
+	fatJarFinal = fs::path(.here("java"),"html2pdfr-0.3.0-jar-with-dependencies.jar")
 	if (!.fileNewer(pomPath, fatJarFinal)) {
 		message("Compiling java library and downloading dependencies, please be patient.")
 		.executeMaven(
@@ -519,7 +519,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 			...
 		)
 		message("Compilation complete")
-		fatJar = fs::path_norm(fs::path(pomPath, "../target/html2pdfr-main-SNAPSHOT-jar-with-dependencies.jar"))
+		fatJar = fs::path_norm(fs::path(pomPath, "../target/html2pdfr-0.3.0-jar-with-dependencies.jar"))
 		fs::file_move(fatJar, fatJarFinal)
 	}
 	return(fatJarFinal)
