@@ -99,9 +99,6 @@ public class HtmlConverter {
 	
 	public HtmlConverter(String[] fontfiles) {
 		
-		Path systemFontDirectory = Paths.get(System.getProperty("java.home"), "lib","fonts");
-		fonts = AutoFont.findFontsInDirectory(systemFontDirectory);
-		
 		System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
 				
 		Arrays.asList(fontfiles).stream()
