@@ -2,11 +2,11 @@
 #' This is the main entry point of the html2pdfr generated R library.
 #'
 #' @description
-#' R wrapper for OpenHTMLtoPDF java library
+#' R Wrapper For Openhtmltopdf Java Library
 #'
-#' Version: 0.3.0
+#' Version: 0.4.0
 #'
-#' Generated: 2022-06-23T16:30:06.814073
+#' Generated: 2022-07-04T17:01:58.016
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import extrafont
@@ -48,7 +48,8 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 	#' @return nothing
 	printMessages = function() {
 		# check = FALSE here to stop exceptions being cleared from the stack.
-		message(.jcall("uk/co/terminological/rjava/LogController", returnSig = "Ljava/lang/String;", method = "getSystemMessages", check=FALSE))
+		msg = .jcall("uk/co/terminological/rjava/LogController", returnSig = "Ljava/lang/String;", method = "getSystemMessages", check=FALSE)
+		if (!is.null(msg) && trimws(msg) != "") message(trimws(msg))
 		invisible(NULL)
 	},
 	
@@ -64,13 +65,16 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	initialize = function(logLevel = "WARN") {
  		if (is.null(JavaApi$singleton)) stop("Startup the java api with JavaApi$get() rather than using this constructor directly")
  	
- 		message("Initialising R wrapper for OpenHTMLtoPDF java library")
- 		message("Version: 0.3.0")
-		message("Generated: 2022-06-23T16:30:06.814369")
+ 		message("Initialising R Wrapper For Openhtmltopdf Java Library")
+ 		message("Version: 0.4.0")
+		message("Generated: 2022-07-04T17:01:58.016")
  	
  	
-		if (!.jniInitialized) 
-			.jinit(parameters=getOption("java.parameters"),silent = TRUE, force.init = FALSE)
+ 		tryCatch({
+			if (!.jniInitialized) 
+				.jinit(parameters=getOption("java.parameters"),silent = TRUE, force.init = FALSE)
+		}, error = function(e) stop("Java cannot be initialised: ",e$message)
+		)
 		
 		# Java dependencies
 		jars = .checkDependencies(quiet = TRUE)
@@ -87,9 +91,9 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		  .jcall(self$.log,returnSig = "V",method = "debug", jar)
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.3.0");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-06-23T16:30:06.814479");
-		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: com.github.terminological:html2pdfr:0.3.0");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.0");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-07-04T17:01:58.020");
+		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.0");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
 		self$printMessages()
@@ -352,10 +356,10 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		# initialise java class constructors and static method definitions
 		
 		self$HtmlConverter = list(
-			new = function(fontfiles=extrafont::fonttable()$fontfile) {
+			new = function(fontfiles) {
 				# constructor
 				# convert parameters to java
-				tmp_fontfiles = self$.toJava$RCharacterVector(fontfiles);
+				tmp_fontfiles = self$.toJava$String(fontfiles);
 				# invoke constructor method
 				tmp_out = .jnew("uk/co/terminological/html2pdfr/HtmlConverter" , tmp_fontfiles, check=FALSE);
 				self$printMessages()
@@ -366,8 +370,105 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 					self
 				);
 				return(tmp_r6)
-			}
-	)
+			},
+			htmlConverter = function(fontfiles=extrafont::fonttable()$fontfile) {
+				# copy parameters
+				tmp_fontfiles = self$.toJava$RCharacterVector(fontfiles);
+				#execute static call
+				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/html2pdfr/HtmlConverter;", method="htmlConverter" , tmp_fontfiles, check=FALSE);
+				self$printMessages()
+				.jcheck() 
+				# wrap return java object in R6 class 
+				out = HtmlConverter$new(
+					self$.fromJava$HtmlConverter(tmp_out),
+					self
+				);
+				return(out)
+			},
+			urlToPdf = function(htmlUrl, outFile=tempfile('html2pdfr_'), cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
+				# copy parameters
+				tmp_htmlUrl = self$.toJava$String(htmlUrl);
+				tmp_outFile = self$.toJava$String(outFile);
+				tmp_cssSelector = self$.toJava$RCharacter(cssSelector);
+				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
+				tmp_yMarginInches = self$.toJava$RNumeric(yMarginInches);
+				tmp_maxWidthInches = self$.toJava$RNumeric(maxWidthInches);
+				tmp_maxHeightInches = self$.toJava$RNumeric(maxHeightInches);
+				tmp_formats = self$.toJava$RCharacterVector(formats);
+				tmp_pngDpi = self$.toJava$RNumeric(pngDpi);
+				tmp_converter = self$.toJava$HtmlConverter(converter);
+				#execute static call
+				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="urlToPdf" , tmp_htmlUrl, tmp_outFile, tmp_cssSelector, tmp_xMarginInches, tmp_yMarginInches, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi, tmp_converter, check=FALSE);
+				self$printMessages()
+				.jcheck() 
+				# convert java object back to R
+				out = self$.fromJava$RCharacterVector(tmp_out);
+				if(is.null(out)) return(invisible(out))
+				return(out)
+			},
+			fileToPdf = function(inFile, outFile=tempfile('html2pdfr_'), cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
+				# copy parameters
+				tmp_inFile = self$.toJava$String(inFile);
+				tmp_outFile = self$.toJava$String(outFile);
+				tmp_cssSelector = self$.toJava$RCharacter(cssSelector);
+				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
+				tmp_yMarginInches = self$.toJava$RNumeric(yMarginInches);
+				tmp_maxWidthInches = self$.toJava$RNumeric(maxWidthInches);
+				tmp_maxHeightInches = self$.toJava$RNumeric(maxHeightInches);
+				tmp_formats = self$.toJava$RCharacterVector(formats);
+				tmp_pngDpi = self$.toJava$RNumeric(pngDpi);
+				tmp_converter = self$.toJava$HtmlConverter(converter);
+				#execute static call
+				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="fileToPdf" , tmp_inFile, tmp_outFile, tmp_cssSelector, tmp_xMarginInches, tmp_yMarginInches, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi, tmp_converter, check=FALSE);
+				self$printMessages()
+				.jcheck() 
+				# convert java object back to R
+				out = self$.fromJava$RCharacterVector(tmp_out);
+				if(is.null(out)) return(invisible(out))
+				return(out)
+			},
+			htmlDocumentToPdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA_character_, cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
+				# copy parameters
+				tmp_html = self$.toJava$String(html);
+				tmp_outFile = self$.toJava$String(outFile);
+				tmp_baseUri = self$.toJava$RCharacter(baseUri);
+				tmp_cssSelector = self$.toJava$RCharacter(cssSelector);
+				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
+				tmp_yMarginInches = self$.toJava$RNumeric(yMarginInches);
+				tmp_maxWidthInches = self$.toJava$RNumeric(maxWidthInches);
+				tmp_maxHeightInches = self$.toJava$RNumeric(maxHeightInches);
+				tmp_formats = self$.toJava$RCharacterVector(formats);
+				tmp_pngDpi = self$.toJava$RNumeric(pngDpi);
+				tmp_converter = self$.toJava$HtmlConverter(converter);
+				#execute static call
+				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="htmlDocumentToPdf" , tmp_html, tmp_outFile, tmp_baseUri, tmp_cssSelector, tmp_xMarginInches, tmp_yMarginInches, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi, tmp_converter, check=FALSE);
+				self$printMessages()
+				.jcheck() 
+				# convert java object back to R
+				out = self$.fromJava$RCharacterVector(tmp_out);
+				if(is.null(out)) return(invisible(out))
+				return(out)
+			},
+			htmlFragmentToPdf = function(htmlFragment, outFile=tempfile('html2pdfr_'), xMarginInches=1.0, yMarginInches=1.0, maxWidthInches=6.25, maxHeightInches=9.75, formats=c('pdf','png'), pngDpi=300, converter=html2pdfr::html_converter()) {
+				# copy parameters
+				tmp_htmlFragment = self$.toJava$String(htmlFragment);
+				tmp_outFile = self$.toJava$String(outFile);
+				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
+				tmp_yMarginInches = self$.toJava$RNumeric(yMarginInches);
+				tmp_maxWidthInches = self$.toJava$RNumeric(maxWidthInches);
+				tmp_maxHeightInches = self$.toJava$RNumeric(maxHeightInches);
+				tmp_formats = self$.toJava$RCharacterVector(formats);
+				tmp_pngDpi = self$.toJava$RNumeric(pngDpi);
+				tmp_converter = self$.toJava$HtmlConverter(converter);
+				#execute static call
+				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="htmlFragmentToPdf" , tmp_htmlFragment, tmp_outFile, tmp_xMarginInches, tmp_yMarginInches, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi, tmp_converter, check=FALSE);
+				self$printMessages()
+				.jcheck() 
+				# convert java object back to R
+				out = self$.fromJava$RCharacterVector(tmp_out);
+				if(is.null(out)) return(invisible(out))
+				return(out)
+			}	)
 	}
 ))
 
@@ -431,7 +532,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 
 # package working directory
 .workingDir = function() {
-	tmp = path.expand(rappdirs::user_cache_dir("html2pdfr-0.3.0"))
+	tmp = path.expand(rappdirs::user_cache_dir("html2pdfr-0.4.0"))
 	fs::dir_create(tmp)
 	return(tmp)
 }
@@ -476,27 +577,27 @@ JavaApi$rebuildDependencies = function( ... ) {
 	as.POSIXct(file.info(original)$mtime) < as.POSIXct(file.info(test)$mtime)
 }
 
-# gets the pom.xml file for com.github.terminological:html2pdfr:0.3.0 from a thin jar
+# gets the pom.xml file for io.github.terminological:html2pdfr:0.4.0 from a thin jar
 .extractPom = function() {
 	dir = .workingDir()
-	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.3.0\\.jar", full.names = TRUE)
-	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.3.0")
+	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.4.0\\.jar", full.names = TRUE)
+	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.4.0")
 	jarLoc = jarLoc[[1]]
 	pomPath = paste0(dir,"/pom.xml")
 	if (!.fileNewer(jarLoc, pomPath)) {
-		utils::unzip(jarLoc, files = "META-INF/maven/com.github.terminological/html2pdfr/pom.xml", junkpaths = TRUE, exdir = dir)
-		if (!file.exists(pomPath)) stop("couldn't extract META-INF/maven/com.github.terminological/html2pdfr/pom.xml from ",jarLoc)
+		utils::unzip(jarLoc, files = "META-INF/maven/io.github.terminological/html2pdfr/pom.xml", junkpaths = TRUE, exdir = dir)
+		if (!file.exists(pomPath)) stop("couldn't extract META-INF/maven/io.github.terminological/html2pdfr/pom.xml from ",jarLoc)
 	}
 	return(pomPath)
 }
 
-# gets the pom.xml file for com.github.terminological:html2pdfr:0.3.0 which is the library version we exepct to be bundled in the 
+# gets the pom.xml file for io.github.terminological:html2pdfr:0.4.0 which is the library version we exepct to be bundled in the 
 .extractSources = function() {
 	dir = .workingDir()
-	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.3.0-src\\.jar", full.names = TRUE)
-	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.3.0-src.jar")
+	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.4.0-src\\.jar", full.names = TRUE)
+	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.4.0-src.jar")
 	jarLoc = jarLoc[[1]]
-	pomPath = paste0(dir,"/html2pdfr-0.3.0/pom.xml")
+	pomPath = paste0(dir,"/html2pdfr-0.4.0/pom.xml")
 	if (!.fileNewer(jarLoc, pomPath)) {
 		utils::unzip(jarLoc, exdir = dir)
 		if (!file.exists(pomPath)) stop("couldn't extract source files from ",jarLoc)
@@ -506,7 +607,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 
 # executes maven assembly plugin and relocates resulting fat jar into java library directory
 .compileFatJar = function(pomPath, ...) {
-	fatJarFinal = fs::path(.here("java"),"html2pdfr-0.3.0-jar-with-dependencies.jar")
+	fatJarFinal = fs::path(.here("java"),"html2pdfr-0.4.0-jar-with-dependencies.jar")
 	if (!.fileNewer(pomPath, fatJarFinal)) {
 		message("Compiling java library and downloading dependencies, please be patient.")
 		.executeMaven(
@@ -519,7 +620,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 			...
 		)
 		message("Compilation complete")
-		fatJar = fs::path_norm(fs::path(pomPath, "../target/html2pdfr-0.3.0-jar-with-dependencies.jar"))
+		fatJar = fs::path_norm(fs::path(pomPath, "../target/html2pdfr-0.4.0-jar-with-dependencies.jar"))
 		fs::file_move(fatJar, fatJarFinal)
 	}
 	return(fatJarFinal)
@@ -572,7 +673,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 	Sys.setenv(JAVA_HOME=java_home)
 	# required due to an issue in Mvnw.cmd on windows.
 	wd = getwd()
-	setwd(.workingDir())
+	setwd(fs::path_dir(pomPath))
 	system2(mvnPath, args)
 	setwd(wd)
 }

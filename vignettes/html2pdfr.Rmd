@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
   echo = TRUE,
   collapse = TRUE
 )
+library(magrittr)
 
 # devtools::load_all("~/Git/html2pdfr/")
 here::i_am("vignettes/html2pdfr.Rmd")
@@ -38,10 +39,8 @@ devtools::install_github("terminological/html2pdfr")
 On first use the major Java library dependencies of this project must be downloaded and cached. This can take some time but only needs to be done once. The following basic initialization code sets up the library:
 
 ```{r}
-J = html2pdfr::JavaApi$get()
 # this produces a verbose output which can be hidden with:
-# J = suppressMessages(html2pdfr::JavaApi$get())
-conv = J$HtmlConverter$new()
+conv = html2pdfr::html_converter()
 ```
 
 Once this is complete the `conv` object provides the useful functions of the package.
@@ -52,9 +51,9 @@ PDF rendering of HTML can be done direct from a URL, or from a locally stored HT
 Pulling in a URL and converting it to PDF is done like so:
 
 ```{r}
-conv$urlToPdf(
-  htmlUrl = "https://cran.r-project.org/banner.shtml",
-  outFile = here::here("docs/articles/example-output.pdf")
+ html2pdfr::url_to_pdf(
+   htmlUrl = "https://cran.r-project.org/banner.shtml",
+   outFile = here::here("docs/articles/example-output.pdf")
 )
 
 ```
@@ -66,20 +65,17 @@ conv$urlToPdf(
 In the following, more usual, example the HTML is generated within R (as you might find from a tabular data library such as `huxtable` or `gtables`) and passed to the converter with some target page dimensions. The converter will lay out the table within the confines of the maximum space available, overflowing to new pages, where-ever required.
 
 ```{r}
-irisHtml = paste0(
-  "<table>",
-  paste0(
-    "<tr><td style='border-style: solid; border-width: 0.5pt; padding: 1pt; font-weight: normal; font-family: Roboto; font-size: 8pt;'>",
-    apply(as.matrix(iris),MARGIN = 1,FUN = paste0, collapse="</td><td style='border-style: solid; border-width: 0.5pt; padding: 1pt; font-weight: normal; font-family: Roboto; font-size: 8pt;'>"),
-    "</td></tr>\n",
-  collapse=""),
-  "</table>")
 
-conv$fitIntoPage(htmlFragment = irisHtml, maxWidthInches = 4, maxHeightInches = 4, outFile = here::here("docs/articles/example-output-2.pdf"))
+irisHtml = iris[c("Species","Sepal.Width")] %>% huxtable::as_hux() %>% huxtable::theme_article() %>% huxtable::to_html()
+html2pdfr::html_fragment_to_pdf(
+  htmlFragment = irisHtml, 
+  maxWidthInches = 8, maxHeightInches = 8, 
+  outFile = here::here("docs/articles/example-output-2.pdf")
+)
   
 ```
 
-And [the resulting pdf](example-output-2.pdf) of the generated HTML is here. This document (which will not be beautiful) should be no more than 4 inches high. The width in this case is determined by the content, which is much less wide than the maximum specified 4 inches. If there was very wide content, the converter would wrap content within cells to stay within the specified bounding box size. This bounding box behaviour means that we can insert the generated pdf into a latex document simply without risk of overfull boxes.
+And [the resulting pdf](example-output-2.pdf) of the generated HTML is here. This document should not have pages any more than 8 inches high. The width in this case is determined by the content, which is much less wide than the maximum specified 8 inches. If there was very wide content, the converter would wrap content within cells to stay within the specified bounding box size. This bounding box behaviour means that we can insert the generated pdf into a latex document simply without risk of overfull boxes.
 
 The layout engine should support simple SVG and MathML content. However it does not execute javascript so is not be able to lay out D3 content. If this is something you need then using `webshot2`, which wraps a whole Chrome instance, may be a better option. 
 
@@ -91,7 +87,7 @@ The layout engine should support simple SVG and MathML content. However it does 
 # )
 
 # MathML does work.
-conv$urlToPdf(
+html2pdfr::url_to_pdf(
   htmlUrl = "https://fred-wang.github.io/MathFonts/mozilla_mathml_test/",
   outFile = here::here("docs/articles/example-mathml.pdf")
 )

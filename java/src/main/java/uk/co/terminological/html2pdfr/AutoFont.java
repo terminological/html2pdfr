@@ -78,17 +78,20 @@ public class AutoFont {
      * @param recurse whether to look in sub-directories recursively
      * @param followLinks whether to follow symbolic links in the file system
      * @return a list of fonts.
-     * @throws IOException - If any files cannot be read.
      */
     public static List<CSSFont> findFontsInDirectory(
-        Path directory, List<String> validFileExtensions, boolean recurse, boolean followLinks) throws IOException {
+        Path directory, List<String> validFileExtensions, boolean recurse, boolean followLinks) {
 
         FontFileProcessor processor = new FontFileProcessor(validFileExtensions);
 
         int maxDepth = recurse ? Integer.MAX_VALUE : 1;
         Set<FileVisitOption> options = followLinks ? EnumSet.of(FileVisitOption.FOLLOW_LINKS) : EnumSet.noneOf(FileVisitOption.class);
 
-        Files.walkFileTree(directory, options, maxDepth, processor);
+        try {
+        	Files.walkFileTree(directory, options, maxDepth, processor);
+        } catch (IOException e) {
+        	throw new RuntimeException("Cannot access font directory: "+directory,e);
+        }
 
         return processor.getFontsAdded();
     }
@@ -99,9 +102,8 @@ public class AutoFont {
      * NOTE: Should not be used repeatedly as each font found is parsed to get the family name.
      * @param directory the directory to browse
      * @return a list of fonts.
-     * @throws IOException - If any files cannot be read.
      */
-    public static List<CSSFont> findFontsInDirectory(Path directory) throws IOException {
+    public static List<CSSFont> findFontsInDirectory(Path directory) {
         return findFontsInDirectory(directory, Collections.singletonList("ttf"), true, true);
     }
 
@@ -166,6 +168,7 @@ public class AutoFont {
             return Optional.of(fnt);
             
         } catch (FontFormatException | IOException ffe) {
+        	log.warn("Skipping invalid or missing truetype font file: "+ttfFile);
             return Optional.empty();
         }
     }

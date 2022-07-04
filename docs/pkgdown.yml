@@ -1,7 +1,7 @@
 pandoc: 1.16.0.2
-pkgdown: 1.6.1
+pkgdown: 2.0.5
 pkgdown_sha: ~
 articles:
   html2pdfr: html2pdfr.html
-last_built: 2022-06-23T15:30Z
+last_built: 2022-07-04T16:02Z
 

@@ -7,9 +7,8 @@ GitHub actions test environments:
 * os: Ubuntu 20.04; R: 4.1.0, Java 11
 * os: Ubuntu 20.04, R: 3.6.1, Java 8
 * os: Windows Server 2022, R: 4.1.0, Java 11
-
-not run on
-* os: Ubuntu 22.04, R: 4.2.0, Java 17
+* os: Ubuntu 20.04, R: 4.2.0, Java 17
+* os: Ubuntu 20.04, R: devel, Java 17
 
 ## R CMD check results
 # TODO: insert R CMD check results here before submission

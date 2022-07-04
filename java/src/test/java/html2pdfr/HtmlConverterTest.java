@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import uk.co.terminological.html2pdfr.AutoFont;
 import uk.co.terminological.html2pdfr.AutoFont.CSSFont;
@@ -20,6 +22,7 @@ import uk.co.terminological.html2pdfr.HtmlConverter;
 import uk.co.terminological.rjava.RConverter;
 import uk.co.terminological.rjava.types.RCharacter;
 import uk.co.terminological.rjava.types.RCharacterVector;
+import uk.co.terminological.rjava.types.RNumeric;
 
 class HtmlConverterTest {
 
@@ -38,7 +41,15 @@ class HtmlConverterTest {
 		return getContent("/test"+i+".html");
 	}
 	
-	
+	private String out(String name) {
+		Path p = Paths.get(System.getProperty("user.home"),"tmp",name);
+		try {
+			Files.createDirectories(p.getParent());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return p.toString();
+	}
 	
 	@Test
 	final void testReader() {
@@ -52,7 +63,7 @@ class HtmlConverterTest {
 				new String[] {
 						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
 						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
-		cov.renderHtmlToFitA4(html, "/home/terminological/tmp/test4",1);
+		cov.renderHtmlToFitA4(html, out("test4"),1);
 	}
 	
 	@Test
@@ -62,7 +73,17 @@ class HtmlConverterTest {
 				new String[] {
 						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
 						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
-		cov.fitIntoPage(html, "/home/terminological/tmp/test6", 5.9, 8.0, RCharacterVector.with("pdf","png"), 300);
+		HtmlConverter.htmlFragmentToPdf(
+			html, 
+			out("test6"), 
+			RNumeric.from(0),
+			RNumeric.from(0),
+			RNumeric.from(5.9),
+			RNumeric.from(8.0),
+			RCharacterVector.with("pdf","png"), 
+			RNumeric.from(300),
+			cov
+		);
 	}
 	
 	@Test
@@ -72,7 +93,37 @@ class HtmlConverterTest {
 				new String[] {
 						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
 						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
-		cov.stringToPdf(html, "/home/terminological/tmp/test2", RCharacter.NA);
+		HtmlConverter.htmlDocumentToPdf(
+				html, out("test2"), 
+				RCharacter.NA, 
+				RCharacter.NA,
+				RNumeric.NA,
+				RNumeric.NA,
+				RNumeric.NA,
+				RNumeric.NA,
+				RCharacterVector.with("pdf"), 
+				RNumeric.from(300),
+				cov
+		);
+	}
+	
+	@Test
+	final void testNBSP() throws IOException {
+		String html = getContent(7);
+		HtmlConverter cov = new HtmlConverter(
+				new String[] {
+						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
+						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
+		HtmlConverter.htmlFragmentToPdf(
+				html, out("test7"), 
+				RNumeric.NA,
+				RNumeric.NA,
+				RNumeric.from(4),
+				RNumeric.from(8),
+				RCharacterVector.with("pdf"), 
+				RNumeric.from(300),
+				cov
+		);
 	}
 	
 	@Test
@@ -82,7 +133,7 @@ class HtmlConverterTest {
 				new String[] {
 						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
 						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
-		cov.renderHtmlToFitA4(html, "/home/terminological/tmp/svg", 1);
+		cov.renderHtmlToFitA4(html, out("svg"), 1);
 	}
 	
 	@Test
@@ -92,7 +143,21 @@ class HtmlConverterTest {
 				new String[] {
 						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
 						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
-		cov.stringToPdf(html, "/home/terminological/tmp/testUrl.pdf", RConverter.convert("http://www.w3.org/People/mimasa/test/xhtml/media-types/test.html"));
+		assertThrows(IOException.class, () -> {
+			HtmlConverter.htmlDocumentToPdf(
+				html, 
+				out("testUrl.pdf"), 
+				RConverter.convert("http://www.w3.org/People/mimasa/test/xhtml/media-types/test.html"),
+				RCharacter.NA,
+				RNumeric.NA,
+				RNumeric.NA,
+				RNumeric.NA,
+				RNumeric.NA,
+				RCharacterVector.with("pdf"), 
+				RNumeric.from(300),
+				cov
+			);
+		});
 	}
 	
 	@Test
@@ -103,7 +168,18 @@ class HtmlConverterTest {
 				new String[] {
 						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
 						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
-		cov.urlToPdf(html, "/home/terminological/tmp/testUrl2.pdf");
+		HtmlConverter.urlToPdf(
+			html, out("testUrl2.pdf"), 
+			RCharacter.NA,
+			RNumeric.NA,
+			RNumeric.NA,
+			RNumeric.NA,
+			RNumeric.NA,
+			RCharacterVector.with("pdf"), 
+			RNumeric.from(300),
+			cov
+			
+		);
 	}
 	
 	@Test
@@ -113,7 +189,16 @@ class HtmlConverterTest {
 				new String[] {
 						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
 						"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
-		cov.urlComponentToPdf(html, "/home/terminological/tmp/testUrl3.pdf", "#content");
+		HtmlConverter.urlToPdf(html, out("testUrl3.pdf"), 
+			RCharacter.from("#content"),
+			RNumeric.NA,
+			RNumeric.NA,
+			RNumeric.NA,
+			RNumeric.NA,
+			RCharacterVector.with("pdf"), 
+			RNumeric.from(300),
+			cov	
+		);
 	}
 	
 	@Test
@@ -145,7 +230,7 @@ class HtmlConverterTest {
 	
 	public static void main(String[] args) throws IOException {
 		HtmlConverterTest tmp = new HtmlConverterTest();
-		tmp.testUrlToPdf();
+		tmp.testNBSP();
 		
 	}
 }

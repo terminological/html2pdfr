@@ -40,6 +40,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Document.OutputSettings;
 import org.jsoup.nodes.Document.OutputSettings.Syntax;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.select.Elements;
 
 import com.openhtmltopdf.bidi.support.ICUBidiReorderer;
@@ -57,14 +58,15 @@ import com.openhtmltopdf.util.XRLog;
 
 import uk.co.terminological.html2pdfr.AutoFont.CSSFont;
 import uk.co.terminological.rjava.RClass;
-import uk.co.terminological.rjava.RConverter;
+import static uk.co.terminological.rjava.RConverter.*;
 import uk.co.terminological.rjava.RDefault;
 import uk.co.terminological.rjava.RFinalize;
 import uk.co.terminological.rjava.RMethod;
 import uk.co.terminological.rjava.types.RCharacter;
 import uk.co.terminological.rjava.types.RCharacterVector;
+import uk.co.terminological.rjava.types.RNumeric;
 
-@RClass(imports = {"extrafont"},suggests= {"here"})
+@RClass(imports = {"extrafont"},suggests= {"here","huxtable","ggplot2"})
 public class HtmlConverter {
 
 	List<CSSFont> fonts = new ArrayList<>();
@@ -72,40 +74,39 @@ public class HtmlConverter {
 	SVGDrawer mathMl = new MathMLDrawer();
 	W3CDom w3cDom = new W3CDom();
 
+	private static HtmlConverter instance = null;
+	
+	
 	/**
-	 * Create a new HtmlConverter for creating PDF and PNG files from HTML.
+	 * Create a new HtmlConverter 
+	 * 
+	 * for creating PDF and PNG files from HTML. In general this will be created automatically.
+	 * but if you have specific fonts you want to use then you may need to pass them to this
+	 * function and specify the result in the `converter` parameter of the main functions.
 	 * 
 	 * @param fontfiles - a character vector of font files that will be imported into the converter.
-	 * @throws IOException  -If the font files cannot be opened
 	 */
-	@RMethod
-	public HtmlConverter(@RDefault(rCode = "extrafont::fonttable()$fontfile") RCharacterVector fontfiles) throws IOException {
-		this(fontfiles.rPrimitive());
-		XRLog.setLoggerImpl(new Slf4jLogger());
-		XRLog.setLoggingEnabled(false);
+	@RMethod(examples= {
+			"conv = html2pdfr::html_converter()"
+	}) public static HtmlConverter htmlConverter(@RDefault(rCode = "extrafont::fonttable()$fontfile") RCharacterVector fontfiles) {
+		if (instance == null) {
+			instance = new HtmlConverter(fontfiles.rPrimitive());
+			XRLog.setLoggerImpl(new Slf4jLogger());
+			XRLog.setLoggingEnabled(false);
+		}
+		return instance;
 	}
 	
-	public HtmlConverter(String[] fontfiles) throws IOException {
+	public HtmlConverter(String[] fontfiles) {
 		
-		try {
-			
-			// Get bundled fronts in pre Java 11 version
-			Path systemFontDirectory = Paths.get(System.getProperty("java.home"), "lib","fonts");
-			fonts = AutoFont.findFontsInDirectory(systemFontDirectory);
-			
-		} catch (java.nio.file.NoSuchFileException e) {
-			
-			// JDKs don't have fonts bundled. We can skip this safely if it fails. 
-			
-		}
-
+		Path systemFontDirectory = Paths.get(System.getProperty("java.home"), "lib","fonts");
+		fonts = AutoFont.findFontsInDirectory(systemFontDirectory);
+		
+		System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
+				
 		Arrays.asList(fontfiles).stream()
 			.flatMap(ff -> AutoFont.fromFontFile(ff).map(o -> Stream.of(o)).orElse(Stream.empty()))
 			.forEach(fonts::add);
-
-		// Path fontDirectory = Paths.get("/usr/share/fonts/truetype");
-		// fonts.addAll(AutoFont.findFontsInDirectory(fontDirectory));
-		// fonts = AutoFont.defineFallbacks(fonts);
 
 	}
 	
@@ -148,7 +149,7 @@ public class HtmlConverter {
 	}
 	
 	// Shrinks HTML content so that it is smaller that maxWidth, and shorter than (or equal to) maxWidth by paging when it gets too long.
-	// This will basically shirink to content unless that gets bigger than outer box.
+	// This will basically shrink to content unless that gets bigger than outer box.
 	// The result is guaranteed to be no larger than maxWidth and no one page longer than maxHeight.
 	// Content will overflow to fill multiple pages.
 	private Document shrinkWrap(Document doc, URI htmlBaseUrl, int maxWidth, int maxHeight, int padding) throws IOException {
@@ -157,7 +158,10 @@ public class HtmlConverter {
 		PdfRendererBuilder builder = configuredBuilder();
 		Element shrinkWrap = doc2.body().appendElement("div").attr("style","display: inline-block;");
 		shrinkWrap.siblingElements().forEach(el -> el.appendTo(shrinkWrap));
-		builder.withHtmlContent(doc2.outerHtml(), htmlBaseUrl == null ? null : htmlBaseUrl.toString());
+		doc2.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+		doc2.outputSettings().escapeMode(EscapeMode.xhtml);
+		String tmp = doc2.toString(); 
+		builder.withHtmlContent(tmp, htmlBaseUrl == null ? null : htmlBaseUrl.toString());
 		PdfBoxRenderer renderer = builder.buildPdfRenderer();
 		renderer.layout();
 		// The root box is <html>, the first child is <body>, then shrinkWrap <div>.
@@ -181,122 +185,231 @@ public class HtmlConverter {
 	}
 	
 	/**
-	 * Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.
-	 * @param htmlUrl the URL 
-	 * @param outFile the full path of the output file 
-	 * @return the filename written to (with extension '.pdf' if outFile did not have an extension).
-	 * @throws IOException if the output file cannot be written
-	 */
-	@RMethod
-	public RCharacter urlToPdf(String htmlUrl, String outFile) throws IOException {
-		Scanner s = new Scanner(new URL(htmlUrl).openStream(), "UTF-8");
-		String html = s.useDelimiter("\\A").next();
-		s.close();
-		List<String> saved = renderHtml(html, URI.create(htmlUrl), outFile, new String[] {"pdf"}, false, 0D, 0D, 0D, false, 300D);
-		return RConverter.convert(saved.get(0));
-	}
-	
-	/**
-	 * Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.
+	 * Convert HTML document from a URL to a PDF document. 
+	 * 
+	 * The URL is assumed to be a complete document. 
+	 * The resulting PDF size will be controlled by page media directives within the HTML, 
+	 * unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
+	 * If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
+	 * In this case it is will be resized to fit within the given dimensions and shrink wrapped
+	 * so that the content is smaller. If no dimensions are present this will default to A4.
+	 *  
 	 * @param htmlUrl the URL 
 	 * @param outFile the full path of the output file
-	 * @param cssSelector the part of the page you want to convert to PDF. 
-	 * @return the filename written to (with extension '.pdf' if outFile did not have an extension).
+	 * @param cssSelector the part of the page you want to convert to PDF.	 
+	 * @param xMarginInches page width margins
+	 * @param yMarginInches page height margins
+	 * @param maxWidthInches what is the maximum allowable width?
+	 * @param maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page)
+	 * @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both.
+	 * @param pngDpi the dots per inch for png outputs if requested
+	 * @param converter (optional) a configured HTML converter, only needed if manually specifying fonts.
+	 * @return the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 	 * @throws IOException if the output file cannot be written
 	 */
-	@RMethod
-	public RCharacter urlComponentToPdf(String htmlUrl, String outFile, String cssSelector) throws IOException {
+	@RMethod(examples = {
+			"url_to_pdf('https://cran.r-project.org/banner.shtml')"
+	})
+	public static RCharacterVector urlToPdf(
+			String htmlUrl, 
+			@RDefault(rCode = "tempfile('html2pdfr_')") String outFile,
+			@RDefault(rCode = "NA_character_") RCharacter cssSelector,
+			@RDefault(rCode = "NA_real_") RNumeric xMarginInches, 
+			@RDefault(rCode = "NA_real_") RNumeric yMarginInches,
+			@RDefault(rCode = "NA_real_") RNumeric maxWidthInches, 
+			@RDefault(rCode = "NA_real_") RNumeric maxHeightInches,
+			@RDefault(rCode = "c('pdf')") RCharacterVector formats,
+			@RDefault(rCode = "300") RNumeric pngDpi,
+			@RDefault(rCode = "html2pdfr::html_converter()") HtmlConverter converter
+	) throws IOException {
 		Scanner s = new Scanner(new URL(htmlUrl).openStream(), "UTF-8");
 		String html = s.useDelimiter("\\A").next();
 		s.close();
-		List<String> saved = renderHtmlWithSelector(html, URI.create(htmlUrl), outFile, new String[] {"pdf"}, false, 0D, 0D, 0D, false, 300D, cssSelector);
-		return RConverter.convert(saved.get(0));
+		URI uri = URI.create(htmlUrl);
+		Double x = maxWidthInches.opt().map(w -> w-2*xMarginInches.opt().orElse(0D)).orElse(null);
+		Double y = maxHeightInches.opt().map(w -> w-2*yMarginInches.opt().orElse(0D)).orElse(null);
+		boolean resize = !(maxWidthInches.isNa() || maxHeightInches.isNa());
+		boolean shrink = !cssSelector.isNa();
+		List<String> saved = converter.renderHtmlWithSelector(html, uri, 
+			outFile, formats.rPrimitive(), 
+			resize, x, y, 
+			1.0/16, 
+			shrink, 
+			pngDpi.opt().orElse(300D),
+			cssSelector.get());
+		return using(stringCollector()).convert(saved);
 	}
 	
+		
 	/**
-	 * Convert HTML from a local file to a PDF file. PDF size will be controlled by page media directives within the html.
-	 * @param inFile the full path to an input HTML file
-	 * @param outFile the full path to the output pdf file. (N.B. this function can also output PNG if specified in the filename extension)
-	 * @return the filename written to (with extension '.pdf' if outFile did not have an extension).
+	 * Convert HTML document from a local file to a PDF document. 
+	 * 
+	 * The HTML in `inFile` is assumed to be a complete document. Relative references are resolved
+	 * with reference to the HTML file on the file system, so correctly located images etc whould be 
+	 * picked up without requiring a server.
+	 * The resulting PDF size will be controlled by page media directives within the HTML, 
+	 * unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
+	 * If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
+	 * In this case it is will be resized to fit within the given dimensions and shrink wrapped
+	 * so that the content is smaller. If no dimensions are present this will default to A4.
+	 *  
+	 * @param inFile the full path the the HTML file 
+	 * @param outFile the full path of the output file
+	 * @param cssSelector the part of the page you want to convert to PDF.	 
+	 * @param xMarginInches page width margins
+	 * @param yMarginInches page height margins
+	 * @param maxWidthInches what is the maximum allowable width?
+	 * @param maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page)
+	 * @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both.
+	 * @param pngDpi the dots per inch for png outputs if requested
+	 * @param converter (optional) a configured HTML converter, only needed if manually specifying fonts.
+	 * @return the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 	 * @throws IOException if the output file cannot be written
-	 */
-	@RMethod
-	public RCharacter fileToPdf(String inFile, String outFile) throws IOException {
+	 */	 
+	@RMethod(examples = {
+			"dest = tempfile(fileext='.html')",
+			"download.file('https://cran.r-project.org/banner.shtml', destfile = dest)",
+			"file_to_pdf(dest)"
+	})
+	public static RCharacterVector fileToPdf(
+			String inFile, 
+			@RDefault(rCode = "tempfile('html2pdfr_')") String outFile,
+			@RDefault(rCode = "NA_character_") RCharacter cssSelector,
+			@RDefault(rCode = "NA_real_") RNumeric xMarginInches, 
+			@RDefault(rCode = "NA_real_") RNumeric yMarginInches,
+			@RDefault(rCode = "NA_real_") RNumeric maxWidthInches, 
+			@RDefault(rCode = "NA_real_") RNumeric maxHeightInches,
+			@RDefault(rCode = "c('pdf')") RCharacterVector formats,
+			@RDefault(rCode = "300") RNumeric pngDpi,
+			@RDefault(rCode = "html2pdfr::html_converter()") HtmlConverter converter
+	) throws IOException {
 		Scanner s = new Scanner(new FileInputStream(new File(inFile)), "UTF-8");
 		String html = s.useDelimiter("\\A").next();
-		URI directory = Paths.get(inFile).getParent().toUri();
+		URI uri = Paths.get(inFile).getParent().toUri();
 		s.close();
-		List<String> saved = renderHtml(html, directory, outFile, new String[] {"pdf"}, false, 0D, 0D, 0D, false, 300D);
-		return RConverter.convert(saved.get(0));
+		Double x = maxWidthInches.opt().map(w -> w-2*xMarginInches.opt().orElse(0D)).orElse(null);
+		Double y = maxHeightInches.opt().map(w -> w-2*yMarginInches.opt().orElse(0D)).orElse(null);
+		boolean resize = !(maxWidthInches.isNa() || maxHeightInches.isNa());
+		boolean shrink = !cssSelector.isNa();
+		List<String> saved = converter.renderHtmlWithSelector(html, uri, 
+			outFile, formats.rPrimitive(), 
+			resize, x, y, 
+			1.0/16, 
+			shrink, 
+			pngDpi.opt().orElse(300D),
+			cssSelector.get());
+		return using(stringCollector()).convert(saved);
 	}
 	
-	//
 	/**
-	 * @param html the HTML string
-	 * @param outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)
-	 * @param baseUri optionally the base URI of the HTML string for resolving relative URLs in the HTML (e.g. CSS files).
-	 * @return the filename written to (with extension '.pdf' if outFile did not have an extension).
+	 * Convert HTML document from a string to a PDF document. 
+	 * 
+	 * The HTML in `html` is assumed to be a complete document. Relative references are resolved
+	 * with reference to `baseUri` if it is given (which could be a `file://` URI).
+	 * The resulting PDF size will be controlled by page media directives within the HTML, 
+	 * unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
+	 * If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
+	 * In this case it is will be resized to fit within the given dimensions and shrink wrapped
+	 * so that the content is smaller. If no dimensions are present this will default to A4.
+	 * 
+	 * @param html the html document as a string 
+	 * @param outFile the full path of the output file
+	 * @param baseUri the URI from which to interpret relative links in the html content.
+	 * @param cssSelector the part of the page you want to convert to PDF.	 
+	 * @param xMarginInches page width margins
+	 * @param yMarginInches page height margins
+	 * @param maxWidthInches what is the maximum allowable width?	 
+	 * @param maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page)
+	 * @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both.
+	 * @param pngDpi the dots per inch for png outputs if requested
+	 * @param converter (optional) a configured HTML converter, only needed if manually specifying fonts.
+	 * @return the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 	 * @throws IOException if the output file cannot be written
 	 */
-	@RMethod
-	public RCharacter stringToPdf(String html, String outFile, @RDefault(rCode = "NA_character_") RCharacter baseUri) throws IOException {
-		URI directory;
+	@RMethod(examples = {
+			"library(tidyverse)", 
+			"html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')",
+			"html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')"
+	})
+	public static RCharacterVector htmlDocumentToPdf(
+			String html, 
+			@RDefault(rCode = "tempfile('html2pdfr_')") String outFile, 
+			@RDefault(rCode = "NA_character_") RCharacter baseUri,
+			@RDefault(rCode = "NA_character_") RCharacter cssSelector,
+			@RDefault(rCode = "NA_real_") RNumeric xMarginInches, 
+			@RDefault(rCode = "NA_real_") RNumeric yMarginInches,
+			@RDefault(rCode = "NA_real_") RNumeric maxWidthInches, 
+			@RDefault(rCode = "NA_real_") RNumeric maxHeightInches,
+			@RDefault(rCode = "c('pdf')") RCharacterVector formats,
+			@RDefault(rCode = "300") RNumeric pngDpi,
+			@RDefault(rCode = "html2pdfr::html_converter()") HtmlConverter converter
+	) throws IOException {
+		URI uri;
 		if (baseUri.isNa()) {
-			directory = null;
+			uri = null;
 		} else {
-			directory = URI.create(baseUri.get()); 
+			uri = URI.create(baseUri.get()); 
 		}
-		List<String> saved = renderHtml(html, directory, outFile, new String[] {"pdf"}, false, 0D, 0D, 0D, false, 300D);
-		return RConverter.convert(saved.get(0));
+		Double x = maxWidthInches.opt().map(w -> w-2*xMarginInches.opt().orElse(0D)).orElse(null);
+		Double y = maxHeightInches.opt().map(w -> w-2*yMarginInches.opt().orElse(0D)).orElse(null);
+		boolean resize = !(maxWidthInches.isNa() || maxHeightInches.isNa());
+		boolean shrink = !cssSelector.isNa();
+		List<String> saved = converter.renderHtmlWithSelector(html, uri, 
+			outFile, formats.rPrimitive(), 
+			resize, x, y, 
+			1.0/16, 
+			shrink, 
+			pngDpi.opt().orElse(300D),
+			cssSelector.get());
+		return using(stringCollector()).convert(saved);
 	}
 	
 	/**
-	 * Render HTML string to fit into a page,
+	 * Render HTML fragment from a string to a PDF image.
 	 * 
-	 * @param htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML 
-	 * @param outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)
-	 * @param maxWidthInches what is the maximum allowable width?
-	 * @param maxHeightInches what is the maximium allowable height? (if the content is larger than this then it will overflow to another page)
+	 * This is the simple rendering function that will output a PDF file (potentially many pages) and a set of PNG files from HTML content. 
+	 * This is primarily used to render HTML content (e.g. a table) that is being included in a larger document.
+	 * In this case the HTML fragment will not specify page dimensions which need to be provided (defaults to A4 size with 1 inch margins). 
+	 * The result can be embedded into an existing page using latex's includegraphics directive exactly the same way as a graphical figure might be used. 
+	 * The sizing of the output will always be smaller than the dimensions of a page, but will shrink to fit the content.
+	 * 
+	 * @param htmlFragment a HTML fragment, e.g. usually the table element, but may be the whole page.
+	 * @param outFile the full path with or without extension (if no extension specified then `formats` parameter will apply)
+	 * @param xMarginInches page width margins
+	 * @param yMarginInches page height margins
+	 * @param maxWidthInches what is the maximum allowable width? (default is A4)
+	 * @param maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page)
 	 * @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both.
-	 * @param pngDpi if outputting a PNG the dpi will determine the dimensions of the image.
-	 * @return the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).
+	 * @param pngDpi the dots per inch for png outputs if requested.
+	 * @param converter (optional) a configured HTML converter, only needed if manually specifying fonts.
+	 * @return the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 	 * @throws IOException if the output file cannot be written
 	 */
-	@RMethod
-	public RCharacterVector fitIntoPage(
+	@RMethod(examples = {
+			"library(tidyverse)", 
+			"html = iris %>% group_by(Species) %>% summarise(across(everything(), mean)) %>% ",
+			"  huxtable::as_hux() %>% huxtable::theme_article() %>% huxtable::to_html()",
+			"html_fragment_to_pdf(html)"
+	})
+	public static RCharacterVector htmlFragmentToPdf(
 			String htmlFragment, 
-			String outFile, 
-			@RDefault(rCode = "6.25") double maxWidthInches, 
-			@RDefault(rCode = "9.75") double maxHeightInches,
+			@RDefault(rCode = "tempfile('html2pdfr_')") String outFile, 
+			@RDefault(rCode = "1.0") RNumeric xMarginInches, 
+			@RDefault(rCode = "1.0") RNumeric yMarginInches,
+			@RDefault(rCode = "6.25") RNumeric maxWidthInches, 
+			@RDefault(rCode = "9.75") RNumeric maxHeightInches,
 			@RDefault(rCode = "c('pdf','png')") RCharacterVector formats,
-			@RDefault(rCode = "300") double pngDpi
+			@RDefault(rCode = "300") RNumeric pngDpi,
+			@RDefault(rCode = "html2pdfr::html_converter()") HtmlConverter converter
 	) throws IOException {
-		List<String> saved = renderHtml(htmlFragment, null, outFile, formats.rPrimitive(), true, maxWidthInches, maxHeightInches, 1.0/16, true, pngDpi);
-		return saved.stream().collect(RConverter.stringCollector());
-	}
-	
-	
-	/**
-	 * Render HTML string to fit into an A4 page,
-	 * 
-	 * @param htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML 
-	 * @param outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)
-	 * @param xMarginInInches page margins
-	 * @param yMarginInInches page margins
-	 * @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both.
-	 * @return the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).
-	 * @throws IOException if the output file cannot be written
-	 */
-	@RMethod
-	public RCharacterVector fitIntoA4(
-			String htmlFragment, 
-			String outFile, 
-			@RDefault(rCode = "1.0") double xMarginInInches, 
-			@RDefault(rCode = "1.0") double yMarginInInches,
-			@RDefault(rCode = "c('pdf','png')") RCharacterVector formats
-	) throws IOException {
-		List<String> saved = renderHtml(htmlFragment, null, outFile, formats.rPrimitive(), true, A4_INCH_WIDTH-2*xMarginInInches, A4_INCH_HEIGHT-2*yMarginInInches, 1.0/16, true, 300D);
-		return saved.stream().collect(RConverter.stringCollector());
+		Double x = maxWidthInches.opt().map(w -> w-2*xMarginInches.opt().orElse(0D)).orElse(null);
+		Double y = maxHeightInches.opt().map(w -> w-2*yMarginInches.opt().orElse(0D)).orElse(null);
+		List<String> saved = converter.renderHtml(
+				htmlFragment, null, 
+				outFile, formats.rPrimitive(), 
+				true, x, y, 
+				1.0/16, true, pngDpi.opt().orElse(300D));
+		return using(stringCollector()).convert(saved);
 	}
 	
 	private PdfRendererBuilder configuredBuilder() {
@@ -311,11 +424,11 @@ public class HtmlConverter {
 		return builder;
 	}
 	
-	public List<String> renderHtml(String html, URI htmlBaseUrl, String outFile, String[] formats, boolean resize,  double widthInches, double heightInches, double paddingInches, boolean shrinkWrap, double pngDotsPerInch) throws IOException {
+	public List<String> renderHtml(String html, URI htmlBaseUrl, String outFile, String[] formats, boolean resize,  Double widthInches, Double heightInches, Double paddingInches, boolean shrinkWrap, double pngDotsPerInch) throws IOException {
 		return renderHtmlWithSelector(html, htmlBaseUrl, outFile, formats, resize, widthInches, heightInches, paddingInches, shrinkWrap, pngDotsPerInch, null);
 	}
 	// main function 
-	public List<String> renderHtmlWithSelector(String html, URI htmlBaseUrl, String outFile, String[] formats, boolean resize,  double widthInches, double heightInches, double paddingInches, boolean shrinkWrap, double pngDotsPerInch, String cssSelector) throws IOException {
+	public List<String> renderHtmlWithSelector(String html, URI htmlBaseUrl, String outFile, String[] formats, boolean resize,  Double widthInches, Double heightInches, Double paddingInches, boolean shrinkWrap, double pngDotsPerInch, String cssSelector) throws IOException {
 		
 		// clean up html
 
@@ -345,6 +458,7 @@ public class HtmlConverter {
 			doc2 = doc;
 		}
 		doc2.outputSettings(new OutputSettings().syntax(Syntax.xml));
+		doc2.outputSettings().escapeMode(EscapeMode.xhtml);
 		
 		// System.out.println(doc2.outerHtml());
 		
@@ -368,6 +482,8 @@ public class HtmlConverter {
 		} catch (Exception e) {
 			throw new IOException("HTML renderer did not complete normally. This usually means the HTML contains unsupported features, (e.g. some types of form fields.)",e);
 		}
+		
+		
 		
 		PDDocument pdfdoc = pdfrender.getPdfDocument();
 		boolean write = false;

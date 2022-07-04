@@ -8,7 +8,7 @@
 
 \arguments{
 	\if{html}{\out{<div class="arguments">}}
-	\item{fontfiles}{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to extrafont::fonttable()$fontfile) - (java expects a RCharacterVector)}
+	\item{fontfiles}{fontfiles - (java expects a String)}
 	\if{html}{\out{</div>}}
 }
 
@@ -16,9 +16,9 @@
 \description{
 missing description
 
-Version: 0.3.0
+Version: 0.4.0
 
-Generated: 2022-06-23T16:30:06.910058
+Generated: 2022-07-04T17:01:58.470
 }
 
 \details{
@@ -30,28 +30,37 @@ J = html2pdfr::JavaApi$get();
 instance = J$HtmlConverter$new(fontfiles)
 
 ## -----------------------------------
-## Method `HtmlConverter$urlToPdf`
+## Method `HtmlConverter$htmlConverter`
 ## -----------------------------------
+ 
+			conv = html2pdfr::html_converter()
 
 ## -----------------------------------
-## Method `HtmlConverter$urlComponentToPdf`
+## Method `HtmlConverter$urlToPdf`
 ## -----------------------------------
+url_to_pdf('https://cran.r-project.org/banner.shtml')
 
 ## -----------------------------------
 ## Method `HtmlConverter$fileToPdf`
 ## -----------------------------------
+dest = tempfile(fileext='.html')
+download.file('https://cran.r-project.org/banner.shtml', destfile = dest)
+file_to_pdf(dest)
 
 ## -----------------------------------
-## Method `HtmlConverter$stringToPdf`
+## Method `HtmlConverter$htmlDocumentToPdf`
 ## -----------------------------------
+library(tidyverse)
+html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
+html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 
 ## -----------------------------------
-## Method `HtmlConverter$fitIntoPage`
+## Method `HtmlConverter$htmlFragmentToPdf`
 ## -----------------------------------
-
-## -----------------------------------
-## Method `HtmlConverter$fitIntoA4`
-## -----------------------------------
+library(tidyverse)
+html = iris %>% group_by(Species) %>% summarise(across(everything(), mean)) %>% 
+  huxtable::as_hux() %>% huxtable::theme_article() %>% huxtable::to_html()
+html_fragment_to_pdf(html)
 
 }}
 
@@ -65,17 +74,16 @@ instance = J$HtmlConverter$new(fontfiles)
 	}
 	\subsection{Static methods}{
 		\itemize{
-			\item{none}
+			\item \href{#method-htmlConverter}{\code{J$HtmlConverter$htmlConverter(fontfiles)}}
+			\item \href{#method-urlToPdf}{\code{J$HtmlConverter$urlToPdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)}}
+			\item \href{#method-fileToPdf}{\code{J$HtmlConverter$fileToPdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)}}
+			\item \href{#method-htmlDocumentToPdf}{\code{J$HtmlConverter$htmlDocumentToPdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)}}
+			\item \href{#method-htmlFragmentToPdf}{\code{J$HtmlConverter$htmlFragmentToPdf(htmlFragment, outFile, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)}}
 		}
 	}
 	\subsection{Instance methods}{
 		\itemize{
-			\item \href{#method-urlToPdf}{\code{instance$urlToPdf(htmlUrl, outFile)}}
-			\item \href{#method-urlComponentToPdf}{\code{instance$urlComponentToPdf(htmlUrl, outFile, cssSelector)}}
-			\item \href{#method-fileToPdf}{\code{instance$fileToPdf(inFile, outFile)}}
-			\item \href{#method-stringToPdf}{\code{instance$stringToPdf(html, outFile, baseUri)}}
-			\item \href{#method-fitIntoPage}{\code{instance$fitIntoPage(htmlFragment, outFile, maxWidthInches, maxHeightInches, formats, pngDpi)}}
-			\item \href{#method-fitIntoA4}{\code{instance$fitIntoA4(htmlFragment, outFile, xMarginInInches, yMarginInInches, formats)}}
+			\item{none}
 			\item \code{instance$clone()}
 			\item \code{instance$print()}
 		}
@@ -85,7 +93,7 @@ instance = J$HtmlConverter$new(fontfiles)
 	\if{html}{\out{<a id="method-new"></a>}}
 	
 	\subsection{Method \code{new()}}{
-		Create a new HtmlConverter for creating PDF and PNG files from HTML.
+		the default no-args constructor
 	
 
 		\subsection{Usage}{
@@ -93,6 +101,46 @@ instance = J$HtmlConverter$new(fontfiles)
 			\preformatted{
 J = html2pdfr::JavaApi$get()
 J$HtmlConverter$new(fontfiles)
+  			}
+			\if{html}{\out{</div>}}
+		}
+	
+		\subsection{Arguments}{
+			\if{html}{\out{<div class="arguments">}}
+			\itemize{
+				\item{fontfiles}{ - (java expects a String)}
+			}
+			\if{html}{\out{</div>}}
+		}
+
+		\subsection{Returns}{
+			R6 HtmlConverter object: 
+		}
+
+		\subsection{Examples}{
+			\if{html}{\out{<div class="r example copy">}}
+			\preformatted{
+not available
+			}
+			\if{html}{\out{</div>}}
+		}
+	}
+	\if{html}{\out{<hr>}}
+	\if{html}{\out{<a id="method-htmlConverter"></a>}}
+	
+	\subsection{Method \code{htmlConverter()}}{
+		Create a new HtmlConverter 
+
+for creating PDF and PNG files from HTML. In general this will be created automatically.
+but if you have specific fonts you want to use then you may need to pass them to this
+function and specify the result in the `converter` parameter of the main functions.
+	
+
+		\subsection{Usage}{
+			\if{html}{\out{<div class="r">}}
+			\preformatted{
+J = html2pdfr::JavaApi$get()
+J$HtmlConverter$htmlConverter(fontfiles)
   			}
 			\if{html}{\out{</div>}}
 		}
@@ -112,7 +160,8 @@ J$HtmlConverter$new(fontfiles)
 		\subsection{Examples}{
 			\if{html}{\out{<div class="r example copy">}}
 			\preformatted{
-not available
+ 
+			conv = html2pdfr::html_converter()
 			}
 			\if{html}{\out{</div>}}
 		}
@@ -121,15 +170,21 @@ not available
 	\if{html}{\out{<a id="method-urlToPdf"></a>}}
 	
 	\subsection{Method \code{urlToPdf()}}{
-		Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.
+		Convert HTML document from a URL to a PDF document. 
+
+The URL is assumed to be a complete document. 
+The resulting PDF size will be controlled by page media directives within the HTML, 
+unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
+If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
+In this case it is will be resized to fit within the given dimensions and shrink wrapped
+so that the content is smaller. If no dimensions are present this will default to A4.
 	
 
 		\subsection{Usage}{
 			\if{html}{\out{<div class="r">}}
 			\preformatted{
 J = html2pdfr::JavaApi$get()
-instance = J$HtmlConverter$new(...);
-instance$urlToPdf(htmlUrl, outFile)
+J$HtmlConverter$urlToPdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)
   			}
 			\if{html}{\out{</div>}}
 		}
@@ -138,58 +193,27 @@ instance$urlToPdf(htmlUrl, outFile)
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
 				\item{htmlUrl the URL}{ - (java expects a String)}
-				\item{outFile the full path of the output file}{ - (java expects a String)}
+				\item{outFile the full path of the output file - (defaulting to tempfile('html2pdfr_'))}{ - (java expects a String)}
+				\item{cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_)}{ - (java expects a RCharacter)}
+				\item{xMarginInches page width margins - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{yMarginInches page height margins - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf'))}{ - (java expects a RCharacterVector)}
+				\item{pngDpi the dots per inch for png outputs if requested - (defaulting to 300)}{ - (java expects a RNumeric)}
+				\item{converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter())}{ - (java expects a HtmlConverter)}
 			}
 			\if{html}{\out{</div>}}
 		}
 
 		\subsection{Returns}{
-			RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).
+			RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 		}
 
 		\subsection{Examples}{
 			\if{html}{\out{<div class="r example copy">}}
 			\preformatted{
-not available
-			}
-			\if{html}{\out{</div>}}
-		}
-	}
-	\if{html}{\out{<hr>}}
-	\if{html}{\out{<a id="method-urlComponentToPdf"></a>}}
-	
-	\subsection{Method \code{urlComponentToPdf()}}{
-		Convert HTML from a URL to a PDF file. PDF size will be controlled by page media directives within the html.
-	
-
-		\subsection{Usage}{
-			\if{html}{\out{<div class="r">}}
-			\preformatted{
-J = html2pdfr::JavaApi$get()
-instance = J$HtmlConverter$new(...);
-instance$urlComponentToPdf(htmlUrl, outFile, cssSelector)
-  			}
-			\if{html}{\out{</div>}}
-		}
-	
-		\subsection{Arguments}{
-			\if{html}{\out{<div class="arguments">}}
-			\itemize{
-				\item{htmlUrl the URL}{ - (java expects a String)}
-				\item{outFile the full path of the output file}{ - (java expects a String)}
-				\item{cssSelector the part of the page you want to convert to PDF.}{ - (java expects a String)}
-			}
-			\if{html}{\out{</div>}}
-		}
-
-		\subsection{Returns}{
-			RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).
-		}
-
-		\subsection{Examples}{
-			\if{html}{\out{<div class="r example copy">}}
-			\preformatted{
-not available
+url_to_pdf('https://cran.r-project.org/banner.shtml')
 			}
 			\if{html}{\out{</div>}}
 		}
@@ -198,15 +222,23 @@ not available
 	\if{html}{\out{<a id="method-fileToPdf"></a>}}
 	
 	\subsection{Method \code{fileToPdf()}}{
-		Convert HTML from a local file to a PDF file. PDF size will be controlled by page media directives within the html.
+		Convert HTML document from a local file to a PDF document. 
+
+The HTML in `inFile` is assumed to be a complete document. Relative references are resolved
+with reference to the HTML file on the file system, so correctly located images etc whould be 
+picked up without requiring a server.
+The resulting PDF size will be controlled by page media directives within the HTML, 
+unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
+If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
+In this case it is will be resized to fit within the given dimensions and shrink wrapped
+so that the content is smaller. If no dimensions are present this will default to A4.
 	
 
 		\subsection{Usage}{
 			\if{html}{\out{<div class="r">}}
 			\preformatted{
 J = html2pdfr::JavaApi$get()
-instance = J$HtmlConverter$new(...);
-instance$fileToPdf(inFile, outFile)
+J$HtmlConverter$fileToPdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)
   			}
 			\if{html}{\out{</div>}}
 		}
@@ -214,37 +246,54 @@ instance$fileToPdf(inFile, outFile)
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{inFile the full path to an input HTML file}{ - (java expects a String)}
-				\item{outFile the full path to the output pdf file. (N.B. this function can also output PNG if specified in the filename extension)}{ - (java expects a String)}
+				\item{inFile the full path the the HTML file}{ - (java expects a String)}
+				\item{outFile the full path of the output file - (defaulting to tempfile('html2pdfr_'))}{ - (java expects a String)}
+				\item{cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_)}{ - (java expects a RCharacter)}
+				\item{xMarginInches page width margins - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{yMarginInches page height margins - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf'))}{ - (java expects a RCharacterVector)}
+				\item{pngDpi the dots per inch for png outputs if requested - (defaulting to 300)}{ - (java expects a RNumeric)}
+				\item{converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter())}{ - (java expects a HtmlConverter)}
 			}
 			\if{html}{\out{</div>}}
 		}
 
 		\subsection{Returns}{
-			RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).
+			RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 		}
 
 		\subsection{Examples}{
 			\if{html}{\out{<div class="r example copy">}}
 			\preformatted{
-not available
+dest = tempfile(fileext='.html')
+download.file('https://cran.r-project.org/banner.shtml', destfile = dest)
+file_to_pdf(dest)
 			}
 			\if{html}{\out{</div>}}
 		}
 	}
 	\if{html}{\out{<hr>}}
-	\if{html}{\out{<a id="method-stringToPdf"></a>}}
+	\if{html}{\out{<a id="method-htmlDocumentToPdf"></a>}}
 	
-	\subsection{Method \code{stringToPdf()}}{
-		no description
+	\subsection{Method \code{htmlDocumentToPdf()}}{
+		Convert HTML document from a string to a PDF document. 
+
+The HTML in `html` is assumed to be a complete document. Relative references are resolved
+with reference to `baseUri` if it is given (which could be a `file://` URI).
+The resulting PDF size will be controlled by page media directives within the HTML, 
+unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
+If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
+In this case it is will be resized to fit within the given dimensions and shrink wrapped
+so that the content is smaller. If no dimensions are present this will default to A4.
 	
 
 		\subsection{Usage}{
 			\if{html}{\out{<div class="r">}}
 			\preformatted{
 J = html2pdfr::JavaApi$get()
-instance = J$HtmlConverter$new(...);
-instance$stringToPdf(html, outFile, baseUri)
+J$HtmlConverter$htmlDocumentToPdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)
   			}
 			\if{html}{\out{</div>}}
 		}
@@ -252,38 +301,53 @@ instance$stringToPdf(html, outFile, baseUri)
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{html the HTML string}{ - (java expects a String)}
-				\item{outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)}{ - (java expects a String)}
-				\item{baseUri optionally the base URI of the HTML string for resolving relative URLs in the HTML (e.g. CSS files). - (defaulting to NA_character_)}{ - (java expects a RCharacter)}
+				\item{html the html document as a string}{ - (java expects a String)}
+				\item{outFile the full path of the output file - (defaulting to tempfile('html2pdfr_'))}{ - (java expects a String)}
+				\item{baseUri the URI from which to interpret relative links in the html content. - (defaulting to NA_character_)}{ - (java expects a RCharacter)}
+				\item{cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_)}{ - (java expects a RCharacter)}
+				\item{xMarginInches page width margins - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{yMarginInches page height margins - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_)}{ - (java expects a RNumeric)}
+				\item{formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf'))}{ - (java expects a RCharacterVector)}
+				\item{pngDpi the dots per inch for png outputs if requested - (defaulting to 300)}{ - (java expects a RNumeric)}
+				\item{converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter())}{ - (java expects a HtmlConverter)}
 			}
 			\if{html}{\out{</div>}}
 		}
 
 		\subsection{Returns}{
-			RCharacter: the filename written to (with extension '.pdf' if outFile did not have an extension).
+			RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 		}
 
 		\subsection{Examples}{
 			\if{html}{\out{<div class="r example copy">}}
 			\preformatted{
-not available
+library(tidyverse)
+html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
+html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 			}
 			\if{html}{\out{</div>}}
 		}
 	}
 	\if{html}{\out{<hr>}}
-	\if{html}{\out{<a id="method-fitIntoPage"></a>}}
+	\if{html}{\out{<a id="method-htmlFragmentToPdf"></a>}}
 	
-	\subsection{Method \code{fitIntoPage()}}{
-		Render HTML string to fit into a page,
+	\subsection{Method \code{htmlFragmentToPdf()}}{
+		Render HTML fragment from a string to a PDF image.
+
+This is the simple rendering function that will output a PDF file (potentially many pages) and a set of PNG files from HTML content. 
+This is primarily used to render HTML content (e.g. a table) that is being included in a larger document.
+In this case the HTML fragment will not specify page dimensions which need to be provided (defaults to A4 size with 1 inch margins). 
+The result can be embedded into an existing page using latex's includegraphics directive exactly the same way as a graphical figure might be used. 
+The sizing of the output will always be smaller than the dimensions of a page, but will shrink to fit the content.
 	
 
 		\subsection{Usage}{
 			\if{html}{\out{<div class="r">}}
 			\preformatted{
 J = html2pdfr::JavaApi$get()
-instance = J$HtmlConverter$new(...);
-instance$fitIntoPage(htmlFragment, outFile, maxWidthInches, maxHeightInches, formats, pngDpi)
+J$HtmlConverter$htmlFragmentToPdf(htmlFragment, outFile, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)
   			}
 			\if{html}{\out{</div>}}
 		}
@@ -291,65 +355,30 @@ instance$fitIntoPage(htmlFragment, outFile, maxWidthInches, maxHeightInches, for
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML}{ - (java expects a String)}
-				\item{outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)}{ - (java expects a String)}
-				\item{maxWidthInches what is the maximum allowable width? - (defaulting to 6.25)}{ - (java expects a double)}
-				\item{maxHeightInches what is the maximium allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to 9.75)}{ - (java expects a double)}
+				\item{htmlFragment a HTML fragment, e.g. usually the table element, but may be the whole page.}{ - (java expects a String)}
+				\item{outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to tempfile('html2pdfr_'))}{ - (java expects a String)}
+				\item{xMarginInches page width margins - (defaulting to 1.0)}{ - (java expects a RNumeric)}
+				\item{yMarginInches page height margins - (defaulting to 1.0)}{ - (java expects a RNumeric)}
+				\item{maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to 6.25)}{ - (java expects a RNumeric)}
+				\item{maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to 9.75)}{ - (java expects a RNumeric)}
 				\item{formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf','png'))}{ - (java expects a RCharacterVector)}
-				\item{pngDpi if outputting a PNG the dpi will determine the dimensions of the image. - (defaulting to 300)}{ - (java expects a double)}
+				\item{pngDpi the dots per inch for png outputs if requested. - (defaulting to 300)}{ - (java expects a RNumeric)}
+				\item{converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter())}{ - (java expects a HtmlConverter)}
 			}
 			\if{html}{\out{</div>}}
 		}
 
 		\subsection{Returns}{
-			RCharacterVector: the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).
+			RCharacterVector: the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 		}
 
 		\subsection{Examples}{
 			\if{html}{\out{<div class="r example copy">}}
 			\preformatted{
-not available
-			}
-			\if{html}{\out{</div>}}
-		}
-	}
-	\if{html}{\out{<hr>}}
-	\if{html}{\out{<a id="method-fitIntoA4"></a>}}
-	
-	\subsection{Method \code{fitIntoA4()}}{
-		Render HTML string to fit into an A4 page,
-	
-
-		\subsection{Usage}{
-			\if{html}{\out{<div class="r">}}
-			\preformatted{
-J = html2pdfr::JavaApi$get()
-instance = J$HtmlConverter$new(...);
-instance$fitIntoA4(htmlFragment, outFile, xMarginInInches, yMarginInInches, formats)
-  			}
-			\if{html}{\out{</div>}}
-		}
-	
-		\subsection{Arguments}{
-			\if{html}{\out{<div class="arguments">}}
-			\itemize{
-				\item{htmlFragment a HTML fragment, e.g. the table element. It is usually expected there will not be any page media directives in the HTML}{ - (java expects a String)}
-				\item{outFile the full path to the output pdf file (N.B. this function can also output PNG if specified in the filename extension)}{ - (java expects a String)}
-				\item{xMarginInInches page margins - (defaulting to 1.0)}{ - (java expects a double)}
-				\item{yMarginInInches page margins - (defaulting to 1.0)}{ - (java expects a double)}
-				\item{formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf','png'))}{ - (java expects a RCharacterVector)}
-			}
-			\if{html}{\out{</div>}}
-		}
-
-		\subsection{Returns}{
-			RCharacterVector: the filename(s) written to (with extension '.pdf' and '.png' if outFile did not have an extension).
-		}
-
-		\subsection{Examples}{
-			\if{html}{\out{<div class="r example copy">}}
-			\preformatted{
-not available
+library(tidyverse)
+html = iris %>% group_by(Species) %>% summarise(across(everything(), mean)) %>% 
+  huxtable::as_hux() %>% huxtable::theme_article() %>% huxtable::to_html()
+html_fragment_to_pdf(html)
 			}
 			\if{html}{\out{</div>}}
 		}

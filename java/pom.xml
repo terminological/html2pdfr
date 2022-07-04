@@ -2,9 +2,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.github.terminological</groupId>
+	<groupId>io.github.terminological</groupId>
 	<artifactId>html2pdfr</artifactId>
-	<version>0.3.0</version>
+	<version>0.4.0</version>
 	<description>R wrapper for OpenHTMLtoPDF java library</description>
 
 	<properties>
@@ -12,7 +12,7 @@
 		<!-- Must be Java 8 for standard rJava implementation -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<r6.version>0.4.1</r6.version>
+		<r6.version>0.5.0</r6.version>
 		<openhtml.version>1.0.10</openhtml.version>
 		<open.batik.version>1.14</open.batik.version>
 
@@ -146,6 +146,7 @@
 						<debug>false</debug>
 						<url>https://terminological.github.io/html2pdfr/docs/index.html</url>
 						<doi>10.5281/zenodo.6576088</doi>
+						<useRoxygen2>true</useRoxygen2>
 						<usePkgdown>true</usePkgdown>
 						<useJavadoc>false</useJavadoc>
 						<rjavaOpts>
@@ -153,7 +154,7 @@
 						</rjavaOpts>
 						<packageName>html2pdfr</packageName>
 						<defaultLogLevel>WARN</defaultLogLevel>
-						<license>LGPL</license>
+						<license>LGPL</license> <!-- to fit with openhtml2pdf -->
 						<preCompileBinary>true</preCompileBinary>
 						<packageAllDependencies>false</packageAllDependencies>
 						<description>
@@ -175,6 +176,18 @@ For correct handling of fonts the paths to local .ttf files must be supplied, bu
 					<outputDirectory>${project.basedir}/..</outputDirectory>
 				</configuration>
 				<executions>
+					<execution>
+						<id>clean-r-library</id>
+						<goals>
+							<goal>clean-r-library</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>flatten-pom</id>
+						<goals>
+							<goal>flatten-pom</goal>
+						</goals>
+					</execution>
 					<execution>
 						<id>generate-r-library</id>
 						<goals>
