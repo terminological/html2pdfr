@@ -1,5 +1,8 @@
 package uk.co.terminological.html2pdfr;
 
+import static uk.co.terminological.rjava.RConverter.stringCollector;
+import static uk.co.terminological.rjava.RConverter.using;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,7 +10,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +60,6 @@ import com.openhtmltopdf.util.XRLog;
 
 import uk.co.terminological.html2pdfr.AutoFont.CSSFont;
 import uk.co.terminological.rjava.RClass;
-import static uk.co.terminological.rjava.RConverter.*;
 import uk.co.terminological.rjava.RDefault;
 import uk.co.terminological.rjava.RFinalize;
 import uk.co.terminological.rjava.RMethod;

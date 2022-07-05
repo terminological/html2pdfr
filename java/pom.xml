@@ -158,14 +158,11 @@
 						<preCompileBinary>true</preCompileBinary>
 						<packageAllDependencies>false</packageAllDependencies>
 						<description>
-This library is really designed to help get PDF or PNG formats of HTML tables, with layout determined by page size and control of styling determined by CSS. This allows use of HTML table layout within latex documents. 
-Although tabular content should be allowed to grow up to the page dimensions, we don't want to force table layout to be a set width, but preventing it from overflowing bounding boxes is 
-also essential. This automatic calculation of the output size up to set limits, is one of the differentiators between this and other options. This library also has no other dependencies making it suitable for server installations.
-
-Although the focus is on tables, any basic HTML content can be rendered including SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf). This does not for example
-include javascript which would be required for D3 content or rendering shiny apps, and for which webshot or webshot2 would be a better option. 
-
-For correct handling of fonts the paths to local .ttf files must be supplied, but if this is set up we should be able to render all fonts correctly.  
+							HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. 
+							This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. 
+							It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be.
+							This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. 
+							Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).   
 						</description>
 						<maintainerName>Rob</maintainerName>
 						<maintainerFamilyName>Challen</maintainerFamilyName>
