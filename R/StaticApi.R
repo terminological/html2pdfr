@@ -3,7 +3,7 @@
 # and serves as an alternative R centric entry point of the html2pdfr generated R library.
 
 # Version: 0.4.0
-# Generated: 2022-07-04T17:54:36.822
+# Generated: 2022-07-05T15:48:04.345
 # Contact: rob.challen@bristol.ac.uk
 
 # HtmlConverter class static methods ----

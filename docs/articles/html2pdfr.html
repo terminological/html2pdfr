@@ -76,7 +76,8 @@
     
 <p><a href="https://github.com/terminological/html2pdfr/actions"><img src="https://github.com/terminological/html2pdfr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
 <p><a href="https://zenodo.org/badge/latestdoi/459091655"><img src="https://zenodo.org/badge/459091655.svg" alt="DOI"></a></p>
-<p><code>html2pdfr</code> is a basic replacement for <code>webshot</code> which does not require any external dependencies, and would suit running on a headless server. Its aim is to support the minimally useful layout and conversion of static HTML to PDF. The general purpose is to generate a static version of HTML tables, created by libraries such as <code>huxtable</code>, that can be included in latex documents, or presentations. To make PDF files from HTML work well within other latex files it is important to be able to specify the dimensions of a bounding box within which the HTML content will be rendered, before the content is included in a latex document. The control of output size is the specific purpose of this library. Although focussed on tabular content, <code>html2pdfr</code> can convert other simple HTML, including SVG and MathML content, with variable success rates, you'll just have to try it to see whether it works.</p>
+<p>The purpose of the <code>html2pdfr</code> package is to support layout and conversion of basic static HTML to PDF, and PNG. The main use case is to generate a static version of HTML tables, created by libraries such as <code>huxtable</code> or <code>gt</code>, that can be included in latex documents, or presentations, which appear the same as the HTML versions of those tables. Such PDF images can be included in LaTeX files using an <code>includegraphics</code> directive in exactly the same way as figures. To make PDF files from HTML work well within a LaTeX document it is important to be able to specify the dimensions of a bounding box within which the HTML content will be rendered. The tight control of that bounding box is the specific purpose of this library which differentiates it form other options such as <code>webshot</code> and <code>webshot2</code>. Although focussed on tabular content, <code>html2pdfr</code> can convert other simple HTML, including SVG and MathML content, with variable success rates.</p>
+<p>The R Package is a wrapper around the Java OpenHTML2PDF library (<a href="https://github.com/danfickle/openhtmltopdf" class="uri">https://github.com/danfickle/openhtmltopdf</a>), and requires a working installation of Java and <code>rJava</code>. All other dependencies are resolved automatically at runtime. It does not require a grapical dislay and would suit running on a headless server. The underlying Java library does not support javascript which would be required for D3 content or rendering shiny apps, and for which <code>webshot</code> or <code>webshot2</code> would be a better option. The library relies on locally installed fonts, and the paths to local <code>.ttf</code> files must be supplied; this is managed by the <code>extrafonts</code> package.</p>
 <div id="installing-the-library" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installing-the-library" class="anchor"></a>Installing the library</h2>
@@ -93,9 +94,8 @@
 <span class="va">conv</span> <span class="op">=</span> <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_converter.html">html_converter</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">## Initialising R Wrapper For Openhtmltopdf Java Library</span>
 <span class="co">## Version: 0.4.0</span>
-<span class="co">## Generated: 2022-07-04T17:54:36.781</span>
+<span class="co">## Generated: 2022-07-05T15:48:04.290</span>
 <span class="co">## Calculating classpath and updating dependencies, please be patient.</span>
-<span class="co">## Bootstrapping maven wrapper.</span>
 <span class="co">## Dependencies updated</span></pre></div>
 <p>Once this is complete the <code>conv</code> object provides the useful functions of the package.</p>
 </div>
