@@ -22,5 +22,5 @@ Imports:
 	fs,
 	rappdirs,
 	utils,
-    magrittr
+  magrittr
 RoxygenNote: 7.1.2
