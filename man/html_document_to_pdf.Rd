@@ -3,8 +3,7 @@
 \name{html_document_to_pdf}
 \alias{html_document_to_pdf}
 \title{Convert HTML document from a string to a PDF document. }
-\usage{
-html_document_to_pdf(
+\usage{html_document_to_pdf(
 	html,
 	outFile=tempfile('html2pdfr_'),
 	baseUri=NA_character_,
@@ -37,7 +36,6 @@ html_document_to_pdf(
 RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 }
 \description{
-
 The HTML in `html` is assumed to be a complete document. Relative references are resolved
 with reference to `baseUri` if it is given (which could be a `file://` URI).
 The resulting PDF size will be controlled by page media directives within the HTML, 

@@ -3,8 +3,7 @@
 \name{html_fragment_to_pdf}
 \alias{html_fragment_to_pdf}
 \title{Render HTML fragment from a string to a PDF image.}
-\usage{
-html_fragment_to_pdf(
+\usage{html_fragment_to_pdf(
 	htmlFragment,
 	outFile=tempfile('html2pdfr_'),
 	xMarginInches=1.0,
@@ -33,7 +32,6 @@ html_fragment_to_pdf(
 RCharacterVector: the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 }
 \description{
-
 This is the simple rendering function that will output a PDF file (potentially many pages) and a set of PNG files from HTML content. 
 This is primarily used to render HTML content (e.g. a table) that is being included in a larger document.
 In this case the HTML fragment will not specify page dimensions which need to be provided (defaults to A4 size with 1 inch margins). 

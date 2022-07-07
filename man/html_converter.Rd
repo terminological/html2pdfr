@@ -3,8 +3,7 @@
 \name{html_converter}
 \alias{html_converter}
 \title{Create a new HtmlConverter }
-\usage{
-html_converter(
+\usage{html_converter(
 	fontfiles=systemfonts::system_fonts()$path,
 	update=FALSE
 )
@@ -19,7 +18,6 @@ html_converter(
 R6 HtmlConverter object: 
 }
 \description{
-
 for creating PDF and PNG files from HTML. In general this will be created automatically.
 but if you have specific fonts you want to use then you may need to pass them to this
 function and specify the result in the `converter` parameter of the main functions.

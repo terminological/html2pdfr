@@ -27,6 +27,9 @@ This is managed by Java's standard package management system, Maven, which is it
 with the R package, minimising the footprint of the R package, but downloading and installing the dependencies is a potential point of failure, and may take quite some time on first use of the library. 
 This is mitigated as much as possible by using battle tested standard Java tooling for dependency management, which will only download libraries it has not already used.
 
+The package download requires a working directory cache which is specified by `rappdirs::user_cache_dir` which allows us to store files that need to shared 
+across R sessions in a way that aligns with the CRAN policies.
+
 * The R6 package is a build time dependency. The note that it is unused can be safely ignored.
 
 * This is a new release.

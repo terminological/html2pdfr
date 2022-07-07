@@ -3,8 +3,7 @@
 \name{file_to_pdf}
 \alias{file_to_pdf}
 \title{Convert HTML document from a local file to a PDF document. }
-\usage{
-file_to_pdf(
+\usage{file_to_pdf(
 	inFile,
 	outFile=tempfile('html2pdfr_'),
 	cssSelector=NA_character_,
@@ -35,7 +34,6 @@ file_to_pdf(
 RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 }
 \description{
-
 The HTML in `inFile` is assumed to be a complete document. Relative references are resolved
 with reference to the HTML file on the file system, so correctly located images etc whould be 
 picked up without requiring a server.

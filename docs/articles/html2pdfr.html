@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">html2pdfr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/html2pdfr.html">Get started</a>
 </li>
@@ -64,7 +60,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using html2pdfr</h1>
-                        <h4 class="author">Rob Challen</h4>
+                        <h4 data-toc-skip class="author">Rob Challen</h4>
             
       
       
@@ -74,71 +70,71 @@
 
     
     
-<p><a href="https://github.com/terminological/html2pdfr/actions"><img src="https://github.com/terminological/html2pdfr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
-<p><a href="https://zenodo.org/badge/latestdoi/459091655"><img src="https://zenodo.org/badge/459091655.svg" alt="DOI"></a></p>
-<p>The purpose of the <code>html2pdfr</code> package is to support layout and conversion of basic static HTML to PDF, and PNG. The main use case is to generate a static version of HTML tables, created by libraries such as <code>huxtable</code> or <code>gt</code>, that can be included in latex documents, or presentations, which appear the same as the HTML versions of those tables. Such PDF images can be included in LaTeX files using an <code>includegraphics</code> directive in exactly the same way as figures. To make PDF files from HTML work well within a LaTeX document it is important to be able to specify the dimensions of a bounding box within which the HTML content will be rendered. The tight control of that bounding box is the specific purpose of this library which differentiates it form other options such as <code>webshot</code> and <code>webshot2</code>. Although focussed on tabular content, <code>html2pdfr</code> can convert other simple HTML, including SVG and MathML content, with variable success rates.</p>
-<p>The R Package is a wrapper around the Java OpenHTML2PDF library (<a href="https://github.com/danfickle/openhtmltopdf" class="uri">https://github.com/danfickle/openhtmltopdf</a>), and requires a working installation of Java and <code>rJava</code>. All other dependencies are resolved automatically at runtime. It does not require a grapical dislay and would suit running on a headless server. The underlying Java library does not support javascript which would be required for D3 content or rendering shiny apps, and for which <code>webshot</code> or <code>webshot2</code> would be a better option. The library relies on locally installed fonts, and the paths to local <code>.ttf</code> files must be supplied; this is managed by the <code>extrafonts</code> package.</p>
-<div id="installing-the-library" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installing-the-library" class="anchor"></a>Installing the library</h2>
+<p><a href="https://github.com/terminological/html2pdfr/actions" class="external-link"><img src="https://github.com/terminological/html2pdfr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
+<p><a href="https://zenodo.org/badge/latestdoi/459091655" class="external-link"><img src="https://zenodo.org/badge/459091655.svg" alt="DOI"></a></p>
+<p>The purpose of the <code>html2pdfr</code> package is to support layout and conversion of basic static HTML to PDF, and PNG. The main use case is to generate a static version of HTML tables, created by libraries such as <code>huxtable</code> or <code>gt</code>, that can be included in latex documents, or presentations, and which appear the same as the HTML versions of those tables. Such PDF images can be included in LaTeX files using an <code>includegraphics</code> directive in exactly the same way as figures. To make PDF files from HTML work well within a LaTeX document it is important to be able to specify the dimensions of a bounding box within which the HTML content will be rendered. The tight control of that bounding box is the specific purpose of this library which differentiates it from other options such as <code>webshot</code> and <code>webshot2</code>. Although focussed on tabular content, <code>html2pdfr</code> can convert other simple HTML, including SVG and MathML content, with variable success rates.</p>
+<p>The R Package is a wrapper around the Java OpenHTML2PDF library (<a href="https://github.com/danfickle/openhtmltopdf" class="external-link uri">https://github.com/danfickle/openhtmltopdf</a>), and requires a working installation of Java and <code>rJava</code>. All other dependencies are resolved automatically at runtime. It does not require a graphical display and would suit running on a headless server. The underlying Java library does not support javascript which would be required for D3 content or rendering shiny apps, and for which <code>webshot</code> or <code>webshot2</code> would be a better option. The library relies on locally installed fonts, and the paths to local <code>.ttf</code> files must be supplied; this is managed by the <code>extrafonts</code> package. The library can resolve local and remote CSS and image files, specified relative to the HTML and locate them without the need for a web server.</p>
+<div class="section level2">
+<h2 id="installing-the-library">Installing the library<a class="anchor" aria-label="anchor" href="#installing-the-library"></a>
+</h2>
 <p><code>html2pdfr</code> is not on cran yet. Installation from this repo can be done as follows:</p>
-<div class="sourceCode"><pre class="downlit">
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"terminological/html2pdfr"</span><span class="op">)</span></pre></div>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"terminological/html2pdfr"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="initialising-the-library" class="section level2">
-<h2 class="hasAnchor">
-<a href="#initialising-the-library" class="anchor"></a>Initialising the library</h2>
+<div class="section level2">
+<h2 id="initialising-the-library">Initialising the library<a class="anchor" aria-label="anchor" href="#initialising-the-library"></a>
+</h2>
 <p>On first use the major Java library dependencies of this project must be downloaded and cached. This can take some time but only needs to be done once. The following basic initialization code sets up the library:</p>
-<div class="sourceCode"><pre class="downlit">
-<span class="co"># this produces a verbose output which can be hidden with:</span>
-<span class="va">conv</span> <span class="op">=</span> <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_converter.html">html_converter</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">## Initialising R Wrapper For Openhtmltopdf Java Library</span>
-<span class="co">## Version: 0.4.0</span>
-<span class="co">## Generated: 2022-07-06T23:32:24.390</span>
-<span class="co">## Calculating classpath and updating dependencies, please be patient.</span>
-<span class="co">## Dependencies updated</span></pre></div>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># this produces a verbose output which can be hidden with:</span></span>
+<span><span class="va">conv</span> <span class="op">=</span> <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_converter.html">html_converter</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Initialising R Wrapper For Openhtmltopdf Java Library</span></span>
+<span><span class="co">## Version: 0.4.0</span></span>
+<span><span class="co">## Generated: 2022-07-07T16:11:14.160</span></span>
+<span><span class="co">## Calculating classpath and updating dependencies, please be patient.</span></span>
+<span><span class="co">## Dependencies updated</span></span></code></pre></div>
 <p>Once this is complete the <code>conv</code> object provides the useful functions of the package.</p>
 </div>
-<div id="generating-a-pdf" class="section level2">
-<h2 class="hasAnchor">
-<a href="#generating-a-pdf" class="anchor"></a>Generating a PDF</h2>
+<div class="section level2">
+<h2 id="generating-a-pdf">Generating a PDF<a class="anchor" aria-label="anchor" href="#generating-a-pdf"></a>
+</h2>
 <p>PDF rendering of HTML can be done direct from a URL, or from a locally stored HTML file. Pulling in a URL and converting it to PDF is done like so:</p>
-<div class="sourceCode"><pre class="downlit">
- <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span>
-   htmlUrl <span class="op">=</span> <span class="st">"https://cran.r-project.org/banner.shtml"</span>,
-   outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output.pdf"</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co">## [1] "/home/terminological/Dropbox/Git/html2pdfr/docs/articles/example-output.pdf"</span></pre></div>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span> <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span></span>
+<span>   htmlUrl <span class="op">=</span> <span class="st">"https://cran.r-project.org/banner.shtml"</span>,</span>
+<span>   outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output.pdf"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">## [1] "/home/rc538/Dropbox/Git/html2pdfr/docs/articles/example-output.pdf"</span></span></code></pre></div>
 <p><a href="example-output.pdf">The resulting pdf</a> is here, Your success rendering HTML will vary as complex web pages (including in this example, frames) are not supported by the underlying engine. The focus of <code>html2pdfr</code> is on simpler static web content and not complex web content, for which alternatives already exist.</p>
 </div>
-<div id="generating-a-pdf-from-html-content" class="section level2">
-<h2 class="hasAnchor">
-<a href="#generating-a-pdf-from-html-content" class="anchor"></a>Generating a pdf from HTML content</h2>
+<div class="section level2">
+<h2 id="generating-a-pdf-from-html-content">Generating a pdf from HTML content<a class="anchor" aria-label="anchor" href="#generating-a-pdf-from-html-content"></a>
+</h2>
 <p>In the following, more usual, example the HTML is generated within R (as you might find from a tabular data library such as <code>huxtable</code> or <code>gtables</code>) and passed to the converter with some target page dimensions. The converter will lay out the table within the confines of the maximum space available, overflowing to new pages, where-ever required.</p>
-<div class="sourceCode"><pre class="downlit">
-
-<span class="va">irisHtml</span> <span class="op">=</span> <span class="va">iris</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Species"</span>,<span class="st">"Sepal.Width"</span><span class="op">)</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/as_huxtable.html">as_hux</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/themes.html">theme_article</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/to_html.html">to_html</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_fragment_to_pdf.html">html_fragment_to_pdf</a></span><span class="op">(</span>
-  htmlFragment <span class="op">=</span> <span class="va">irisHtml</span>, 
-  maxWidthInches <span class="op">=</span> <span class="fl">8</span>, maxHeightInches <span class="op">=</span> <span class="fl">8</span>, 
-  outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output-2.pdf"</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co">## [1] "/home/terminological/Dropbox/Git/html2pdfr/docs/articles/example-output-2.pdf"</span></pre></div>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">irisHtml</span> <span class="op">=</span> <span class="va">iris</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Species"</span>,<span class="st">"Sepal.Width"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/as_huxtable.html" class="external-link">as_hux</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/themes.html" class="external-link">theme_article</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/to_html.html" class="external-link">to_html</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_fragment_to_pdf.html">html_fragment_to_pdf</a></span><span class="op">(</span></span>
+<span>  htmlFragment <span class="op">=</span> <span class="va">irisHtml</span>, </span>
+<span>  maxWidthInches <span class="op">=</span> <span class="fl">8</span>, maxHeightInches <span class="op">=</span> <span class="fl">8</span>, </span>
+<span>  outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output-2.pdf"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">## [1] "/home/rc538/Dropbox/Git/html2pdfr/docs/articles/example-output-2.pdf"</span></span></code></pre></div>
 <p>And <a href="example-output-2.pdf">the resulting pdf</a> of the generated HTML is here. This document should not have pages any more than 8 inches high. The width in this case is determined by the content, which is much less wide than the maximum specified 8 inches. If there was very wide content, the converter would wrap content within cells to stay within the specified bounding box size. This bounding box behaviour means that we can insert the generated pdf into a latex document simply without risk of overfull boxes.</p>
 <p>The layout engine should support simple SVG and MathML content. However it does not execute javascript so is not be able to lay out D3 content. If this is something you need then using <code>webshot2</code>, which wraps a whole Chrome instance, may be a better option.</p>
-<div class="sourceCode"><pre class="downlit">
-<span class="co"># Javascript Does not work:</span>
-<span class="co"># conv$urlToPdf(</span>
-<span class="co">#   htmlUrl = "https://bl.ocks.org/mbostock/raw/1389927/?raw=true",</span>
-<span class="co">#   outFile = here::here("docs/articles/example-d3.pdf")</span>
-<span class="co"># )</span>
-
-<span class="co"># MathML does work.</span>
-<span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span>
-  htmlUrl <span class="op">=</span> <span class="st">"https://fred-wang.github.io/MathFonts/mozilla_mathml_test/"</span>,
-  outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-mathml.pdf"</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co">## [1] "/home/terminological/Dropbox/Git/html2pdfr/docs/articles/example-mathml.pdf"</span></pre></div>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Javascript Does not work:</span></span>
+<span><span class="co"># conv$urlToPdf(</span></span>
+<span><span class="co">#   htmlUrl = "https://bl.ocks.org/mbostock/raw/1389927/?raw=true",</span></span>
+<span><span class="co">#   outFile = here::here("docs/articles/example-d3.pdf")</span></span>
+<span><span class="co"># )</span></span>
+<span></span>
+<span><span class="co"># MathML does work.</span></span>
+<span><span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span></span>
+<span>  htmlUrl <span class="op">=</span> <span class="st">"https://fred-wang.github.io/MathFonts/mozilla_mathml_test/"</span>,</span>
+<span>  outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-mathml.pdf"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">## [1] "/home/rc538/Dropbox/Git/html2pdfr/docs/articles/example-mathml.pdf"</span></span></code></pre></div>
 <p><a href="example-mathml.pdf">The resulting mathml</a></p>
 </div>
   </div>
@@ -154,11 +150,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Rob Challen.</p>
+  <p></p>
+<p>Developed by Rob Challen.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
@@ -166,6 +164,8 @@
 
   
 
+
+  
 
   </body>
 </html>

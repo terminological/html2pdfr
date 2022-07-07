@@ -3,8 +3,7 @@
 \name{url_to_pdf}
 \alias{url_to_pdf}
 \title{Convert HTML document from a URL to a PDF document. }
-\usage{
-url_to_pdf(
+\usage{url_to_pdf(
 	htmlUrl,
 	outFile=tempfile('html2pdfr_'),
 	cssSelector=NA_character_,
@@ -35,7 +34,6 @@ url_to_pdf(
 RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 }
 \description{
-
 The URL is assumed to be a complete document. 
 The resulting PDF size will be controlled by page media directives within the HTML, 
 unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
