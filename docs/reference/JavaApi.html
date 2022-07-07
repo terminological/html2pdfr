@@ -42,7 +42,7 @@
 <meta property="og:title" content="R Wrapper For Openhtmltopdf Java Library — JavaApi" />
 <meta property="og:description" content="HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).
 Version: 0.4.0
-Generated: 2022-07-05T15:48:04.214" />
+Generated: 2022-07-06T23:32:24.355" />
 
 
 
@@ -116,7 +116,7 @@ Generated: 2022-07-05T15:48:04.214" />
     <div class="ref-description">
     <p>HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).</p>
 <p>Version: 0.4.0</p>
-<p>Generated: 2022-07-05T15:48:04.214</p>
+<p>Generated: 2022-07-06T23:32:24.355</p>
     </div>
 
 
@@ -144,7 +144,7 @@ Generated: 2022-07-05T15:48:04.214" />
     <p></p><ul>
 <li><p><code>JavaApi$get()</code></p></li>
 <li><p><a href='#method-HtmlConverter-new'><code>J$HtmlConverter$new(fontfiles)</code></a></p></li>
-<li><p><a href='#method-HtmlConverter-htmlConverter'><code>J$HtmlConverter$htmlConverter(fontfiles)</code></a></p></li>
+<li><p><a href='#method-HtmlConverter-htmlConverter'><code>J$HtmlConverter$htmlConverter(fontfiles, update)</code></a></p></li>
 <li><p><a href='#method-HtmlConverter-urlToPdf'><code>J$HtmlConverter$urlToPdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)</code></a></p></li>
 <li><p><a href='#method-HtmlConverter-fileToPdf'><code>J$HtmlConverter$fileToPdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)</code></a></p></li>
 <li><p><a href='#method-HtmlConverter-htmlDocumentToPdf'><code>J$HtmlConverter$htmlDocumentToPdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)</code></a></p></li>
@@ -183,13 +183,14 @@ function and specify the result in the `converter` parameter of the main functio
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre>
 <span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'>JavaApi</span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>htmlConverter</span><span class='op'>(</span><span class='va'>fontfiles</span><span class='op'>)</span>
+<span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>htmlConverter</span><span class='op'>(</span><span class='va'>fontfiles</span>, <span class='va'>update</span><span class='op'>)</span>
         </pre><p></div></p>
 	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 				
-					fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to extrafont::fonttable()$fontfile) - (java expects a RCharacterVector)
+					fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path) - (java expects a RCharacterVector)
+					update - (defaulting to FALSE) - (java expects a RLogical)
 				
 			
 </dl><p></div></p>

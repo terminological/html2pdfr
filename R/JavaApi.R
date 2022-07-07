@@ -6,10 +6,10 @@
 #'
 #' Version: 0.4.0
 #'
-#' Generated: 2022-07-05T15:48:04.290
+#' Generated: 2022-07-06T23:32:24.390
 #'
 #' Contact: rob.challen@bristol.ac.uk
-#' @import extrafont
+#' @import systemfonts
 #' @import rJava
 #' @export
 JavaApi = R6::R6Class("JavaApi", public=list( 
@@ -67,7 +67,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R Wrapper For Openhtmltopdf Java Library")
  		message("Version: 0.4.0")
-		message("Generated: 2022-07-05T15:48:04.290")
+		message("Generated: 2022-07-06T23:32:24.390")
  	
  	
  		tryCatch({
@@ -92,7 +92,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.0");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-07-05T15:48:04.291");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-07-06T23:32:24.390");
 		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.0");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
@@ -371,11 +371,12 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				);
 				return(tmp_r6)
 			},
-			htmlConverter = function(fontfiles=extrafont::fonttable()$fontfile) {
+			htmlConverter = function(fontfiles=systemfonts::system_fonts()$path, update=FALSE) {
 				# copy parameters
 				tmp_fontfiles = self$.toJava$RCharacterVector(fontfiles);
+				tmp_update = self$.toJava$RLogical(update);
 				#execute static call
-				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/html2pdfr/HtmlConverter;", method="htmlConverter" , tmp_fontfiles, check=FALSE);
+				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/html2pdfr/HtmlConverter;", method="htmlConverter" , tmp_fontfiles, tmp_update, check=FALSE);
 				self$printMessages()
 				.jcheck() 
 				# wrap return java object in R6 class 

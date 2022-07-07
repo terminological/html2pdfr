@@ -65,9 +65,10 @@ import uk.co.terminological.rjava.RFinalize;
 import uk.co.terminological.rjava.RMethod;
 import uk.co.terminological.rjava.types.RCharacter;
 import uk.co.terminological.rjava.types.RCharacterVector;
+import uk.co.terminological.rjava.types.RLogical;
 import uk.co.terminological.rjava.types.RNumeric;
 
-@RClass(imports = {"extrafont"},suggests= {"here","huxtable","ggplot2"})
+@RClass(imports = {"systemfonts"},suggests= {"here","huxtable","ggplot2"})
 public class HtmlConverter {
 
 	List<CSSFont> fonts = new ArrayList<>();
@@ -89,8 +90,12 @@ public class HtmlConverter {
 	 */
 	@RMethod(examples= {
 			"conv = html2pdfr::html_converter()"
-	}) public static HtmlConverter htmlConverter(@RDefault(rCode = "extrafont::fonttable()$fontfile") RCharacterVector fontfiles) {
-		if (instance == null) {
+	}) 
+	public static HtmlConverter htmlConverter(
+			@RDefault(rCode = "systemfonts::system_fonts()$path") RCharacterVector fontfiles,
+			@RDefault(rCode = "FALSE") RLogical update
+	) {
+		if (instance == null || update.get().booleanValue()) {
 			instance = new HtmlConverter(fontfiles.rPrimitive());
 			XRLog.setLoggerImpl(new Slf4jLogger());
 			XRLog.setLoggingEnabled(false);
@@ -103,7 +108,7 @@ public class HtmlConverter {
 		System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
 				
 		Arrays.asList(fontfiles).stream()
-			.flatMap(ff -> AutoFont.fromFontFile(ff).map(o -> Stream.of(o)).orElse(Stream.empty()))
+			.flatMap(ff -> AutoFont.fromFontPath(ff))
 			.forEach(fonts::add);
 
 	}

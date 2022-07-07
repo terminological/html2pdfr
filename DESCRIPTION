@@ -16,11 +16,11 @@ Suggests:
 	rmarkdown,
 	testthat
 Imports:
-	extrafont,
+	systemfonts,
 	rJava,
 	R6,
 	fs,
 	rappdirs,
 	utils,
-  magrittr
+    magrittr
 RoxygenNote: 7.1.2

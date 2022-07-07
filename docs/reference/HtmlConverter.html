@@ -42,7 +42,7 @@
 <meta property="og:title" content="HtmlConverter — HtmlConverter" />
 <meta property="og:description" content="missing description
 Version: 0.4.0
-Generated: 2022-07-05T15:48:04.435" />
+Generated: 2022-07-06T23:32:24.500" />
 
 
 
@@ -116,7 +116,7 @@ Generated: 2022-07-05T15:48:04.435" />
     <div class="ref-description">
     <p>missing description</p>
 <p>Version: 0.4.0</p>
-<p>Generated: 2022-07-05T15:48:04.435</p>
+<p>Generated: 2022-07-06T23:32:24.500</p>
     </div>
 
 
@@ -139,7 +139,7 @@ Generated: 2022-07-05T15:48:04.435" />
 <li><p><a href='#method-new'><code>J$HtmlConverter$new(fontfiles)</code></a></p></li>
 </ul><p></p><p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Static methods</h3>
 <p></p><ul>
-<li><p><a href='#method-htmlConverter'><code>J$HtmlConverter$htmlConverter(fontfiles)</code></a></p></li>
+<li><p><a href='#method-htmlConverter'><code>J$HtmlConverter$htmlConverter(fontfiles, update)</code></a></p></li>
 <li><p><a href='#method-urlToPdf'><code>J$HtmlConverter$urlToPdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)</code></a></p></li>
 <li><p><a href='#method-fileToPdf'><code>J$HtmlConverter$fileToPdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)</code></a></p></li>
 <li><p><a href='#method-htmlDocumentToPdf'><code>J$HtmlConverter$htmlDocumentToPdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)</code></a></p></li>
@@ -184,12 +184,13 @@ function and specify the result in the `converter` parameter of the main functio
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre>
 <span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>htmlConverter</span><span class='op'>(</span><span class='va'>fontfiles</span><span class='op'>)</span>
+<span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>htmlConverter</span><span class='op'>(</span><span class='va'>fontfiles</span>, <span class='va'>update</span><span class='op'>)</span>
         </pre><p></div></p>
 	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><ul>
-<li><p>fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to extrafont::fonttable()$fontfile) - (java expects a RCharacterVector)</p></li>
+<li><p>fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path) - (java expects a RCharacterVector)</p></li>
+<li><p>update - (defaulting to FALSE) - (java expects a RLogical)</p></li>
 </ul><p></div></p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>

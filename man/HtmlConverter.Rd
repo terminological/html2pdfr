@@ -18,7 +18,7 @@ missing description
 
 Version: 0.4.0
 
-Generated: 2022-07-05T15:48:04.435
+Generated: 2022-07-06T23:32:24.500
 }
 
 \details{
@@ -74,7 +74,7 @@ html_fragment_to_pdf(html)
 	}
 	\subsection{Static methods}{
 		\itemize{
-			\item \href{#method-htmlConverter}{\code{J$HtmlConverter$htmlConverter(fontfiles)}}
+			\item \href{#method-htmlConverter}{\code{J$HtmlConverter$htmlConverter(fontfiles, update)}}
 			\item \href{#method-urlToPdf}{\code{J$HtmlConverter$urlToPdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)}}
 			\item \href{#method-fileToPdf}{\code{J$HtmlConverter$fileToPdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)}}
 			\item \href{#method-htmlDocumentToPdf}{\code{J$HtmlConverter$htmlDocumentToPdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)}}
@@ -140,7 +140,7 @@ function and specify the result in the `converter` parameter of the main functio
 			\if{html}{\out{<div class="r">}}
 			\preformatted{
 J = html2pdfr::JavaApi$get()
-J$HtmlConverter$htmlConverter(fontfiles)
+J$HtmlConverter$htmlConverter(fontfiles, update)
   			}
 			\if{html}{\out{</div>}}
 		}
@@ -148,7 +148,8 @@ J$HtmlConverter$htmlConverter(fontfiles)
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to extrafont::fonttable()$fontfile)}{ - (java expects a RCharacterVector)}
+				\item{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path)}{ - (java expects a RCharacterVector)}
+				\item{update - (defaulting to FALSE)}{ - (java expects a RLogical)}
 			}
 			\if{html}{\out{</div>}}
 		}

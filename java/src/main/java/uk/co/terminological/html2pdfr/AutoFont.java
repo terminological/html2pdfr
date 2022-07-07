@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,9 +121,28 @@ public class AutoFont {
         }
     }
     
-    public static Optional<CSSFont> fromFontFile(String ttfFile) {
+    public static Stream<CSSFont> fromFontPath(String s) {
+    	Path p = Paths.get(s);
+    	return fromFontPath(p);
+    }
+    
+    public static Stream<CSSFont> fromFontPath(Path p) {
+    	if (Files.isRegularFile(p) && p.endsWith(".ttf")) {
+    		return fromFontFile(p);
+    	}
+    	if (Files.isDirectory(p)) {
+    		try {
+				return Files.walk(p).filter(p2 -> !Files.isDirectory(p2)).flatMap(AutoFont::fromFontPath);
+			} catch (IOException e) {
+				return Stream.empty();
+			}
+    	}
+    	return Stream.empty();
+    }
+    
+    public static Stream<CSSFont> fromFontFile(Path ttfFile) {
     	try {
-            Font f = Font.createFont(Font.TRUETYPE_FONT, Paths.get(ttfFile).toFile());
+            Font f = Font.createFont(Font.TRUETYPE_FONT, ttfFile.toFile());
             
             String family = f.getFamily();
             // Short of parsing the font ourselves there doesn't seem to be a way
@@ -163,13 +183,13 @@ public class AutoFont {
             		name.contains("slanted") ? FontStyle.OBLIQUE :
             		FontStyle.NORMAL;
 
-            CSSFont fnt = new CSSFont(Paths.get(ttfFile), family, weight, style);
+            CSSFont fnt = new CSSFont(ttfFile, family, weight, style);
 
-            return Optional.of(fnt);
+            return Stream.of(fnt);
             
         } catch (FontFormatException | IOException ffe) {
         	log.warn("Skipping invalid or missing truetype font file: "+ttfFile);
-            return Optional.empty();
+            return Stream.empty();
         }
     }
 
@@ -240,7 +260,7 @@ public class AutoFont {
         @Override
         public FileVisitResult visitFile(Path font, BasicFileAttributes attrs) throws IOException {
             if (attrs.isRegularFile() && isValidFont(font)) {
-            	AutoFont.fromFontFile(font.toString()).ifPresent(fontsAdded::add);
+            	AutoFont.fromFontFile(font).forEach(fontsAdded::add);
             }
             return FileVisitResult.CONTINUE;
         }

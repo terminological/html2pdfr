@@ -124,7 +124,8 @@ function and specify the result in the `converter` parameter of the main functio
     </div>
 
     <pre class="usage"><span class='fu'>html_converter</span><span class='op'>(</span>
-  fontfiles<span class='op'>=</span><span class='fu'>extrafont</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/extrafont/man/fonttable.html'>fonttable</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>fontfile</span>
+  fontfiles<span class='op'>=</span><span class='fu'>systemfonts</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/systemfonts/man/system_fonts.html'>system_fonts</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>path</span>,
+  update<span class='op'>=</span><span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -132,7 +133,11 @@ function and specify the result in the `converter` parameter of the main functio
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fontfiles</th>
-      <td><p>fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to extrafont::fonttable()$fontfile) - (java expects a RCharacterVector)</p></td>
+      <td><p>fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path) - (java expects a RCharacterVector)</p></td>
+    </tr>
+    <tr>
+      <th>update</th>
+      <td><p>update - (defaulting to FALSE) - (java expects a RLogical)</p></td>
     </tr>
     </table>
 

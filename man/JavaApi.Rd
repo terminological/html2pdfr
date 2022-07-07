@@ -27,7 +27,7 @@ HTML and CSS do a good job at automatically laying out and styling content parti
 
 Version: 0.4.0
 
-Generated: 2022-07-05T15:48:04.214
+Generated: 2022-07-06T23:32:24.355
 }
 
 \author{\email{rob.challen@bristol.ac.uk}}
@@ -38,7 +38,7 @@ Generated: 2022-07-05T15:48:04.214
 	\itemize{
 		\item \code{JavaApi$get()}
 		\item \href{#method-HtmlConverter-new}{\code{J$HtmlConverter$new(fontfiles)}}
-		\item \href{#method-HtmlConverter-htmlConverter}{\code{J$HtmlConverter$htmlConverter(fontfiles)}}
+		\item \href{#method-HtmlConverter-htmlConverter}{\code{J$HtmlConverter$htmlConverter(fontfiles, update)}}
 		\item \href{#method-HtmlConverter-urlToPdf}{\code{J$HtmlConverter$urlToPdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)}}
 		\item \href{#method-HtmlConverter-fileToPdf}{\code{J$HtmlConverter$fileToPdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)}}
 		\item \href{#method-HtmlConverter-htmlDocumentToPdf}{\code{J$HtmlConverter$htmlDocumentToPdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)}}
@@ -90,7 +90,7 @@ function and specify the result in the `converter` parameter of the main functio
 			\if{html}{\out{<div class="r">}}
 			\preformatted{
 J = html2pdfr::JavaApi$get()
-J$HtmlConverter$htmlConverter(fontfiles)
+J$HtmlConverter$htmlConverter(fontfiles, update)
 	  		}
 			\if{html}{\out{</div>}}
 		}
@@ -99,7 +99,8 @@ J$HtmlConverter$htmlConverter(fontfiles)
 			\if{html}{\out{<div class="arguments">}}
 			\describe{
 				\itemize{
-					\item{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to extrafont::fonttable()$fontfile)}{ - (java expects a RCharacterVector)}
+					\item{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path)}{ - (java expects a RCharacterVector)}
+					\item{update - (defaulting to FALSE)}{ - (java expects a RLogical)}
 				}
 			}
 			\if{html}{\out{</div>}}

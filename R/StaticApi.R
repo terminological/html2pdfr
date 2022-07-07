@@ -3,7 +3,7 @@
 # and serves as an alternative R centric entry point of the html2pdfr generated R library.
 
 # Version: 0.4.0
-# Generated: 2022-07-05T15:48:04.345
+# Generated: 2022-07-06T23:32:24.442
 # Contact: rob.challen@bristol.ac.uk
 
 # HtmlConverter class static methods ----
@@ -16,7 +16,8 @@
 #' for creating PDF and PNG files from HTML. In general this will be created automatically.
 #' but if you have specific fonts you want to use then you may need to pass them to this
 #' function and specify the result in the `converter` parameter of the main functions.
-#' @param fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to extrafont::fonttable()$fontfile) - (java expects a RCharacterVector)
+#' @param fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path) - (java expects a RCharacterVector)
+#' @param update - (defaulting to FALSE) - (java expects a RLogical)
 #' @return R6 HtmlConverter object: 
 #' 
 #' @examples
@@ -24,11 +25,11 @@
 #' conv = html2pdfr::html_converter()
 #' }
 #' @export
-html_converter = function(fontfiles=extrafont::fonttable()$fontfile) {
+html_converter = function(fontfiles=systemfonts::system_fonts()$path, update=FALSE) {
 	# get the API singleton
 	J = JavaApi$get()
 	# execute the R6 function call with the same parameters
-	out = J$HtmlConverter$htmlConverter(fontfiles)
+	out = J$HtmlConverter$htmlConverter(fontfiles, update)
 	if(is.null(out)) return(invisible(out))
 	return(out)
 }

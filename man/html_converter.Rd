@@ -5,12 +5,14 @@
 \title{Create a new HtmlConverter }
 \usage{
 html_converter(
-	fontfiles=extrafont::fonttable()$fontfile
+	fontfiles=systemfonts::system_fonts()$path,
+	update=FALSE
 )
 }
 \arguments{
 	\if{html}{\out{<div class="arguments">}}
-	\item{fontfiles}{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to extrafont::fonttable()$fontfile) - (java expects a RCharacterVector)}
+	\item{fontfiles}{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path) - (java expects a RCharacterVector)}
+	\item{update}{update - (defaulting to FALSE) - (java expects a RLogical)}
 	\if{html}{\out{</div>}}
 }
 \value{
