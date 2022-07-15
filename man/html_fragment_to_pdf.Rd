@@ -8,8 +8,8 @@
 	outFile=tempfile('html2pdfr_'),
 	xMarginInches=1.0,
 	yMarginInches=1.0,
-	maxWidthInches=6.25,
-	maxHeightInches=9.75,
+	maxWidthInches=8.27,
+	maxHeightInches=11.69,
 	formats=c('pdf','png'),
 	pngDpi=300,
 	converter=html2pdfr::html_converter()
@@ -21,8 +21,8 @@
 	\item{outFile}{outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to tempfile('html2pdfr_')) - (java expects a String)}
 	\item{xMarginInches}{xMarginInches page width margins - (defaulting to 1.0) - (java expects a RNumeric)}
 	\item{yMarginInches}{yMarginInches page height margins - (defaulting to 1.0) - (java expects a RNumeric)}
-	\item{maxWidthInches}{maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to 6.25) - (java expects a RNumeric)}
-	\item{maxHeightInches}{maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to 9.75) - (java expects a RNumeric)}
+	\item{maxWidthInches}{maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to 8.27) - (java expects a RNumeric)}
+	\item{maxHeightInches}{maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to 11.69) - (java expects a RNumeric)}
 	\item{formats}{formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf','png')) - (java expects a RCharacterVector)}
 	\item{pngDpi}{pngDpi the dots per inch for png outputs if requested. - (defaulting to 300) - (java expects a RNumeric)}
 	\item{converter}{converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)}

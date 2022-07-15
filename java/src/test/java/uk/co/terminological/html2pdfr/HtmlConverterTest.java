@@ -1,4 +1,4 @@
-package html2pdfr;
+package uk.co.terminological.html2pdfr;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -22,6 +22,7 @@ import uk.co.terminological.html2pdfr.HtmlConverter;
 import uk.co.terminological.rjava.RConverter;
 import uk.co.terminological.rjava.types.RCharacter;
 import uk.co.terminological.rjava.types.RCharacterVector;
+import uk.co.terminological.rjava.types.RLogical;
 import uk.co.terminological.rjava.types.RNumeric;
 
 class HtmlConverterTest {
@@ -232,5 +233,14 @@ class HtmlConverterTest {
 		HtmlConverterTest tmp = new HtmlConverterTest();
 		tmp.testNBSP();
 		
+	}
+	
+	@Test
+	final void testFontPaths() {
+		String[] paths = new String[] {"/usr/share/fonts/X11/util",
+				"/home/terminological/R/x86_64-pc-linux-gnu-library/3.6/showtextdb/fonts"};
+		
+		HtmlConverter conv = HtmlConverter.htmlConverter(RCharacterVector.with(paths), RConverter.convert(true));
+		conv.fonts.stream().forEach(f -> System.out.println(f.family));
 	}
 }

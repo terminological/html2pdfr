@@ -6,7 +6,7 @@
 #'
 #' Version: 0.4.0
 #'
-#' Generated: 2022-07-07T16:11:14.160
+#' Generated: 2022-07-11T22:28:51.214
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import systemfonts
@@ -67,7 +67,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  	
  		message("Initialising R Wrapper For Openhtmltopdf Java Library")
  		message("Version: 0.4.0")
-		message("Generated: 2022-07-07T16:11:14.160")
+		message("Generated: 2022-07-11T22:28:51.215")
  	
  	
  		tryCatch({
@@ -92,7 +92,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.0");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-07-07T16:11:14.163");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-07-11T22:28:51.215");
 		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.0");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
@@ -450,7 +450,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				if(is.null(out)) return(invisible(out))
 				return(out)
 			},
-			htmlFragmentToPdf = function(htmlFragment, outFile=tempfile('html2pdfr_'), xMarginInches=1.0, yMarginInches=1.0, maxWidthInches=6.25, maxHeightInches=9.75, formats=c('pdf','png'), pngDpi=300, converter=html2pdfr::html_converter()) {
+			htmlFragmentToPdf = function(htmlFragment, outFile=tempfile('html2pdfr_'), xMarginInches=1.0, yMarginInches=1.0, maxWidthInches=8.27, maxHeightInches=11.69, formats=c('pdf','png'), pngDpi=300, converter=html2pdfr::html_converter()) {
 				# copy parameters
 				tmp_htmlFragment = self$.toJava$String(htmlFragment);
 				tmp_outFile = self$.toJava$String(outFile);

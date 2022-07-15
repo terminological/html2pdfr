@@ -71,7 +71,7 @@ import uk.co.terminological.rjava.types.RNumeric;
 @RClass(imports = {"systemfonts"},suggests= {"here","huxtable","ggplot2"})
 public class HtmlConverter {
 
-	List<CSSFont> fonts = new ArrayList<>();
+	protected List<CSSFont> fonts = new ArrayList<>();
 	SVGDrawer svg = new BatikSVGDrawer();
 	SVGDrawer mathMl = new MathMLDrawer();
 	W3CDom w3cDom = new W3CDom();
@@ -399,8 +399,8 @@ public class HtmlConverter {
 			@RDefault(rCode = "tempfile('html2pdfr_')") String outFile, 
 			@RDefault(rCode = "1.0") RNumeric xMarginInches, 
 			@RDefault(rCode = "1.0") RNumeric yMarginInches,
-			@RDefault(rCode = "6.25") RNumeric maxWidthInches, 
-			@RDefault(rCode = "9.75") RNumeric maxHeightInches,
+			@RDefault(rCode = "8.27") RNumeric maxWidthInches, 
+			@RDefault(rCode = "11.69") RNumeric maxHeightInches,
 			@RDefault(rCode = "c('pdf','png')") RCharacterVector formats,
 			@RDefault(rCode = "300") RNumeric pngDpi,
 			@RDefault(rCode = "html2pdfr::html_converter()") HtmlConverter converter

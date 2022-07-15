@@ -3,7 +3,7 @@
 # and serves as an alternative R centric entry point of the html2pdfr generated R library.
 
 # Version: 0.4.0
-# Generated: 2022-07-07T16:11:14.311
+# Generated: 2022-07-11T22:28:51.264
 # Contact: rob.challen@bristol.ac.uk
 
 # HtmlConverter class static methods ----
@@ -167,8 +167,8 @@ html_document_to_pdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA
 #' @param outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to tempfile('html2pdfr_')) - (java expects a String)
 #' @param xMarginInches page width margins - (defaulting to 1.0) - (java expects a RNumeric)
 #' @param yMarginInches page height margins - (defaulting to 1.0) - (java expects a RNumeric)
-#' @param maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to 6.25) - (java expects a RNumeric)
-#' @param maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to 9.75) - (java expects a RNumeric)
+#' @param maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to 8.27) - (java expects a RNumeric)
+#' @param maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to 11.69) - (java expects a RNumeric)
 #' @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf','png')) - (java expects a RCharacterVector)
 #' @param pngDpi the dots per inch for png outputs if requested. - (defaulting to 300) - (java expects a RNumeric)
 #' @param converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)
@@ -182,7 +182,7 @@ html_document_to_pdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA
 #' html_fragment_to_pdf(html)
 #' }
 #' @export
-html_fragment_to_pdf = function(htmlFragment, outFile=tempfile('html2pdfr_'), xMarginInches=1.0, yMarginInches=1.0, maxWidthInches=6.25, maxHeightInches=9.75, formats=c('pdf','png'), pngDpi=300, converter=html2pdfr::html_converter()) {
+html_fragment_to_pdf = function(htmlFragment, outFile=tempfile('html2pdfr_'), xMarginInches=1.0, yMarginInches=1.0, maxWidthInches=8.27, maxHeightInches=11.69, formats=c('pdf','png'), pngDpi=300, converter=html2pdfr::html_converter()) {
 	# get the API singleton
 	J = JavaApi$get()
 	# execute the R6 function call with the same parameters

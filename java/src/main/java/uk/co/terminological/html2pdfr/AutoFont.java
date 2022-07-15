@@ -127,17 +127,15 @@ public class AutoFont {
     }
     
     public static Stream<CSSFont> fromFontPath(Path p) {
-    	if (Files.isRegularFile(p) && p.endsWith(".ttf")) {
-    		return fromFontFile(p);
-    	}
-    	if (Files.isDirectory(p)) {
-    		try {
-				return Files.walk(p).filter(p2 -> !Files.isDirectory(p2)).flatMap(AutoFont::fromFontPath);
-			} catch (IOException e) {
-				return Stream.empty();
-			}
-    	}
-    	return Stream.empty();
+    	try {
+			return Files
+				.walk(p)
+				.filter(p2 -> !Files.isDirectory(p2) && p2.toString().endsWith("ttf"))
+				.peek(System.out::println)
+				.flatMap(AutoFont::fromFontFile);
+		} catch (IOException e) {
+			return Stream.empty();
+		}
     }
     
     public static Stream<CSSFont> fromFontFile(Path ttfFile) {

@@ -19,8 +19,6 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,12 +31,18 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">html2pdfr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
 <li>
   <a href="../articles/html2pdfr.html">Get started</a>
 </li>
@@ -60,7 +64,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using html2pdfr</h1>
-                        <h4 data-toc-skip class="author">Rob Challen</h4>
+                        <h4 class="author">Rob Challen</h4>
             
       
       
@@ -70,71 +74,595 @@
 
     
     
-<p><a href="https://github.com/terminological/html2pdfr/actions" class="external-link"><img src="https://github.com/terminological/html2pdfr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
-<p><a href="https://zenodo.org/badge/latestdoi/459091655" class="external-link"><img src="https://zenodo.org/badge/459091655.svg" alt="DOI"></a></p>
+<p><a href="https://github.com/terminological/html2pdfr/actions"><img src="https://github.com/terminological/html2pdfr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
+<p><a href="https://zenodo.org/badge/latestdoi/459091655"><img src="https://zenodo.org/badge/459091655.svg" alt="DOI"></a></p>
 <p>The purpose of the <code>html2pdfr</code> package is to support layout and conversion of basic static HTML to PDF, and PNG. The main use case is to generate a static version of HTML tables, created by libraries such as <code>huxtable</code> or <code>gt</code>, that can be included in latex documents, or presentations, and which appear the same as the HTML versions of those tables. Such PDF images can be included in LaTeX files using an <code>includegraphics</code> directive in exactly the same way as figures. To make PDF files from HTML work well within a LaTeX document it is important to be able to specify the dimensions of a bounding box within which the HTML content will be rendered. The tight control of that bounding box is the specific purpose of this library which differentiates it from other options such as <code>webshot</code> and <code>webshot2</code>. Although focussed on tabular content, <code>html2pdfr</code> can convert other simple HTML, including SVG and MathML content, with variable success rates.</p>
-<p>The R Package is a wrapper around the Java OpenHTML2PDF library (<a href="https://github.com/danfickle/openhtmltopdf" class="external-link uri">https://github.com/danfickle/openhtmltopdf</a>), and requires a working installation of Java and <code>rJava</code>. All other dependencies are resolved automatically at runtime. It does not require a graphical display and would suit running on a headless server. The underlying Java library does not support javascript which would be required for D3 content or rendering shiny apps, and for which <code>webshot</code> or <code>webshot2</code> would be a better option. The library relies on locally installed fonts, and the paths to local <code>.ttf</code> files must be supplied; this is managed by the <code>extrafonts</code> package. The library can resolve local and remote CSS and image files, specified relative to the HTML and locate them without the need for a web server.</p>
-<div class="section level2">
-<h2 id="installing-the-library">Installing the library<a class="anchor" aria-label="anchor" href="#installing-the-library"></a>
-</h2>
+<p>The R Package is a wrapper around the Java OpenHTML2PDF library (<a href="https://github.com/danfickle/openhtmltopdf" class="uri">https://github.com/danfickle/openhtmltopdf</a>), and requires a working installation of Java and <code>rJava</code>. All other dependencies are resolved automatically at runtime. It does not require a graphical display and would suit running on a headless server. The underlying Java library does not support javascript which would be required for D3 content or rendering shiny apps, and for which <code>webshot</code> or <code>webshot2</code> would be a better option. The library relies on locally installed fonts, and the paths to local <code>.ttf</code> files must be supplied; this is managed by the <code>extrafonts</code> package. The library can resolve local and remote CSS and image files, specified relative to the HTML and locate them without the need for a web server.</p>
+<div id="installing-the-library" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installing-the-library" class="anchor"></a>Installing the library</h2>
 <p><code>html2pdfr</code> is not on cran yet. Installation from this repo can be done as follows:</p>
-<div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"terminological/html2pdfr"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode"><pre class="downlit">
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"terminological/html2pdfr"</span><span class="op">)</span></pre></div>
 </div>
-<div class="section level2">
-<h2 id="initialising-the-library">Initialising the library<a class="anchor" aria-label="anchor" href="#initialising-the-library"></a>
-</h2>
+<div id="initialising-the-library" class="section level2">
+<h2 class="hasAnchor">
+<a href="#initialising-the-library" class="anchor"></a>Initialising the library</h2>
 <p>On first use the major Java library dependencies of this project must be downloaded and cached. This can take some time but only needs to be done once. The following basic initialization code sets up the library:</p>
-<div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># this produces a verbose output which can be hidden with:</span></span>
-<span><span class="va">conv</span> <span class="op">=</span> <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_converter.html">html_converter</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## Initialising R Wrapper For Openhtmltopdf Java Library</span></span>
-<span><span class="co">## Version: 0.4.0</span></span>
-<span><span class="co">## Generated: 2022-07-07T16:11:14.160</span></span>
-<span><span class="co">## Calculating classpath and updating dependencies, please be patient.</span></span>
-<span><span class="co">## Dependencies updated</span></span></code></pre></div>
+<div class="sourceCode"><pre class="downlit">
+<span class="co"># this produces a verbose output which can be hidden with:</span>
+<span class="va">conv</span> <span class="op">=</span> <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_converter.html">html_converter</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">## Initialising R Wrapper For Openhtmltopdf Java Library</span>
+<span class="co">## Version: 0.4.0</span>
+<span class="co">## Generated: 2022-07-11T22:28:51.215</span>
+<span class="co">## Calculating classpath and updating dependencies, please be patient.</span>
+<span class="co">## Dependencies updated</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansCarian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/ipafont-mincho/ipamp.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-R.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-ThinItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeMono.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium-basic/GenBkBasR.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/samyak/Samyak-Devanagari.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansUI-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-SemiboldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium-basic/GenBasI.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-ThinItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/trebucbi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGujarati-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSans-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/padauk/Padauk-bookbold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-MediumItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansPhagsPa-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansCanadianAboriginal-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifTamil-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansLaoUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansBengaliUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansLao-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/andalemo.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-deva-extra/kalimati.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/samyak-fonts/Samyak-Tamil.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMyanmar-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Kinnari-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/padauk/Padauk-bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansSymbols-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansHebrew-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/crosextra/Caladea-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/malayalam-fonts/AnjaliOldLipi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoNaskhArabic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/mry_KacstQurn.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/Navilu/Navilu.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Kinnari.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansUI-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstOffice.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/malayalam-fonts/RaghuMalayalamSans.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKaithi-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/fonts-hosny-amiri/amiri-boldslanted.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium-basic/GenBkBasBI.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-LightItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Umpush-Light.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansSaurashtra-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansHebrew-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-malayalam/Lohit-Malayalam.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-telu-extra/Pothana2000.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSans-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Umpush-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/trebucbd.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/nanum/NanumMyeongjo.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Webdings.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifTelugu-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Courier_New_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMalayalamUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Trebuchet_MS_Bold_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOriya-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-oriya/Lohit-Oriya.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-BlackItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansEthiopic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSansNarrow-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/comfortaa/Comfortaa-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstDigital.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansNewTaiLue-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Verdana.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ebgaramond/EBGaramond08-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstArt.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Sawasdee-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-deva-extra/samanata.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifGujarati-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-BI.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansDevanagariUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-LI.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-RI.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/abyssinica/AbyssinicaSIL-R.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansEgyptianHieroglyphs-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOlChiki-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-guru-extra/Saab.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/arialbd.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-gujr-extra/aakar-medium.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-BlackItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/malayalam-fonts/Meera.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium-basic/GenBasBI.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansCherokee-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-Medium.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/RobotoCondensed-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Laksaman-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/fonts-hosny-amiri/amiri-quran.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-devanagari/Lohit-Devanagari.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTamil-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansLimbu-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSans-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansLaoUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeSans.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypewriter-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansThaiUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium-basic/GenBkBasB.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Loma.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/RobotoCondensed-LightItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypo.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Norasi-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypewriter-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ebgaramond/EBGaramond08-SC.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSerif-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/malayalam-fonts/Kalyani.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Norasi-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Loma-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerif-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Loma-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/ipaexfont-mincho/ipaexm.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Georgia.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium-basic/GenBasR.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/fonts-hosny-amiri/amiri-regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeSansOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/pagul/Pagul.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Umpush.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Waree-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium/GentiumAlt-R.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGurmukhiUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeSerifBoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifArmenian-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/oxygen/Oxygen-Sans-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstQurn.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Sawasdee-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Courier_New_Bold_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstPoster.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOldTurkic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium/GentiumAlt-I.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-beng-extra/MuktiNarrow.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeSerifItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/comfortaa/Comfortaa-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/times.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstTitleL.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansInscriptionalPahlavi-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-telugu/Lohit-Telugu.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Times_New_Roman.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTagalog-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansSamaritan-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-telu-extra/vemana2000.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGeorgian-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ttf-khmeros-core/KhmerOS.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstPen.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansBengaliUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMalayalam-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/junicode/Junicode.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifKannada-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansSyriacEstrangela-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypewriter-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/verdanai.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium-basic/GenBkBasI.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgMono.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ancient-scripts/Symbola_hint.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansCham-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-beng-extra/mitra.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansArmenian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Comic_Sans_MS_Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/ariblk.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-beng-extra/LikhanNormal.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgMono-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/verdanab.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoMono-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOsmanya-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Georgia_Bold_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-Black.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypo-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstTitle.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansShavian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ttf-khmeros-core/KhmerOSsys.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifGujarati-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Arial_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansThaana-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansBuhid-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Laksaman.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-C.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerif-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Trebuchet_MS.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/georgiab.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTeluguUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/Nakula/nakula.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypewriter.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKayahLi-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansInscriptionalParthian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansUgaritic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMeeteiMayek-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/samyak-fonts/Samyak-Malayalam.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTelugu-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifGeorgian-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMandaic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoKufiArabic-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-tamil/Lohit-Tamil.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-assamese/Lohit-Assamese.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-Hairline.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansBengali-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Garuda-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstScreen.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifThai-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Georgia_Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansBatak-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGujarati-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/malayalam-fonts/Rachana.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/ariali.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansRunic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTifinagh-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansArmenian-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/crosextra/Caladea-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypist-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTibetan-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Norasi-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium-basic/GenBasB.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoNastaliqUrdu-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstBook.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Kinnari-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansBengali-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifMalayalam-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/crosextra/Carlito-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Norasi-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSansNarrow-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansLepcha-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifLao-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifThai-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/nanum/NanumBarunGothicBold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/samyak-fonts/Samyak-Gujarati.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansRejang-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-Thin.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-beng-extra/ani.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/comic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTelugu-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansLinearB-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Norasi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansSylotiNagri-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOgham-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-beng-extra/MuktiNarrowBold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Norasi-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Waree-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/comfortaa/Comfortaa-Light.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTaiLe-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSans-ExtraLight.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Laksaman-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGujaratiUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGurmukhi-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/oxygen/OxygenMono-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-beng-extra/JamrulNormal.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-gujr-extra/padmaa-Medium-0.5.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGurmukhi-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Kinnari-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKhmerUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansAvestan-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-MI.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstNaskh.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-Semibold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Trebuchet_MS_Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-R.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMyanmar-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-MediumItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKannada-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst-one/KacstOne-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansThaiUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGlagolitic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/crosextra/Caladea-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansCuneiform-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMalayalamUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/georgiaz.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansDevanagariUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-Black.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationMono-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoNaskhArabic-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKannadaUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-kannada/Lohit-Kannada.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerif-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansYi-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstFarsi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/RobotoCondensed-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifBengali-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Garuda-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-gujarati/Lohit-Gujarati.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Purisa-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/verdanaz.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTamilUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/trebuc.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Sawasdee.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOriyaUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/crosextra/Caladea-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/crosextra/Carlito-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Purisa.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTaiTham-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/RobotoCondensed-Light.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/gentiumplus/GentiumPlus-I.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-punjabi/Lohit-Punjabi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-kalapi/Kalapi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/padauk/Padauk.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Courier_New.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMongolian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansLycian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTibetan-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOriyaUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeSansBold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/Sarai/Sarai.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/timesbd.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-M.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Trebuchet_MS_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Garuda.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansBrahmi-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/Sahadeva/sahadeva.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKhmer-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerif-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOldSouthArabian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstLetter.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansNKo-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/RobotoCondensed-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/font-awesome/fontawesome-webfont.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/openoffice/opens___.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansDeseret-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium/Gentium-I.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/courbd.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-bengali/Lohit-Bengali.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/nanum/NanumGothic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeSansBoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypist-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansSinhala-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/timesi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKannadaUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Arial.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGurmukhiUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansVai-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Arial_Bold_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansCoptic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-BI.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/comicbd.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/courbi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOldPersian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeSerifBold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/georgiai.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Arial_Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifMalayalam-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTamilUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoKufiArabic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGeorgian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansLydian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifTelugu-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Arial_Black.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTaiViet-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Purisa-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/takao-gothic/TakaoPGothic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/crosextra/Carlito-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Impact.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGothic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-Light.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSansNarrow-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-japanese-mincho.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTagbanwa-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-orya-extra/utkal.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypist.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/fonts-hosny-amiri/amiri-slanted.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansThaana-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-RI.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/malayalam-fonts/Suruma.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/junicode/Junicode-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Garuda-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifKannada-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/oxygen/Oxygen-Sans.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/sinhala/lklug.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypist-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/gentiumplus/GentiumPlus-R.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lohit-tamil-classical/Lohit-Tamil-Classical.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Waree-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/fonts-hosny-amiri/amiri-bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansBuginese-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifLao-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Sawasdee-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-Medium.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ebgaramond/EBGaramond-InitialsF2.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tibetan-machine/TibetanMachineUni.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeMonoBoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/arialbi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ebgaramond/EBGaramond-Initials.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeSerif.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansSyriacWestern-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-HairlineItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ebgaramond/EBGaramond08-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifArmenian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansDevanagari-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKhmer-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-L.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeMonoBold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMalayalam-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-deva-extra/chandas1-2.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/freefont/FreeMonoOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-LightItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/Gargi/Gargi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ebgaramond/EBGaramond-InitialsF1.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansDevanagari-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansPhoenician-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoNaskhArabicUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgMono-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/junicode/Junicode-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/malayalam-fonts/Dyuthi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansSundanese-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKannada-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgMono-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansHanunoo-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansBalinese-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKhmerUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansJavanese-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifKhmer-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTamil-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-gujr-extra/padmaa.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/padauk/Padauk-book.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansLao-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationSansNarrow-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansSinhala-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Umpush-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Verdana_Bold_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/junicode/Junicode-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Verdana_Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansSyriacEastern-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-Light.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-HeavyItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/crosextra/Carlito-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/trebucit.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/timesbi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypo-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst/KacstDecorative.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-japanese-gothic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Laksaman-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMyanmarUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOriya-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansImperialAramaic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/TlwgTypo-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Comic_Sans_MS.ttf</span>
+<span class="co">## /usr/share/fonts/opentype/ipafont-mincho/ipam.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansTeluguUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansThai-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Verdana_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/couri.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ebgaramond/EBGaramond12-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Courier_New_Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansEthiopic-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Waree.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifKhmer-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansOldItalic-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-Thin.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/Gubbi/Gubbi.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/nanum/NanumMyeongjoBold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansBamum-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansCypriot-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lao/Phetsarath_OT.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifGeorgian-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Kinnari-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/cour.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansThai-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Umpush-LightOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/RobotoCondensed-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/lato/Lato-Heavy.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ebgaramond/EBGaramond12-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/gentium/Gentium-R.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Georgia_Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/msttcorefonts/Andale_Mono.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Loma-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/roboto/hinted/Roboto-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifBengali-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansLisu-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSerifTamil-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-B.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSans-Italic.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Umpush-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-gujr-extra/padmaa-Bold.1.1.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansGujaratiUI-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Kinnari-Oblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/fonts-gujr-extra/Rekha.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansMyanmarUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansKharoshthi-Regular.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoNaskhArabicUI-Bold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/nanum/NanumGothicBold.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/tlwg/Purisa-BoldOblique.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/kacst-one/KacstOne.ttf</span>
+<span class="co">## /usr/share/fonts/truetype/noto/NotoSansCham-Regular.ttf</span></pre></div>
 <p>Once this is complete the <code>conv</code> object provides the useful functions of the package.</p>
 </div>
-<div class="section level2">
-<h2 id="generating-a-pdf">Generating a PDF<a class="anchor" aria-label="anchor" href="#generating-a-pdf"></a>
-</h2>
+<div id="generating-a-pdf" class="section level2">
+<h2 class="hasAnchor">
+<a href="#generating-a-pdf" class="anchor"></a>Generating a PDF</h2>
 <p>PDF rendering of HTML can be done direct from a URL, or from a locally stored HTML file. Pulling in a URL and converting it to PDF is done like so:</p>
-<div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span> <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span></span>
-<span>   htmlUrl <span class="op">=</span> <span class="st">"https://cran.r-project.org/banner.shtml"</span>,</span>
-<span>   outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output.pdf"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">## [1] "/home/rc538/Dropbox/Git/html2pdfr/docs/articles/example-output.pdf"</span></span></code></pre></div>
+<div class="sourceCode"><pre class="downlit">
+ <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span>
+   htmlUrl <span class="op">=</span> <span class="st">"https://cran.r-project.org/banner.shtml"</span>,
+   outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output.pdf"</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="co">## [1] "/home/terminological/Dropbox/Git/html2pdfr/docs/articles/example-output.pdf"</span></pre></div>
 <p><a href="example-output.pdf">The resulting pdf</a> is here, Your success rendering HTML will vary as complex web pages (including in this example, frames) are not supported by the underlying engine. The focus of <code>html2pdfr</code> is on simpler static web content and not complex web content, for which alternatives already exist.</p>
 </div>
-<div class="section level2">
-<h2 id="generating-a-pdf-from-html-content">Generating a pdf from HTML content<a class="anchor" aria-label="anchor" href="#generating-a-pdf-from-html-content"></a>
-</h2>
+<div id="generating-a-pdf-from-html-content" class="section level2">
+<h2 class="hasAnchor">
+<a href="#generating-a-pdf-from-html-content" class="anchor"></a>Generating a pdf from HTML content</h2>
 <p>In the following, more usual, example the HTML is generated within R (as you might find from a tabular data library such as <code>huxtable</code> or <code>gtables</code>) and passed to the converter with some target page dimensions. The converter will lay out the table within the confines of the maximum space available, overflowing to new pages, where-ever required.</p>
-<div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">irisHtml</span> <span class="op">=</span> <span class="va">iris</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Species"</span>,<span class="st">"Sepal.Width"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/as_huxtable.html" class="external-link">as_hux</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/themes.html" class="external-link">theme_article</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/to_html.html" class="external-link">to_html</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_fragment_to_pdf.html">html_fragment_to_pdf</a></span><span class="op">(</span></span>
-<span>  htmlFragment <span class="op">=</span> <span class="va">irisHtml</span>, </span>
-<span>  maxWidthInches <span class="op">=</span> <span class="fl">8</span>, maxHeightInches <span class="op">=</span> <span class="fl">8</span>, </span>
-<span>  outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output-2.pdf"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">## [1] "/home/rc538/Dropbox/Git/html2pdfr/docs/articles/example-output-2.pdf"</span></span></code></pre></div>
+<div class="sourceCode"><pre class="downlit">
+
+<span class="va">irisHtml</span> <span class="op">=</span> <span class="va">iris</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Species"</span>,<span class="st">"Sepal.Width"</span><span class="op">)</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/as_huxtable.html">as_hux</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/themes.html">theme_article</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/to_html.html">to_html</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_fragment_to_pdf.html">html_fragment_to_pdf</a></span><span class="op">(</span>
+  htmlFragment <span class="op">=</span> <span class="va">irisHtml</span>, 
+  maxWidthInches <span class="op">=</span> <span class="fl">8</span>, maxHeightInches <span class="op">=</span> <span class="fl">8</span>, 
+  outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output-2.pdf"</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="co">## [1] "/home/terminological/Dropbox/Git/html2pdfr/docs/articles/example-output-2.pdf"</span></pre></div>
 <p>And <a href="example-output-2.pdf">the resulting pdf</a> of the generated HTML is here. This document should not have pages any more than 8 inches high. The width in this case is determined by the content, which is much less wide than the maximum specified 8 inches. If there was very wide content, the converter would wrap content within cells to stay within the specified bounding box size. This bounding box behaviour means that we can insert the generated pdf into a latex document simply without risk of overfull boxes.</p>
 <p>The layout engine should support simple SVG and MathML content. However it does not execute javascript so is not be able to lay out D3 content. If this is something you need then using <code>webshot2</code>, which wraps a whole Chrome instance, may be a better option.</p>
-<div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Javascript Does not work:</span></span>
-<span><span class="co"># conv$urlToPdf(</span></span>
-<span><span class="co">#   htmlUrl = "https://bl.ocks.org/mbostock/raw/1389927/?raw=true",</span></span>
-<span><span class="co">#   outFile = here::here("docs/articles/example-d3.pdf")</span></span>
-<span><span class="co"># )</span></span>
-<span></span>
-<span><span class="co"># MathML does work.</span></span>
-<span><span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span></span>
-<span>  htmlUrl <span class="op">=</span> <span class="st">"https://fred-wang.github.io/MathFonts/mozilla_mathml_test/"</span>,</span>
-<span>  outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-mathml.pdf"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">## [1] "/home/rc538/Dropbox/Git/html2pdfr/docs/articles/example-mathml.pdf"</span></span></code></pre></div>
+<div class="sourceCode"><pre class="downlit">
+<span class="co"># Javascript Does not work:</span>
+<span class="co"># conv$urlToPdf(</span>
+<span class="co">#   htmlUrl = "https://bl.ocks.org/mbostock/raw/1389927/?raw=true",</span>
+<span class="co">#   outFile = here::here("docs/articles/example-d3.pdf")</span>
+<span class="co"># )</span>
+
+<span class="co"># MathML does work.</span>
+<span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span>
+  htmlUrl <span class="op">=</span> <span class="st">"https://fred-wang.github.io/MathFonts/mozilla_mathml_test/"</span>,
+  outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-mathml.pdf"</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="co">## [1] "/home/terminological/Dropbox/Git/html2pdfr/docs/articles/example-mathml.pdf"</span></pre></div>
 <p><a href="example-mathml.pdf">The resulting mathml</a></p>
 </div>
   </div>
@@ -150,13 +678,11 @@
 
 
       <footer><div class="copyright">
-  <p></p>
-<p>Developed by Rob Challen.</p>
+  <p>Developed by Rob Challen.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -164,8 +690,6 @@
 
   
 
-
-  
 
   </body>
 </html>
