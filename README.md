@@ -22,6 +22,13 @@ rJava::J("java.lang.System")$getProperty("java.version")
 devtools::install_github("terminological/html2pdfr")
 ```
 
+Stable releases should be installed.
+On windows particularly build may fail if the multi-arch option is set
+
+```R
+devtools::install_github("terminological/html2pdfr@0.4.1", build_opts = c("--no-multiarch"))
+```
+
 Submission to CRAN is planned shortly.
 
 [Visit the docs](https://terminological.github.io/html2pdfr/) for usage info.
