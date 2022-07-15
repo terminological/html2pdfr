@@ -4,9 +4,9 @@
 #' @description
 #' R Wrapper For Openhtmltopdf Java Library
 #'
-#' Version: 0.4.0
+#' Version: 0.4.1.9999
 #'
-#' Generated: 2022-07-11T22:28:51.214
+#' Generated: 2022-07-15T12:09:36.622627
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import systemfonts
@@ -66,8 +66,8 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  		if (is.null(JavaApi$singleton)) stop("Startup the java api with JavaApi$get() rather than using this constructor directly")
  	
  		message("Initialising R Wrapper For Openhtmltopdf Java Library")
- 		message("Version: 0.4.0")
-		message("Generated: 2022-07-11T22:28:51.215")
+ 		message("Version: 0.4.1.9999")
+		message("Generated: 2022-07-15T12:09:36.623024")
  	
  	
  		tryCatch({
@@ -91,9 +91,9 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		  .jcall(self$.log,returnSig = "V",method = "debug", jar)
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.0");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-07-11T22:28:51.215");
-		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.0");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.1.9999");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-07-15T12:09:36.623350");
+		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.1-SNAPSHOT");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
 		self$printMessages()
@@ -533,7 +533,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 
 # package working directory
 .workingDir = function() {
-	tmp = path.expand(rappdirs::user_cache_dir("html2pdfr-0.4.0"))
+	tmp = path.expand(rappdirs::user_cache_dir("html2pdfr-0.4.1.9999"))
 	fs::dir_create(tmp)
 	return(tmp)
 }
@@ -578,11 +578,11 @@ JavaApi$rebuildDependencies = function( ... ) {
 	as.POSIXct(file.info(original)$mtime) < as.POSIXct(file.info(test)$mtime)
 }
 
-# gets the pom.xml file for io.github.terminological:html2pdfr:0.4.0 from a thin jar
+# gets the pom.xml file for io.github.terminological:html2pdfr:0.4.1-SNAPSHOT from a thin jar
 .extractPom = function() {
 	dir = .workingDir()
-	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.4.0\\.jar", full.names = TRUE)
-	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.4.0")
+	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.4.1-SNAPSHOT\\.jar", full.names = TRUE)
+	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.4.1-SNAPSHOT")
 	jarLoc = jarLoc[[1]]
 	pomPath = paste0(dir,"/pom.xml")
 	if (!.fileNewer(jarLoc, pomPath)) {
@@ -592,13 +592,13 @@ JavaApi$rebuildDependencies = function( ... ) {
 	return(pomPath)
 }
 
-# gets the pom.xml file for io.github.terminological:html2pdfr:0.4.0 which is the library version we exepct to be bundled in the 
+# gets the pom.xml file for io.github.terminological:html2pdfr:0.4.1-SNAPSHOT which is the library version we exepct to be bundled in the 
 .extractSources = function() {
 	dir = .workingDir()
-	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.4.0-src\\.jar", full.names = TRUE)
-	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.4.0-src.jar")
+	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.4.1-SNAPSHOT-src\\.jar", full.names = TRUE)
+	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.4.1-SNAPSHOT-src.jar")
 	jarLoc = jarLoc[[1]]
-	pomPath = paste0(dir,"/html2pdfr-0.4.0/pom.xml")
+	pomPath = paste0(dir,"/html2pdfr-0.4.1-SNAPSHOT/pom.xml")
 	if (!.fileNewer(jarLoc, pomPath)) {
 		utils::unzip(jarLoc, exdir = dir)
 		if (!file.exists(pomPath)) stop("couldn't extract source files from ",jarLoc)
@@ -608,7 +608,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 
 # executes maven assembly plugin and relocates resulting fat jar into java library directory
 .compileFatJar = function(pomPath, ...) {
-	fatJarFinal = fs::path(.here("java"),"html2pdfr-0.4.0-jar-with-dependencies.jar")
+	fatJarFinal = fs::path(.here("java"),"html2pdfr-0.4.1-SNAPSHOT-jar-with-dependencies.jar")
 	if (!.fileNewer(pomPath, fatJarFinal)) {
 		message("Compiling java library and downloading dependencies, please be patient.")
 		.executeMaven(
@@ -621,7 +621,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 			...
 		)
 		message("Compilation complete")
-		fatJar = fs::path_norm(fs::path(pomPath, "../target/html2pdfr-0.4.0-jar-with-dependencies.jar"))
+		fatJar = fs::path_norm(fs::path(pomPath, "../target/html2pdfr-0.4.1-SNAPSHOT-jar-with-dependencies.jar"))
 		fs::file_move(fatJar, fatJarFinal)
 	}
 	return(fatJarFinal)
