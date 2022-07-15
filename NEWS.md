@@ -6,6 +6,10 @@
 * very close to browser rendering if size contraints matched
 * ttf fonts need to be supplied from R (done automatically).
 
+# html2pdfr 0.4.1
+
+* remove dependency on extrafont (for sysfont)
+
 # html2pdfr 0.4.1.9000
 
 * TODO: check whether java's font detection can be used.
