@@ -41,7 +41,7 @@ devtools::install_github("terminological/html2pdfr")
 On first use the major Java library dependencies of this project must be downloaded and cached. This can take some time but only needs to be done once. The following basic initialization code sets up the library:
 
 ```{r}
-# this produces a verbose output which can be hidden with:
+# this produces a verbose output which can be hidden with suppressMessages:
 conv = html2pdfr::html_converter()
 ```
 
@@ -60,7 +60,7 @@ Pulling in a URL and converting it to PDF is done like so:
 
 ```
 
-[The resulting pdf](example-output.pdf) is here, Your success rendering HTML will vary as complex web pages (including in this example, frames) are not supported by the underlying engine. The focus of `html2pdfr` is on simpler static web content and not complex web content, for which alternatives already exist.
+[The resulting pdf](example-output.pdf) is here, Your success rendering HTML will vary as complex web pages (including in this example, frames) are not supported by the underlying engine. The focus of `html2pdfr` is on simpler static html content and not complex pages, for which alternatives already exist (see `webshot2` for example).
 
 ## Generating a pdf from HTML content
 

@@ -49,6 +49,9 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -62,9 +65,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="html2pdfr---r-wrapper-for-openhtmltopdf-java-library-" class="section level1">
+<div id="html2pdfr---r-wrapper-for-openhtmltopdf-java-library" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#html2pdfr---r-wrapper-for-openhtmltopdf-java-library-" class="anchor"></a>html2pdfr - R wrapper for OpenHTMLtoPDF java library.</h1></div>
+<a href="#html2pdfr---r-wrapper-for-openhtmltopdf-java-library" class="anchor"></a>html2pdfr - R wrapper for OpenHTMLtoPDF java library.</h1></div>
 
 <p><a href="https://zenodo.org/badge/latestdoi/459091655"><img src="https://zenodo.org/badge/459091655.svg" alt="DOI"></a></p>
 <p><code>html2pdfr</code> is designed to help get PDF or PNG rendering of HTML tables, so that the table can be included in a LaTeX page. This allows use of HTML table layout within LaTeX documents with page size determined by LaTeX, but with layout and control of styling determined by HTML and CSS. This creates alignment between web and printed content. Tabular content should be allowed to grow up to the page dimensions, but we don’t want to force narrower tables to be a set width or height. Automatic calculation of the output size up to specified page size limits, is one of the differentiators between this and other options, such as <code>webshot</code> and <code>webshot2</code>. Although the focus is on tables, any basic static HTML content can be rendered including SVG and MathML, up to the level support of the underlying HTML rendering engine, the Java OpenHTML2PDF library (<a href="https://github.com/danfickle/openhtmltopdf" class="uri">https://github.com/danfickle/openhtmltopdf</a>).</p>
@@ -72,12 +75,12 @@
 <h2 class="hasAnchor">
 <a href="#installation-instructions" class="anchor"></a>Installation instructions</h2>
 <p><code>html2pdfr</code> is based on a java library and must have a working version of <code>Java</code> and <code>rJava</code> installed. The following commands can ensure that your <code>rJava</code> installation is working.</p>
-<div class="sourceCode"><pre class="downlit">
+<div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"rJava"</span><span class="op">)</span>
 <span class="fu">rJava</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rJava/man/jinit.html">.jinit</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu">rJava</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rJava/man/J.html">J</a></span><span class="op">(</span><span class="st">"java.lang.System"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProperty</span><span class="op">(</span><span class="st">"java.version"</span><span class="op">)</span></pre></div>
 <p><code>html2pdfr</code> is not on cran yet. Installation from this repo can be done as follows:</p>
-<div class="sourceCode"><pre class="downlit">
+<div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"terminological/html2pdfr"</span><span class="op">)</span></pre></div>
 <p>Submission to CRAN is planned shortly.</p>
 <p><a href="https://terminological.github.io/html2pdfr/">Visit the docs</a> for usage info.</p>
