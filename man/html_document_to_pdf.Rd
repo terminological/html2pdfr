@@ -46,8 +46,8 @@ so that the content is smaller. If no dimensions are present this will default t
 }
 \examples{
 library(testthat)
-library(tidyverse)
-html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
+library(readr)
+html = read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 }
 \keyword{java api}

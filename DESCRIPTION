@@ -11,7 +11,7 @@ LazyData: true
 VignetteBuilder: knitr
 Suggests: 
 	here,
-	ggplot2,
+	readr,
 	huxtable,
 	dplyr,
 	knitr,

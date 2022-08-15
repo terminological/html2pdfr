@@ -106,9 +106,9 @@
 <div class="sourceCode"><pre class="downlit">
  <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span>
    htmlUrl <span class="op">=</span> <span class="st">"https://cran.r-project.org/banner.shtml"</span>,
-   outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output.pdf"</span><span class="op">)</span>
+   outFile <span class="op">=</span> <span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles/example-output.pdf"</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">## [1] "/home/terminological/Dropbox/Git/html2pdfr/docs/articles/example-output.pdf"</span></pre></div>
+<span class="co">## [1] "/tmp/RtmpkfXqWf/docs/articles/example-output.pdf"</span></pre></div>
 <p><a href="example-output.pdf">The resulting pdf</a> is here, Your success rendering HTML will vary as complex web pages (including in this example, frames) are not supported by the underlying engine. The focus of <code>html2pdfr</code> is on simpler static html content and not complex pages, for which alternatives already exist (see <code>webshot2</code> for example).</p>
 </div>
 <div id="generating-a-pdf-from-html-content" class="section level2">
@@ -121,9 +121,9 @@
 <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_fragment_to_pdf.html">html_fragment_to_pdf</a></span><span class="op">(</span>
   htmlFragment <span class="op">=</span> <span class="va">irisHtml</span>, 
   maxWidthInches <span class="op">=</span> <span class="fl">8</span>, maxHeightInches <span class="op">=</span> <span class="fl">8</span>, 
-  outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-output-2.pdf"</span><span class="op">)</span>
+  outFile <span class="op">=</span> <span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles/example-output-2.pdf"</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">## [1] "/home/terminological/Dropbox/Git/html2pdfr/docs/articles/example-output-2.pdf"</span></pre></div>
+<span class="co">## [1] "/tmp/RtmpkfXqWf/docs/articles/example-output-2.pdf"</span></pre></div>
 <p>And <a href="example-output-2.pdf">the resulting pdf</a> of the generated HTML is here. This document should not have pages any more than 8 inches high. The width in this case is determined by the content, which is much less wide than the maximum specified 8 inches. If there was very wide content, the converter would wrap content within cells to stay within the specified bounding box size. This bounding box behaviour means that we can insert the generated pdf into a latex document simply without risk of overfull boxes.</p>
 <p>The layout engine should support simple SVG and MathML content. However it does not execute javascript so is not be able to lay out D3 content. If this is something you need then using <code>webshot2</code>, which wraps a whole Chrome instance, may be a better option.</p>
 <div class="sourceCode"><pre class="downlit">
@@ -136,10 +136,16 @@
 <span class="co"># MathML does work.</span>
 <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span>
   htmlUrl <span class="op">=</span> <span class="st">"https://fred-wang.github.io/MathFonts/mozilla_mathml_test/"</span>,
-  outFile <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles/example-mathml.pdf"</span><span class="op">)</span>
+  outFile <span class="op">=</span> <span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles/example-mathml.pdf"</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">## [1] "/home/terminological/Dropbox/Git/html2pdfr/docs/articles/example-mathml.pdf"</span></pre></div>
+<span class="co">## [1] "/tmp/RtmpkfXqWf/docs/articles/example-mathml.pdf"</span></pre></div>
 <p><a href="example-mathml.pdf">The resulting mathml</a></p>
+<div class="sourceCode"><pre class="downlit">
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html">interactive</a></span><span class="op">(</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"IN_PKGDOWN"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"as we are running in pkgdown and rendering the site we copy the output files to the correct location to be picked up by the pkgdown site"</span><span class="op">)</span>
+  <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/copy.html">dir_copy</a></span><span class="op">(</span><span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles"</span><span class="op">)</span>, <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles"</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="op">}</span> 
+<span class="co">## as we are running in pkgdown and rendering the site we copy the output files to the correct location to be picked up by the pkgdown site</span></pre></div>
 <div class="sourceCode"><pre class="sourceCode latex"><code class="sourceCode latex">\begingroup
 
 \begin{sidewaysfigure}

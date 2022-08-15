@@ -69,7 +69,7 @@ import uk.co.terminological.rjava.types.RCharacterVector;
 import uk.co.terminological.rjava.types.RLogical;
 import uk.co.terminological.rjava.types.RNumeric;
 
-@RClass(imports = {"systemfonts"},suggests= {"here","huxtable","ggplot2","dplyr"})
+@RClass(imports = {"systemfonts"},suggests= {"here","huxtable","dplyr","readr"})
 public class HtmlConverter {
 
 	protected List<CSSFont> fonts = new ArrayList<>();
@@ -331,8 +331,8 @@ public class HtmlConverter {
 	 * @throws IOException if the output file cannot be written
 	 */
 	@RMethod(tests = {
-			"library(tidyverse)", 
-			"html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')",
+			"library(readr)", 
+			"html = read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')",
 			"html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')"
 	})
 	public static RCharacterVector htmlDocumentToPdf(

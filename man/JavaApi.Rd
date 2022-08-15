@@ -27,7 +27,7 @@ HTML and CSS do a good job at automatically laying out and styling content parti
 
 Version: 0.4.2
 
-Generated: 2022-08-15T19:05:41.258
+Generated: 2022-08-15T22:38:55.065585
 }
 
 \author{\email{rob.challen@bristol.ac.uk}}
@@ -84,8 +84,8 @@ file_to_pdf(dest)
 ## Aliased as `html2pdfr::html_document_to_pdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`
 ## -----------------------------------
 library(testthat)
-library(tidyverse)
-html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
+library(readr)
+html = read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 
 ## -----------------------------------
@@ -572,8 +572,8 @@ html2pdfr::html_document_to_pdf(html, outFile, baseUri, cssSelector, xMarginInch
 			\if{html}{\out{<div class="r example copy">}}
 			\preformatted{
 library(testthat)
-library(tidyverse)
-html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
+library(readr)
+html = read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 			}
 			\if{html}{\out{</div>}}

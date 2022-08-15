@@ -22,10 +22,14 @@ knitr::opts_chunk$set(
   echo = TRUE,
   collapse = TRUE
 )
-library(magrittr)
 
-# devtools::load_all("~/Git/html2pdfr/")
-here::i_am("vignettes/web-only/html2pdfr.Rmd")
+library(html2pdfr)
+
+here::i_am("vignettes/html2pdfr.Rmd")
+
+out = function(path) {
+  return(fs::path(tempdir(),path))
+}
 ```
 
 ## Installing the library
@@ -55,7 +59,7 @@ Pulling in a URL and converting it to PDF is done like so:
 ```{r}
  html2pdfr::url_to_pdf(
    htmlUrl = "https://cran.r-project.org/banner.shtml",
-   outFile = here::here("docs/articles/example-output.pdf")
+   outFile = out("docs/articles/example-output.pdf")
 )
 
 ```
@@ -72,7 +76,7 @@ irisHtml = iris[c("Species","Sepal.Width")] %>% huxtable::as_hux() %>% huxtable:
 html2pdfr::html_fragment_to_pdf(
   htmlFragment = irisHtml, 
   maxWidthInches = 8, maxHeightInches = 8, 
-  outFile = here::here("docs/articles/example-output-2.pdf")
+  outFile = out("docs/articles/example-output-2.pdf")
 )
   
 ```
@@ -91,14 +95,19 @@ The layout engine should support simple SVG and MathML content. However it does 
 # MathML does work.
 html2pdfr::url_to_pdf(
   htmlUrl = "https://fred-wang.github.io/MathFonts/mozilla_mathml_test/",
-  outFile = here::here("docs/articles/example-mathml.pdf")
+  outFile = out("docs/articles/example-mathml.pdf")
 )
  
 ```
 
 [The resulting mathml](example-mathml.pdf) 
 
-
+```{r}
+if (interactive() || identical(Sys.getenv("IN_PKGDOWN"), "true")) {
+  message("as we are running in pkgdown and rendering the site we copy the output files to the correct location to be picked up by the pkgdown site")
+  fs::dir_copy(out("docs/articles"), here::here("docs/articles"), overwrite = TRUE)
+} 
+```
 
 ```LATEX
 \begingroup

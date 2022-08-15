@@ -3,7 +3,7 @@
 # and serves as an alternative R centric entry point of the html2pdfr generated R library.
 
 # Version: 0.4.2
-# Generated: 2022-08-15T19:05:41.358
+# Generated: 2022-08-15T22:38:55.126439
 # Contact: rob.challen@bristol.ac.uk
 
 # HtmlConverter class static methods ----
@@ -135,8 +135,8 @@ file_to_pdf = function(inFile, outFile=tempfile('html2pdfr_'), cssSelector=NA_ch
 #' the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 #' @examples
 #' library(testthat)
-#' library(tidyverse)
-#' html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
+#' library(readr)
+#' html = read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 #' html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 #' @export
 html_document_to_pdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA_character_, cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {

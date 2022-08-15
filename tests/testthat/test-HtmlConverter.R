@@ -22,8 +22,8 @@ test_that("html2pdfr::file_to_pdf() static method", {
 })
 # ├ html_document_to_pdf() package method ----
 test_that("html2pdfr::html_document_to_pdf() static method", {
-	library(tidyverse)
-	html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
+	library(readr)
+	html = read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 	html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 		expect_message(message("test case complete"))
 })

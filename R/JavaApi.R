@@ -6,7 +6,7 @@
 #'
 #' Version: 0.4.2
 #'
-#' Generated: 2022-08-15T19:05:41.306
+#' Generated: 2022-08-15T22:38:55.106689
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import systemfonts
@@ -64,11 +64,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
  		if (is.null(JavaApi$singleton)) stop("Startup the java api with JavaApi$get() rather than using this constructor directly")
  	
  	
- 		tryCatch({
-			if (!.jniInitialized) 
-				.jinit(parameters=getOption("java.parameters"),silent = TRUE, force.init = FALSE)
-		}, error = function(e) stop("Java cannot be initialised: ",e$message)
-		)
+ 		.startJvm()
 		
 		# Java dependencies
 		jars = .checkDependencies(quiet = TRUE)
@@ -86,7 +82,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.2");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-08-15T19:05:41.306");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-08-15T22:38:55.107103");
 		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.2");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
@@ -479,6 +475,7 @@ JavaApi$get = function(logLevel = "WARN") {
 }
 
 JavaApi$rebuildDependencies = function( ... ) {
+	.startJvm()
 	# remove working directory
 	unlink(.workingDir(), recursive = TRUE)
 	# rebuild everything
@@ -505,6 +502,7 @@ JavaApi$rebuildDependencies = function( ... ) {
 
 
 JavaApi$installDependencies = function() {
+	.startJvm()
 	.checkDependencies(quiet=FALSE)
 }
 
@@ -512,7 +510,7 @@ JavaApi$versionInformation = function() {
 	out = list(
 		package = "html2pdfr",
 		r_package_version = "0.4.2",
-		r_package_generated = "2022-08-15T19:05:41.349",
+		r_package_generated = "2022-08-15T22:38:55.123943",
 		java_library_version = "io.github.terminological:html2pdfr:0.4.2",
 		maintainer = "rob.challen@bristol.ac.uk"
 	)
@@ -526,6 +524,14 @@ JavaApi$versionInformation = function() {
 ## package private utility functions for managing maven dependencies ----
 # as this is generated code configuration is hard coded here
 # i.e. these functions are specific for the configuration of this package.
+
+.startJvm = function() {
+	tryCatch({
+		if (!.jniInitialized) 
+			.jinit(parameters=getOption("java.parameters"),silent = TRUE, force.init = FALSE)
+	}, error = function(e) stop("Java cannot be initialised: ",e$message))
+}
+
 
 .checkDependencies = function(...) {
 	# Java dependencies
