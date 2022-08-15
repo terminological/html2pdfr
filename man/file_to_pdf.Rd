@@ -46,7 +46,8 @@ so that the content is smaller. If no dimensions are present this will default t
 \examples{
 library(testthat)
 dest = tempfile(fileext='.html')
-download.file('https://cran.r-project.org/banner.shtml', destfile = dest)
+download.file('https://cran.r-project.org/banner.shtml',
+ destfile = dest)
 file_to_pdf(dest)
 }
 \keyword{java api}

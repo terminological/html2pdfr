@@ -42,7 +42,7 @@
 <meta property="og:title" content="R Wrapper For Openhtmltopdf Java Library — JavaApi" />
 <meta property="og:description" content="HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).
 Version: 0.4.2
-Generated: 2022-08-15T22:38:55.065585" />
+Generated: 2022-08-15T23:03:22.071" />
 
 
 
@@ -119,7 +119,7 @@ Generated: 2022-08-15T22:38:55.065585" />
     <div class="ref-description">
     <p>HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).</p>
 <p>Version: 0.4.2</p>
-<p>Generated: 2022-08-15T22:38:55.065585</p>
+<p>Generated: 2022-08-15T23:03:22.071</p>
     </div>
 
 
@@ -416,7 +416,8 @@ so that the content is smaller. If no dimensions are present this will default t
 <p><div class="r example copy"></p><pre>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://testthat.r-lib.org'>testthat</a></span><span class='op'>)</span>
 <span class='va'>dest</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext<span class='op'>=</span><span class='st'>'.html'</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span>, destfile <span class='op'>=</span> <span class='va'>dest</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span>,
+ destfile <span class='op'>=</span> <span class='va'>dest</span><span class='op'>)</span>
 <span class='fu'><a href='file_to_pdf.html'>file_to_pdf</a></span><span class='op'>(</span><span class='va'>dest</span><span class='op'>)</span>
       </pre><p></div></p>
 
@@ -518,7 +519,7 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 <span class='co'>## Check library dependencies for html2pdfr</span>
 <span class='co'>## -----------------------------------</span>
 <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'>JavaApi</span><span class='op'>$</span><span class='fu'>installDependencies</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Calculating classpath and updating dependencies, please be patient.</span></div><div class='output co'>#&gt; <span class='message'>Dependencies updated</span></div><div class='output co'>#&gt;  [1] "/tmp/RtmpGxrjiI/temp_libpath296a49c78526/html2pdfr/java/html2pdfr-0.4.2.jar"                                                           
+</div><div class='output co'>#&gt; <span class='message'>Calculating classpath and updating dependencies, please be patient.</span></div><div class='output co'>#&gt; <span class='message'>Dependencies updated</span></div><div class='output co'>#&gt;  [1] "/tmp/RtmpzmqL5U/temp_libpath3d148a603aa/html2pdfr/java/html2pdfr-0.4.2.jar"                                                            
 #&gt;  [2] "/home/terminological/.m2/repository/org/slf4j/slf4j-api/1.7.22/slf4j-api-1.7.22.jar"                                                   
 #&gt;  [3] "/home/terminological/.m2/repository/com/openhtmltopdf/openhtmltopdf-slf4j/1.0.10/openhtmltopdf-slf4j-1.0.10.jar"                       
 #&gt;  [4] "/home/terminological/.m2/repository/io/github/terminological/r6-generator-runtime/main-SNAPSHOT/r6-generator-runtime-main-SNAPSHOT.jar"
@@ -577,7 +578,7 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 
 
 <span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `J$HtmlConverter$new(fontfiles)`</span>
+<span class='co'>## Method `J$HtmlConverter$new(...)`</span>
 <span class='co'>## -----------------------------------</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># no example given - appropriate parameter values must be provided:</span>
@@ -587,30 +588,31 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 <span class='op'>}</span>
 
 <span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `J$HtmlConverter$htmlConverter(fontfiles, update)`</span>
-<span class='co'>## Aliased as `html2pdfr::html_converter(fontfiles, update)`</span>
+<span class='co'>## Method `J$HtmlConverter$htmlConverter(...)`</span>
+<span class='co'>## Aliased as `html2pdfr::html_converter(...)`</span>
 <span class='co'>## -----------------------------------</span>
 <span class='va'>conv</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='fu'><a href='html_converter.html'>html_converter</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `J$HtmlConverter$urlToPdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`</span>
-<span class='co'>## Aliased as `html2pdfr::url_to_pdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`</span>
+<span class='co'>## Method `J$HtmlConverter$urlToPdf(...)`</span>
+<span class='co'>## Aliased as `html2pdfr::url_to_pdf(...)`</span>
 <span class='co'>## -----------------------------------</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://testthat.r-lib.org'>testthat</a></span><span class='op'>)</span>
 <span class='fu'><a href='url_to_pdf.html'>url_to_pdf</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpWuxDS3/html2pdfr_29b57f803e32.pdf"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpFU0SeJ/html2pdfr_3d61b0fcd1b.pdf"</div><div class='input'>
 <span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `J$HtmlConverter$fileToPdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`</span>
-<span class='co'>## Aliased as `html2pdfr::file_to_pdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`</span>
+<span class='co'>## Method `J$HtmlConverter$fileToPdf(...)`</span>
+<span class='co'>## Aliased as `html2pdfr::file_to_pdf(...)`</span>
 <span class='co'>## -----------------------------------</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://testthat.r-lib.org'>testthat</a></span><span class='op'>)</span>
 <span class='va'>dest</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext<span class='op'>=</span><span class='st'>'.html'</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span>, destfile <span class='op'>=</span> <span class='va'>dest</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span>,
+ destfile <span class='op'>=</span> <span class='va'>dest</span><span class='op'>)</span>
 <span class='fu'><a href='file_to_pdf.html'>file_to_pdf</a></span><span class='op'>(</span><span class='va'>dest</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpWuxDS3/html2pdfr_29b579543164.pdf"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpFU0SeJ/html2pdfr_3d6168b25d36.pdf"</div><div class='input'>
 <span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `J$HtmlConverter$htmlDocumentToPdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`</span>
-<span class='co'>## Aliased as `html2pdfr::html_document_to_pdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`</span>
+<span class='co'>## Method `J$HtmlConverter$htmlDocumentToPdf(...)`</span>
+<span class='co'>## Aliased as `html2pdfr::html_document_to_pdf(...)`</span>
 <span class='co'>## -----------------------------------</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://testthat.r-lib.org'>testthat</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span>
@@ -619,10 +621,10 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    edition_get, local_edition</span></div><div class='input'><span class='va'>html</span> <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_file.html'>read_file</a></span><span class='op'>(</span><span class='st'>'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/'</span><span class='op'>)</span>
 <span class='fu'><a href='html_document_to_pdf.html'>html_document_to_pdf</a></span><span class='op'>(</span><span class='va'>html</span>, baseUri <span class='op'>=</span> <span class='st'>'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpWuxDS3/html2pdfr_29b548864533.pdf"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpFU0SeJ/html2pdfr_3d6169c54163.pdf"</div><div class='input'>
 <span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `J$HtmlConverter$htmlFragmentToPdf(htmlFragment, outFile, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`</span>
-<span class='co'>## Aliased as `html2pdfr::html_fragment_to_pdf(htmlFragment, outFile, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`</span>
+<span class='co'>## Method `J$HtmlConverter$htmlFragmentToPdf(...)`</span>
+<span class='co'>## Aliased as `html2pdfr::html_fragment_to_pdf(...)`</span>
 <span class='co'>## -----------------------------------</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://testthat.r-lib.org'>testthat</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
@@ -639,8 +641,8 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 <span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/themes.html'>theme_article</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
 <span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/to_html.html'>to_html</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='html_fragment_to_pdf.html'>html_fragment_to_pdf</a></span><span class='op'>(</span><span class='va'>html</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpWuxDS3/html2pdfr_29b5476161c7.pdf"
-#&gt; [2] "/tmp/RtmpWuxDS3/html2pdfr_29b5476161c7.png"</div></pre>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpFU0SeJ/html2pdfr_3d612e9aa56e.pdf"
+#&gt; [2] "/tmp/RtmpFU0SeJ/html2pdfr_3d612e9aa56e.png"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

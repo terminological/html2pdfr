@@ -6,7 +6,7 @@
 #'
 #' Version: 0.4.2
 #'
-#' Generated: 2022-08-15T22:38:55.106689
+#' Generated: 2022-08-15T23:03:22.134
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import systemfonts
@@ -82,7 +82,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.2");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-08-15T22:38:55.107103");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-08-15T23:03:22.134");
 		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.2");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
@@ -510,7 +510,7 @@ JavaApi$versionInformation = function() {
 	out = list(
 		package = "html2pdfr",
 		r_package_version = "0.4.2",
-		r_package_generated = "2022-08-15T22:38:55.123943",
+		r_package_generated = "2022-08-15T23:03:22.180",
 		java_library_version = "io.github.terminological:html2pdfr:0.4.2",
 		maintainer = "rob.challen@bristol.ac.uk"
 	)

@@ -27,7 +27,7 @@ HTML and CSS do a good job at automatically laying out and styling content parti
 
 Version: 0.4.2
 
-Generated: 2022-08-15T22:38:55.065585
+Generated: 2022-08-15T23:03:22.071
 }
 
 \author{\email{rob.challen@bristol.ac.uk}}
@@ -48,7 +48,7 @@ J = html2pdfr::JavaApi$get()
 
 
 ## -----------------------------------
-## Method `J$HtmlConverter$new(fontfiles)`
+## Method `J$HtmlConverter$new(...)`
 ## -----------------------------------
 \dontrun{
 # no example given - appropriate parameter values must be provided:
@@ -58,30 +58,31 @@ html2pdfr::new(fontfiles)
 }
 
 ## -----------------------------------
-## Method `J$HtmlConverter$htmlConverter(fontfiles, update)`
-## Aliased as `html2pdfr::html_converter(fontfiles, update)`
+## Method `J$HtmlConverter$htmlConverter(...)`
+## Aliased as `html2pdfr::html_converter(...)`
 ## -----------------------------------
 conv = html2pdfr::html_converter()
 
 ## -----------------------------------
-## Method `J$HtmlConverter$urlToPdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`
-## Aliased as `html2pdfr::url_to_pdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`
+## Method `J$HtmlConverter$urlToPdf(...)`
+## Aliased as `html2pdfr::url_to_pdf(...)`
 ## -----------------------------------
 library(testthat)
 url_to_pdf('https://cran.r-project.org/banner.shtml')
 
 ## -----------------------------------
-## Method `J$HtmlConverter$fileToPdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`
-## Aliased as `html2pdfr::file_to_pdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`
+## Method `J$HtmlConverter$fileToPdf(...)`
+## Aliased as `html2pdfr::file_to_pdf(...)`
 ## -----------------------------------
 library(testthat)
 dest = tempfile(fileext='.html')
-download.file('https://cran.r-project.org/banner.shtml', destfile = dest)
+download.file('https://cran.r-project.org/banner.shtml',
+ destfile = dest)
 file_to_pdf(dest)
 
 ## -----------------------------------
-## Method `J$HtmlConverter$htmlDocumentToPdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`
-## Aliased as `html2pdfr::html_document_to_pdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`
+## Method `J$HtmlConverter$htmlDocumentToPdf(...)`
+## Aliased as `html2pdfr::html_document_to_pdf(...)`
 ## -----------------------------------
 library(testthat)
 library(readr)
@@ -89,8 +90,8 @@ html = read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 
 ## -----------------------------------
-## Method `J$HtmlConverter$htmlFragmentToPdf(htmlFragment, outFile, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`
-## Aliased as `html2pdfr::html_fragment_to_pdf(htmlFragment, outFile, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)`
+## Method `J$HtmlConverter$htmlFragmentToPdf(...)`
+## Aliased as `html2pdfr::html_fragment_to_pdf(...)`
 ## -----------------------------------
 library(testthat)
 library(dplyr)
@@ -514,7 +515,8 @@ html2pdfr::file_to_pdf(inFile, outFile, cssSelector, xMarginInches, yMarginInche
 			\preformatted{
 library(testthat)
 dest = tempfile(fileext='.html')
-download.file('https://cran.r-project.org/banner.shtml', destfile = dest)
+download.file('https://cran.r-project.org/banner.shtml',
+ destfile = dest)
 file_to_pdf(dest)
 			}
 			\if{html}{\out{</div>}}
