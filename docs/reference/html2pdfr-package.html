@@ -42,7 +42,7 @@
 <meta property="og:title" content="html2pdfr: R Wrapper For Openhtmltopdf Java Library — html2pdfr-package" />
 <meta property="og:description" content="
 HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).
-Version: 0.4.1.9999
+Version: 0.4.2
 Classes:
 JavaApi
 HtmlConverter
@@ -79,7 +79,7 @@ HtmlConverter
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">html2pdfr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -92,10 +92,19 @@ HtmlConverter
   </a>
 </li>
 <li>
-  <a href="../articles/html2pdfr.html">Get started</a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/web-only/html2pdfr.html">Using html2pdfr</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -124,7 +133,7 @@ HtmlConverter
     <div class="ref-description">
     <p><!-- % \if{html}{\figure{logo.png}{options: align='right'}} -->
 HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).</p>
-<p>Version: 0.4.1.9999</p>
+<p>Version: 0.4.2</p>
 <p>Classes:</p><ul>
 <li><p><code>JavaApi</code></p></li>
 <li><p><code>HtmlConverter</code></p></li>

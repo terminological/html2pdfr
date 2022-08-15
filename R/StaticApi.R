@@ -2,8 +2,8 @@
 # This is a collection of the static methods described in the Java API
 # and serves as an alternative R centric entry point of the html2pdfr generated R library.
 
-# Version: 0.4.1.9999
-# Generated: 2022-07-15T12:09:36.666474
+# Version: 0.4.2
+# Generated: 2022-08-15T19:05:41.358
 # Contact: rob.challen@bristol.ac.uk
 
 # HtmlConverter class static methods ----
@@ -21,9 +21,7 @@
 #' @return R6 HtmlConverter object: 
 #' 
 #' @examples
-#' \dontrun{
 #' conv = html2pdfr::html_converter()
-#' }
 #' @export
 html_converter = function(fontfiles=systemfonts::system_fonts()$path, update=FALSE) {
 	# get the API singleton
@@ -56,11 +54,10 @@ html_converter = function(fontfiles=systemfonts::system_fonts()$path, update=FAL
 #' @param pngDpi the dots per inch for png outputs if requested - (defaulting to 300) - (java expects a RNumeric)
 #' @param converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)
 #' @return RCharacterVector: 
-#' the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
+#' the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 #' @examples
-#' \dontrun{
+#' library(testthat)
 #' url_to_pdf('https://cran.r-project.org/banner.shtml')
-#' }
 #' @export
 url_to_pdf = function(htmlUrl, outFile=tempfile('html2pdfr_'), cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
 	# get the API singleton
@@ -97,11 +94,10 @@ url_to_pdf = function(htmlUrl, outFile=tempfile('html2pdfr_'), cssSelector=NA_ch
 #' @return RCharacterVector: 
 #' the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 #' @examples
-#' \dontrun{
+#' library(testthat)
 #' dest = tempfile(fileext='.html')
 #' download.file('https://cran.r-project.org/banner.shtml', destfile = dest)
 #' file_to_pdf(dest)
-#' }
 #' @export
 file_to_pdf = function(inFile, outFile=tempfile('html2pdfr_'), cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
 	# get the API singleton
@@ -138,11 +134,10 @@ file_to_pdf = function(inFile, outFile=tempfile('html2pdfr_'), cssSelector=NA_ch
 #' @return RCharacterVector: 
 #' the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 #' @examples
-#' \dontrun{
+#' library(testthat)
 #' library(tidyverse)
 #' html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 #' html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
-#' }
 #' @export
 html_document_to_pdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA_character_, cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
 	# get the API singleton
@@ -175,12 +170,14 @@ html_document_to_pdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA
 #' @return RCharacterVector: 
 #' the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 #' @examples
-#' \dontrun{
-#' library(tidyverse)
-#' html = iris %>% group_by(Species) %>% summarise(across(everything(), mean)) %>%
-#' huxtable::as_hux() %>% huxtable::theme_article() %>% huxtable::to_html()
+#' library(testthat)
+#' library(dplyr)
+#' html = iris %>% group_by(Species) %>%
+#' summarise(across(everything(), mean)) %>%
+#' huxtable::as_hux() %>%
+#' huxtable::theme_article() %>%
+#' huxtable::to_html()
 #' html_fragment_to_pdf(html)
-#' }
 #' @export
 html_fragment_to_pdf = function(htmlFragment, outFile=tempfile('html2pdfr_'), xMarginInches=1.0, yMarginInches=1.0, maxWidthInches=8.27, maxHeightInches=11.69, formats=c('pdf','png'), pngDpi=300, converter=html2pdfr::html_converter()) {
 	# get the API singleton

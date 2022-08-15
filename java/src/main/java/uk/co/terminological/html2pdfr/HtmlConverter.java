@@ -30,6 +30,7 @@ import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.output.NullOutputStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 //import org.htmlcleaner.CleanerProperties;
@@ -68,7 +69,7 @@ import uk.co.terminological.rjava.types.RCharacterVector;
 import uk.co.terminological.rjava.types.RLogical;
 import uk.co.terminological.rjava.types.RNumeric;
 
-@RClass(imports = {"systemfonts"},suggests= {"here","huxtable","ggplot2"})
+@RClass(imports = {"systemfonts"},suggests= {"here","huxtable","ggplot2","dplyr"})
 public class HtmlConverter {
 
 	protected List<CSSFont> fonts = new ArrayList<>();
@@ -96,9 +97,9 @@ public class HtmlConverter {
 			@RDefault(rCode = "FALSE") RLogical update
 	) {
 		if (instance == null || update.get().booleanValue()) {
-			instance = new HtmlConverter(fontfiles.rPrimitive());
 			XRLog.setLoggerImpl(new Slf4jLogger());
 			XRLog.setLoggingEnabled(false);
+			instance = new HtmlConverter(fontfiles.rPrimitive());
 		}
 		return instance;
 	}
@@ -207,10 +208,10 @@ public class HtmlConverter {
 	 * @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both.
 	 * @param pngDpi the dots per inch for png outputs if requested
 	 * @param converter (optional) a configured HTML converter, only needed if manually specifying fonts.
-	 * @return the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
+	 * @return the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 	 * @throws IOException if the output file cannot be written
 	 */
-	@RMethod(examples = {
+	@RMethod(tests = {
 			"url_to_pdf('https://cran.r-project.org/banner.shtml')"
 	})
 	public static RCharacterVector urlToPdf(
@@ -269,7 +270,7 @@ public class HtmlConverter {
 	 * @return the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 	 * @throws IOException if the output file cannot be written
 	 */	 
-	@RMethod(examples = {
+	@RMethod(tests = {
 			"dest = tempfile(fileext='.html')",
 			"download.file('https://cran.r-project.org/banner.shtml', destfile = dest)",
 			"file_to_pdf(dest)"
@@ -329,7 +330,7 @@ public class HtmlConverter {
 	 * @return the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 	 * @throws IOException if the output file cannot be written
 	 */
-	@RMethod(examples = {
+	@RMethod(tests = {
 			"library(tidyverse)", 
 			"html = readr::read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')",
 			"html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')"
@@ -388,10 +389,13 @@ public class HtmlConverter {
 	 * @return the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).
 	 * @throws IOException if the output file cannot be written
 	 */
-	@RMethod(examples = {
-			"library(tidyverse)", 
-			"html = iris %>% group_by(Species) %>% summarise(across(everything(), mean)) %>% ",
-			"  huxtable::as_hux() %>% huxtable::theme_article() %>% huxtable::to_html()",
+	@RMethod(tests = {
+			"library(dplyr)", 
+			"html = iris %>% group_by(Species) %>% ",
+			"  summarise(across(everything(), mean)) %>% ",
+			"  huxtable::as_hux() %>% ",
+			"  huxtable::theme_article() %>% ",
+			"  huxtable::to_html()",
 			"html_fragment_to_pdf(html)"
 	})
 	public static RCharacterVector htmlFragmentToPdf(
@@ -497,7 +501,10 @@ public class HtmlConverter {
 			pdfdoc.save(pdfFile);
 			write = true;
 			saved.add(pdfFile.toString());
-		} 
+		} else {
+			// Dummy save to trigger allow png save to execute correctly
+			pdfdoc.save(new NullOutputStream());
+		}
 
 		
 		if(Arrays.asList(formats).contains("png")) {

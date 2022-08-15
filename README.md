@@ -22,7 +22,7 @@ rJava::J("java.lang.System")$getProperty("java.version")
 devtools::install_github("terminological/html2pdfr")
 ```
 
-Stable releases should be installed.
+Stable releases are preferred.
 On windows particularly build may fail if the multi-arch option is set
 
 ```R

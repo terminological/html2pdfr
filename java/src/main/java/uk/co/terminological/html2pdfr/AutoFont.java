@@ -131,7 +131,7 @@ public class AutoFont {
 			return Files
 				.walk(p)
 				.filter(p2 -> !Files.isDirectory(p2) && p2.toString().endsWith("ttf"))
-				.peek(System.out::println)
+				.peek(s -> log.debug("adding font: "+s))
 				.flatMap(AutoFont::fromFontFile);
 		} catch (IOException e) {
 			return Stream.empty();
@@ -264,7 +264,7 @@ public class AutoFont {
         }
 
         protected void onValidFont(CSSFont font) {
-            log.info("Adding font with path = '%s', name = '%s', weight = %d, style = %s%n", font.path, font.family, font.weight, font.style.name());
+            log.debug("Adding font with path = '%s', name = '%s', weight = %d, style = %s%n", font.path, font.family, font.weight, font.style.name());
         }
 
         protected void onInvalidFont(Path font, FontFormatException ffe) {

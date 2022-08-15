@@ -41,8 +41,8 @@
 
 <meta property="og:title" content="HtmlConverter — HtmlConverter" />
 <meta property="og:description" content="missing description
-Version: 0.4.1.9999
-Generated: 2022-07-15T12:09:36.759306" />
+Version: 0.4.2
+Generated: 2022-08-15T19:05:41.468" />
 
 
 
@@ -74,7 +74,7 @@ Generated: 2022-07-15T12:09:36.759306" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">html2pdfr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -87,10 +87,19 @@ Generated: 2022-07-15T12:09:36.759306" />
   </a>
 </li>
 <li>
-  <a href="../articles/html2pdfr.html">Get started</a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/web-only/html2pdfr.html">Using html2pdfr</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -118,8 +127,8 @@ Generated: 2022-07-15T12:09:36.759306" />
 
     <div class="ref-description">
     <p>missing description</p>
-<p>Version: 0.4.1.9999</p>
-<p>Generated: 2022-07-15T12:09:36.759306</p>
+<p>Version: 0.4.2</p>
+<p>Generated: 2022-08-15T19:05:41.468</p>
     </div>
 
 
@@ -140,14 +149,7 @@ Generated: 2022-07-15T12:09:36.759306" />
     <p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Constructors</h3>
 <p></p><ul>
 <li><p><a href='#method-new'><code>J$HtmlConverter$new(fontfiles)</code></a></p></li>
-</ul><p></p><p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Static methods</h3>
-<p></p><ul>
-<li><p><a href='#method-htmlConverter'><code>J$HtmlConverter$htmlConverter(fontfiles, update)</code></a></p></li>
-<li><p><a href='#method-urlToPdf'><code>J$HtmlConverter$urlToPdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)</code></a></p></li>
-<li><p><a href='#method-fileToPdf'><code>J$HtmlConverter$fileToPdf(inFile, outFile, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)</code></a></p></li>
-<li><p><a href='#method-htmlDocumentToPdf'><code>J$HtmlConverter$htmlDocumentToPdf(html, outFile, baseUri, cssSelector, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)</code></a></p></li>
-<li><p><a href='#method-htmlFragmentToPdf'><code>J$HtmlConverter$htmlFragmentToPdf(htmlFragment, outFile, xMarginInches, yMarginInches, maxWidthInches, maxHeightInches, formats, pngDpi, converter)</code></a></p></li>
-</ul><p></p><p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Instance methods</h3>
+</ul><p></p><p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Class methods</h3>
 <p></p><ul>
 <li><p>none</p></li>
 <li><p><code>instance$clone()</code></p></li>
@@ -156,13 +158,12 @@ Generated: 2022-07-15T12:09:36.759306" />
 
 <p><hr>
 	<a id="method-new"></a></p>	
-<p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
-<p>the default no-args constructor</p>	
-
+<p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Constructor <code>new()</code></h3>
+<p>the default no-args constructor</p>
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre>
 <span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>fontfiles</span><span class='op'>)</span>
+<span class='va'>instance</span> <span class='op'>=</span> <span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>fontfiles</span><span class='op'>)</span>;
         </pre><p></div></p>
 	
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
@@ -171,237 +172,22 @@ Generated: 2022-07-15T12:09:36.759306" />
 </ul><p></div></p>
 
 <p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>R6 HtmlConverter object:</p>
+<p>the new R6 HtmlConverter object</p>
 
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>
-not available
-			</pre><p></div></p><p></p><p><hr>
-	<a id="method-htmlConverter"></a></p>	
-<p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>htmlConverter()</code></h3>
-<p>Create a new HtmlConverter</p>
-<p>for creating PDF and PNG files from HTML. In general this will be created automatically.
-but if you have specific fonts you want to use then you may need to pass them to this
-function and specify the result in the `converter` parameter of the main functions.</p>	
+<p></p>
 
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre>
-<span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>htmlConverter</span><span class='op'>(</span><span class='va'>fontfiles</span>, <span class='va'>update</span><span class='op'>)</span>
-        </pre><p></div></p>
-	
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><ul>
-<li><p>fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path) - (java expects a RCharacterVector)</p></li>
-<li><p>update - (defaulting to FALSE) - (java expects a RLogical)</p></li>
-</ul><p></div></p>
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>R6 HtmlConverter object:</p>
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>
- 
-      <span class='va'>conv</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='fu'><a href='html_converter.html'>html_converter</a></span><span class='op'>(</span><span class='op'>)</span>
-      </pre><p></div></p><p></p><p><hr>
-	<a id="method-urlToPdf"></a></p>	
-<p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>urlToPdf()</code></h3>
-<p>Convert HTML document from a URL to a PDF document.</p>
-<p>The URL is assumed to be a complete document. 
-The resulting PDF size will be controlled by page media directives within the HTML, 
-unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
-If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
-In this case it is will be resized to fit within the given dimensions and shrink wrapped
-so that the content is smaller. If no dimensions are present this will default to A4.</p>	
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre>
-<span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>urlToPdf</span><span class='op'>(</span><span class='va'>htmlUrl</span>, <span class='va'>outFile</span>, <span class='va'>cssSelector</span>, <span class='va'>xMarginInches</span>, <span class='va'>yMarginInches</span>, <span class='va'>maxWidthInches</span>, <span class='va'>maxHeightInches</span>, <span class='va'>formats</span>, <span class='va'>pngDpi</span>, <span class='va'>converter</span><span class='op'>)</span>
-        </pre><p></div></p>
-	
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><ul>
-<li><p>htmlUrl the URL - (java expects a String)</p></li>
-<li><p>outFile the full path of the output file - (defaulting to tempfile('html2pdfr_')) - (java expects a String)</p></li>
-<li><p>cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_) - (java expects a RCharacter)</p></li>
-<li><p>xMarginInches page width margins - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>yMarginInches page height margins - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf')) - (java expects a RCharacterVector)</p></li>
-<li><p>pngDpi the dots per inch for png outputs if requested - (defaulting to 300) - (java expects a RNumeric)</p></li>
-<li><p>converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)</p></li>
-</ul><p></div></p>
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).</p>
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>
-<span class='fu'><a href='url_to_pdf.html'>url_to_pdf</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span><span class='op'>)</span>
-      </pre><p></div></p><p></p><p><hr>
-	<a id="method-fileToPdf"></a></p>	
-<p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>fileToPdf()</code></h3>
-<p>Convert HTML document from a local file to a PDF document.</p>
-<p>The HTML in `inFile` is assumed to be a complete document. Relative references are resolved
-with reference to the HTML file on the file system, so correctly located images etc whould be 
-picked up without requiring a server.
-The resulting PDF size will be controlled by page media directives within the HTML, 
-unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
-If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
-In this case it is will be resized to fit within the given dimensions and shrink wrapped
-so that the content is smaller. If no dimensions are present this will default to A4.</p>	
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre>
-<span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>fileToPdf</span><span class='op'>(</span><span class='va'>inFile</span>, <span class='va'>outFile</span>, <span class='va'>cssSelector</span>, <span class='va'>xMarginInches</span>, <span class='va'>yMarginInches</span>, <span class='va'>maxWidthInches</span>, <span class='va'>maxHeightInches</span>, <span class='va'>formats</span>, <span class='va'>pngDpi</span>, <span class='va'>converter</span><span class='op'>)</span>
-        </pre><p></div></p>
-	
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><ul>
-<li><p>inFile the full path the the HTML file - (java expects a String)</p></li>
-<li><p>outFile the full path of the output file - (defaulting to tempfile('html2pdfr_')) - (java expects a String)</p></li>
-<li><p>cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_) - (java expects a RCharacter)</p></li>
-<li><p>xMarginInches page width margins - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>yMarginInches page height margins - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf')) - (java expects a RCharacterVector)</p></li>
-<li><p>pngDpi the dots per inch for png outputs if requested - (defaulting to 300) - (java expects a RNumeric)</p></li>
-<li><p>converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)</p></li>
-</ul><p></div></p>
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).</p>
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>
-<span class='va'>dest</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext<span class='op'>=</span><span class='st'>'.html'</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span>, destfile <span class='op'>=</span> <span class='va'>dest</span><span class='op'>)</span>
-<span class='fu'><a href='file_to_pdf.html'>file_to_pdf</a></span><span class='op'>(</span><span class='va'>dest</span><span class='op'>)</span>
-      </pre><p></div></p><p></p><p><hr>
-	<a id="method-htmlDocumentToPdf"></a></p>	
-<p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>htmlDocumentToPdf()</code></h3>
-<p>Convert HTML document from a string to a PDF document.</p>
-<p>The HTML in `html` is assumed to be a complete document. Relative references are resolved
-with reference to `baseUri` if it is given (which could be a `file://` URI).
-The resulting PDF size will be controlled by page media directives within the HTML, 
-unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
-If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
-In this case it is will be resized to fit within the given dimensions and shrink wrapped
-so that the content is smaller. If no dimensions are present this will default to A4.</p>	
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre>
-<span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>htmlDocumentToPdf</span><span class='op'>(</span><span class='va'>html</span>, <span class='va'>outFile</span>, <span class='va'>baseUri</span>, <span class='va'>cssSelector</span>, <span class='va'>xMarginInches</span>, <span class='va'>yMarginInches</span>, <span class='va'>maxWidthInches</span>, <span class='va'>maxHeightInches</span>, <span class='va'>formats</span>, <span class='va'>pngDpi</span>, <span class='va'>converter</span><span class='op'>)</span>
-        </pre><p></div></p>
-	
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><ul>
-<li><p>html the html document as a string - (java expects a String)</p></li>
-<li><p>outFile the full path of the output file - (defaulting to tempfile('html2pdfr_')) - (java expects a String)</p></li>
-<li><p>baseUri the URI from which to interpret relative links in the html content. - (defaulting to NA_character_) - (java expects a RCharacter)</p></li>
-<li><p>cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_) - (java expects a RCharacter)</p></li>
-<li><p>xMarginInches page width margins - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>yMarginInches page height margins - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_) - (java expects a RNumeric)</p></li>
-<li><p>formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf')) - (java expects a RCharacterVector)</p></li>
-<li><p>pngDpi the dots per inch for png outputs if requested - (defaulting to 300) - (java expects a RNumeric)</p></li>
-<li><p>converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)</p></li>
-</ul><p></div></p>
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).</p>
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>html</span> <span class='op'>=</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_file.html'>read_file</a></span><span class='op'>(</span><span class='st'>'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/'</span><span class='op'>)</span>
-<span class='fu'><a href='html_document_to_pdf.html'>html_document_to_pdf</a></span><span class='op'>(</span><span class='va'>html</span>, baseUri <span class='op'>=</span> <span class='st'>'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/'</span><span class='op'>)</span>
-      </pre><p></div></p><p></p><p><hr>
-	<a id="method-htmlFragmentToPdf"></a></p>	
-<p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>htmlFragmentToPdf()</code></h3>
-<p>Render HTML fragment from a string to a PDF image.</p>
-<p>This is the simple rendering function that will output a PDF file (potentially many pages) and a set of PNG files from HTML content. 
-This is primarily used to render HTML content (e.g. a table) that is being included in a larger document.
-In this case the HTML fragment will not specify page dimensions which need to be provided (defaults to A4 size with 1 inch margins). 
-The result can be embedded into an existing page using latex's includegraphics directive exactly the same way as a graphical figure might be used. 
-The sizing of the output will always be smaller than the dimensions of a page, but will shrink to fit the content.</p>	
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre>
-<span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>htmlFragmentToPdf</span><span class='op'>(</span><span class='va'>htmlFragment</span>, <span class='va'>outFile</span>, <span class='va'>xMarginInches</span>, <span class='va'>yMarginInches</span>, <span class='va'>maxWidthInches</span>, <span class='va'>maxHeightInches</span>, <span class='va'>formats</span>, <span class='va'>pngDpi</span>, <span class='va'>converter</span><span class='op'>)</span>
-        </pre><p></div></p>
-	
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><ul>
-<li><p>htmlFragment a HTML fragment, e.g. usually the table element, but may be the whole page. - (java expects a String)</p></li>
-<li><p>outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to tempfile('html2pdfr_')) - (java expects a String)</p></li>
-<li><p>xMarginInches page width margins - (defaulting to 1.0) - (java expects a RNumeric)</p></li>
-<li><p>yMarginInches page height margins - (defaulting to 1.0) - (java expects a RNumeric)</p></li>
-<li><p>maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to 8.27) - (java expects a RNumeric)</p></li>
-<li><p>maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to 11.69) - (java expects a RNumeric)</p></li>
-<li><p>formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf','png')) - (java expects a RCharacterVector)</p></li>
-<li><p>pngDpi the dots per inch for png outputs if requested. - (defaulting to 300) - (java expects a RNumeric)</p></li>
-<li><p>converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)</p></li>
-</ul><p></div></p>
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
-<p>RCharacterVector: the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).</p>
-
-<p></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>
-library(tidyverse)
-html = iris &lt;!-- %&gt;% group_by(Species) %&gt;% summarise(across(everything(), mean)) %&gt;%  --&gt;
-  huxtable::as_hux() &lt;!-- %&gt;% huxtable::theme_article() %&gt;% huxtable::to_html() --&gt;
-html_fragment_to_pdf(html)
-			</pre><p></div></p><p></p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>;
+    <pre class="examples"><div class='input'><span class='co'>## -----------------------------------</span>
+<span class='co'>## Construct new instance of HtmlConverter</span>
+<span class='co'>## -----------------------------------</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'><a href='JavaApi.html'>JavaApi</a></span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
+<span class='co'># appropriate parameter values must be provided</span>
 <span class='va'>instance</span> <span class='op'>=</span> <span class='va'>J</span><span class='op'>$</span><span class='va'>HtmlConverter</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>fontfiles</span><span class='op'>)</span>
-
-<span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `HtmlConverter$htmlConverter`</span>
-<span class='co'>## -----------------------------------</span>
- 
-      <span class='va'>conv</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='fu'><a href='html_converter.html'>html_converter</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `HtmlConverter$urlToPdf`</span>
-<span class='co'>## -----------------------------------</span>
-<span class='fu'><a href='url_to_pdf.html'>url_to_pdf</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span><span class='op'>)</span>
-
-<span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `HtmlConverter$fileToPdf`</span>
-<span class='co'>## -----------------------------------</span>
-<span class='va'>dest</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext<span class='op'>=</span><span class='st'>'.html'</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span>, destfile <span class='op'>=</span> <span class='va'>dest</span><span class='op'>)</span>
-<span class='fu'><a href='file_to_pdf.html'>file_to_pdf</a></span><span class='op'>(</span><span class='va'>dest</span><span class='op'>)</span>
-
-<span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `HtmlConverter$htmlDocumentToPdf`</span>
-<span class='co'>## -----------------------------------</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>html</span> <span class='op'>=</span> <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_file.html'>read_file</a></span><span class='op'>(</span><span class='st'>'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/'</span><span class='op'>)</span>
-<span class='fu'><a href='html_document_to_pdf.html'>html_document_to_pdf</a></span><span class='op'>(</span><span class='va'>html</span>, baseUri <span class='op'>=</span> <span class='st'>'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/'</span><span class='op'>)</span>
-
-<span class='co'>## -----------------------------------</span>
-<span class='co'>## Method `HtmlConverter$htmlFragmentToPdf`</span>
-<span class='co'>## -----------------------------------</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>html</span> <span class='op'>=</span> <span class='va'>iris</span> 
-  <span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/as_huxtable.html'>as_hux</a></span><span class='op'>(</span><span class='op'>)</span> 
-<span class='fu'><a href='html_fragment_to_pdf.html'>html_fragment_to_pdf</a></span><span class='op'>(</span><span class='va'>html</span><span class='op'>)</span>
-
-<span class='op'>}</span></div></pre>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

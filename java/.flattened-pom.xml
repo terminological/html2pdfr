@@ -4,14 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.terminological</groupId>
   <artifactId>html2pdfr</artifactId>
-  <version>0.4.1-SNAPSHOT</version>
+  <version>0.4.2</version>
   <name>Java html to pdf for R</name>
   <description>R wrapper for OpenHTMLtoPDF java library</description>
   <dependencies>
     <dependency>
       <groupId>io.github.terminological</groupId>
       <artifactId>r6-generator-runtime</artifactId>
-      <version>0.5.1</version>
+      <version>main-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

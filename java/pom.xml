@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.terminological</groupId>
 	<artifactId>html2pdfr</artifactId>
-	<version>0.4.1-SNAPSHOT</version>
+	<version>0.4.2</version>
 	<description>R wrapper for OpenHTMLtoPDF java library</description>
 
 	<properties>
@@ -12,7 +12,7 @@
 		<!-- Must be Java 8 for standard rJava implementation -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<r6.version>0.5.1</r6.version>
+		<r6.version>main-SNAPSHOT</r6.version>
 		<openhtml.version>1.0.10</openhtml.version>
 		<open.batik.version>1.14</open.batik.version>
 

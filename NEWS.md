@@ -9,8 +9,10 @@
 # html2pdfr 0.4.1
 
 * remove dependency on extrafont (for sysfont)
+* Bug: cannot generate png files without pdfs
 
 # html2pdfr 0.4.1.9000
 
+* Fix bug: cannot generate png files without pdfs
 * TODO: check whether java's font detection can be used.
 * possibly including Google fonts.

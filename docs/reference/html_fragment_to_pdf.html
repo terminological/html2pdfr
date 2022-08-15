@@ -76,7 +76,7 @@ The sizing of the output will always be smaller than the dimensions of a page, b
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">html2pdfr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -89,10 +89,19 @@ The sizing of the output will always be smaller than the dimensions of a page, b
   </a>
 </li>
 <li>
-  <a href="../articles/html2pdfr.html">Get started</a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/web-only/html2pdfr.html">Using html2pdfr</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -184,13 +193,16 @@ The sizing of the output will always be smaller than the dimensions of a page, b
     <p>RCharacterVector: the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>html</span> <span class='op'>=</span> <span class='va'>iris</span> <span class='op'>%&gt;%</span> <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>Species</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>summarise</span><span class='op'>(</span><span class='fu'>across</span><span class='op'>(</span><span class='fu'>everything</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>mean</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/as_huxtable.html'>as_hux</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/themes.html'>theme_article</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/to_html.html'>to_html</a></span><span class='op'>(</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://testthat.r-lib.org'>testthat</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='va'>html</span> <span class='op'>=</span> <span class='va'>iris</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Species</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/across.html'>across</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/everything.html'>everything</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>mean</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/as_huxtable.html'>as_hux</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/themes.html'>theme_article</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/to_html.html'>to_html</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'>html_fragment_to_pdf</span><span class='op'>(</span><span class='va'>html</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpusnBKv/html2pdfr_61ef377d8b40.pdf"
+#&gt; [2] "/tmp/RtmpusnBKv/html2pdfr_61ef377d8b40.png"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

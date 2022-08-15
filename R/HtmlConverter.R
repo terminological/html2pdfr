@@ -8,9 +8,9 @@
 #' 
 #' This is a class of the html2pdfr generated R library.
 #' 
-#' Version: 0.4.1.9999
+#' Version: 0.4.2
 #' 
-#' Generated: 2022-07-15T12:09:36.787687
+#' Generated: 2022-08-15T19:05:41.472
 #'
 #' @details
 	#' no details
@@ -31,8 +31,11 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 	#' @param api The R6 api library class.
 	#' @return A new HtmlConverter object.
 	#' @examples
-	#' J = html2pdfr::JavaApi$get();
+	#' \dontrun{
+	#' J = html2pdfr::JavaApi$get()
+	#' # This constructor must be called via the JavaApi where an appropriate set of parameters must be provided.
 	#' instance = J$HtmlConverter$new(fontfiles)
+	#' }	
 	initialize = function(jobj,api){
 		self$.jobj = jobj;
 		self$.api = api;

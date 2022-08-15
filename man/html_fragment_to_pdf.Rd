@@ -38,12 +38,15 @@ In this case the HTML fragment will not specify page dimensions which need to be
 The result can be embedded into an existing page using latex's includegraphics directive exactly the same way as a graphical figure might be used. 
 The sizing of the output will always be smaller than the dimensions of a page, but will shrink to fit the content.
 }
-\examples{\dontrun{
-library(tidyverse)
-html = iris \%>\% group_by(Species) \%>\% summarise(across(everything(), mean)) \%>\% 
-  huxtable::as_hux() \%>\% huxtable::theme_article() \%>\% huxtable::to_html()
+\examples{
+library(testthat)
+library(dplyr)
+html = iris \%>\% group_by(Species) \%>\%
+summarise(across(everything(), mean)) \%>\%
+huxtable::as_hux() \%>\%
+huxtable::theme_article() \%>\%
+huxtable::to_html()
 html_fragment_to_pdf(html)
-}
 }
 \keyword{java api}
 

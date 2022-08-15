@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pipe operator — %&gt;% • html2pdfr</title>
+<title>Create a new HtmlConverter — html_converter_html_converter • html2pdfr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Pipe operator — %&gt;%" />
-<meta property="og:description" content="See magrittr::%&amp;gt;% for details." />
+<meta property="og:title" content="Create a new HtmlConverter — html_converter_html_converter" />
+<meta property="og:description" content="for creating PDF and PNG files from HTML. In general this will be created automatically.
+but if you have specific fonts you want to use then you may need to pass them to this
+function and specify the result in the `converter` parameter of the main functions." />
 
 
 
@@ -118,34 +120,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pipe operator</h1>
+    <h1>Create a new HtmlConverter</h1>
     
-    <div class="hidden name"><code>pipe.Rd</code></div>
+    <div class="hidden name"><code>html_converter_html_converter.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>See <code>magrittr::%&gt;%</code> for details.</p>
+    <p>for creating PDF and PNG files from HTML. In general this will be created automatically.
+but if you have specific fonts you want to use then you may need to pass them to this
+function and specify the result in the `converter` parameter of the main functions.</p>
     </div>
 
-    <pre class="usage"><span class='va'>lhs</span> <span class='op'>%&gt;%</span> <span class='va'>rhs</span></pre>
+    <pre class="usage"><span class='fu'>html_converter_html_converter</span><span class='op'>(</span>
+  fontfiles<span class='op'>=</span><span class='fu'>systemfonts</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/systemfonts/man/system_fonts.html'>system_fonts</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>path</span>,
+  update<span class='op'>=</span><span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>lhs</th>
-      <td><p>A value or the magrittr placeholder.</p></td>
+      <th>fontfiles</th>
+      <td><p>fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path) - (java expects a RCharacterVector)</p></td>
     </tr>
     <tr>
-      <th>rhs</th>
-      <td><p>A function call using the magrittr semantics.</p></td>
+      <th>update</th>
+      <td><p>update - (defaulting to FALSE) - (java expects a RLogical)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The result of calling `rhs(lhs)`.</p>
+    <p>R6 HtmlConverter object:</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>conv</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='fu'><a href='html_converter.html'>html_converter</a></span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

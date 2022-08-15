@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 library(magrittr)
 
 # devtools::load_all("~/Git/html2pdfr/")
-here::i_am("vignettes/html2pdfr.Rmd")
+here::i_am("vignettes/web-only/html2pdfr.Rmd")
 ```
 
 ## Installing the library
@@ -98,3 +98,29 @@ html2pdfr::url_to_pdf(
 
 [The resulting mathml](example-mathml.pdf) 
 
+
+
+```LATEX
+\begingroup
+
+\begin{sidewaysfigure}
+
+    \begin{center}
+    %\fbox{
+    \includegraphics[page=1, width=\linewidth]{multipageTable.pdf}%}
+    \end{center}
+\end{sidewaysfigure}
+
+
+\begin{sidewaysfigure}
+
+    \begin{center}
+    %\fbox{
+    \includegraphics[page=2, width=\linewidth]{multipageTable.pdf}%}
+    \captionof{table}{Caption}
+    \label{your_label}
+    \end{center}
+\end{sidewaysfigure}
+
+\endgroup
+```
