@@ -161,6 +161,8 @@
 						<debug>false</debug>
 						<url>https://terminological.github.io/html2pdfr/docs/index.html</url>
 						<doi>10.5281/zenodo.6576088</doi>
+						<githubOrganisation>terminological</githubOrganisation>
+						<githubRepository>html2pdfr</githubRepository>
 						<useRoxygen2>true</useRoxygen2>
 						<usePkgdown>true</usePkgdown>
 						<useJavadoc>false</useJavadoc>

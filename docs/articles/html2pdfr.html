@@ -80,7 +80,7 @@
 <p><a href="https://github.com/terminological/html2pdfr/actions"><img src="https://github.com/terminological/html2pdfr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
 <p><a href="https://zenodo.org/badge/latestdoi/459091655"><img src="https://zenodo.org/badge/459091655.svg" alt="DOI"></a></p>
 <p>The purpose of the <code>html2pdfr</code> package is to support layout and conversion of basic static HTML to PDF, and PNG. The main use case is to generate a static version of HTML tables, created by libraries such as <code>huxtable</code> or <code>gt</code>, that can be included in latex documents, or presentations, and which appear the same as the HTML versions of those tables. Such PDF images can be included in LaTeX files using an <code>includegraphics</code> directive in exactly the same way as figures. To make PDF files from HTML work well within a LaTeX document it is important to be able to specify the dimensions of a bounding box within which the HTML content will be rendered. The tight control of that bounding box is the specific purpose of this library which differentiates it from other options such as <code>webshot</code> and <code>webshot2</code>. Although focussed on tabular content, <code>html2pdfr</code> can convert other simple HTML, including SVG and MathML content, with variable success rates.</p>
-<p>The R Package is a wrapper around the Java OpenHTML2PDF library (<a href="https://github.com/danfickle/openhtmltopdf" class="uri">https://github.com/danfickle/openhtmltopdf</a>), and requires a working installation of Java and <code>rJava</code>. All other dependencies are resolved automatically at runtime. It does not require a graphical display and would suit running on a headless server. The underlying Java library does not support javascript which would be required for D3 content or rendering shiny apps, and for which <code>webshot</code> or <code>webshot2</code> would be a better option. The library relies on locally installed fonts, and the paths to local <code>.ttf</code> files must be supplied; this is managed by the <code>extrafonts</code> package. The library can resolve local and remote CSS and image files, specified relative to the HTML and locate them without the need for a web server.</p>
+<p>The R Package is a wrapper around the Java OpenHTML2PDF library (<a href="https://github.com/danfickle/openhtmltopdf" class="uri">https://github.com/danfickle/openhtmltopdf</a>), and requires a working installation of Java and <code>rJava</code>. All other dependencies are resolved automatically at runtime. It does not require a graphical display and would suit running on a headless server. The underlying Java library does not support javascript which would be required for D3 content or rendering shiny apps, and for which <code>webshot</code> or <code>webshot2</code> would be a better option. The library relies on locally installed fonts, and the paths to local <code>.ttf</code> files must be supplied; this is managed by the <code>systemfonts</code> package. The library can resolve local and remote CSS and image files, specified relative to the HTML and locate them without the need for a web server.</p>
 <div id="installing-the-library" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installing-the-library" class="anchor"></a>Installing the library</h2>
@@ -108,7 +108,7 @@
    htmlUrl <span class="op">=</span> <span class="st">"https://cran.r-project.org/banner.shtml"</span>,
    outFile <span class="op">=</span> <span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles/example-output.pdf"</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">## [1] "/tmp/RtmpKDE9Ov/docs/articles/example-output.pdf"</span></pre></div>
+<span class="co">## [1] "/tmp/RtmpFe45EQ/docs/articles/example-output.pdf"</span></pre></div>
 <p><a href="example-output.pdf">The resulting pdf</a> is here, Your success rendering HTML will vary as complex web pages (including in this example, frames) are not supported by the underlying engine. The focus of <code>html2pdfr</code> is on simpler static html content and not complex pages, for which alternatives already exist (see <code>webshot2</code> for example).</p>
 </div>
 <div id="generating-a-pdf-from-html-content" class="section level2">
@@ -123,7 +123,7 @@
   maxWidthInches <span class="op">=</span> <span class="fl">8</span>, maxHeightInches <span class="op">=</span> <span class="fl">8</span>, 
   outFile <span class="op">=</span> <span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles/example-output-2.pdf"</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">## [1] "/tmp/RtmpKDE9Ov/docs/articles/example-output-2.pdf"</span></pre></div>
+<span class="co">## [1] "/tmp/RtmpFe45EQ/docs/articles/example-output-2.pdf"</span></pre></div>
 <p>And <a href="example-output-2.pdf">the resulting pdf</a> of the generated HTML is here. This document should not have pages any more than 8 inches high. The width in this case is determined by the content, which is much less wide than the maximum specified 8 inches. If there was very wide content, the converter would wrap content within cells to stay within the specified bounding box size. This bounding box behaviour means that we can insert the generated pdf into a latex document simply without risk of overfull boxes.</p>
 <p>The layout engine should support simple SVG and MathML content. However it does not execute javascript so is not be able to lay out D3 content. If this is something you need then using <code>webshot2</code>, which wraps a whole Chrome instance, may be a better option.</p>
 <div class="sourceCode"><pre class="downlit">
@@ -138,7 +138,7 @@
   htmlUrl <span class="op">=</span> <span class="st">"https://fred-wang.github.io/MathFonts/mozilla_mathml_test/"</span>,
   outFile <span class="op">=</span> <span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles/example-mathml.pdf"</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">## [1] "/tmp/RtmpKDE9Ov/docs/articles/example-mathml.pdf"</span></pre></div>
+<span class="co">## [1] "/tmp/RtmpFe45EQ/docs/articles/example-mathml.pdf"</span></pre></div>
 <p><a href="example-mathml.pdf">The resulting mathml</a></p>
 <div class="sourceCode"><pre class="downlit">
 <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html">interactive</a></span><span class="op">(</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"IN_PKGDOWN"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
@@ -146,19 +146,20 @@
   <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/copy.html">dir_copy</a></span><span class="op">(</span><span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles"</span><span class="op">)</span>, <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"docs/articles"</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="op">}</span> 
 <span class="co">## as we are running in pkgdown and rendering the site we copy the output files to the correct location to be picked up by the pkgdown site</span></pre></div>
+</div>
+<div id="multipage-output" class="section level1">
+<h1 class="hasAnchor">
+<a href="#multipage-output" class="anchor"></a>Multipage output</h1>
+<p>One likely output of the package when passed a large amount of data in a table is a multipage pdf, where the pages can be designed small enough to fit into the overall flow of a latex document. This can be included into a latex document using the following approach which includes each page seperately. I this way an html table can be converted to a multipage pdf which can be embedded into a parent latex document, even possibly in landscape as here, but with consistent page furniture:</p>
 <div class="sourceCode"><pre class="sourceCode latex"><code class="sourceCode latex">\begingroup
-
 \begin{sidewaysfigure}
-
     \begin{center}
     <span class="co">%\fbox{</span>
     \includegraphics[page=1, width=\linewidth]{multipageTable.pdf}<span class="co">%}</span>
     \end{center}
 \end{sidewaysfigure}
 
-
 \begin{sidewaysfigure}
-
     \begin{center}
     <span class="co">%\fbox{</span>
     \includegraphics[page=2, width=\linewidth]{multipageTable.pdf}<span class="co">%}</span>
@@ -166,7 +167,6 @@
     \label{your_label}
     \end{center}
 \end{sidewaysfigure}
-
 \endgroup</code></pre></div>
 </div>
   </div>

@@ -27,7 +27,7 @@ HTML and CSS do a good job at automatically laying out and styling content parti
 
 Version: 0.4.2
 
-Generated: 2022-08-15T23:03:22.071
+Generated: 2022-08-18T16:04:56.563
 }
 
 \author{\email{rob.challen@bristol.ac.uk}}
@@ -155,7 +155,6 @@ html2pdfr::JavaApi$installDependencies()
 nothing. called for side effects.
 		}
 	}
-	\if{html}{\out{</div>}}
 	
 	\if{html}{\out{<hr>}}
 	\if{html}{\out{<a id="method-api-rebuildDependencies"></a>}}
@@ -183,7 +182,6 @@ html2pdfr::JavaApi$rebuildDependencies()
 nothing. called for side effects.
 		}
 	}
-	\if{html}{\out{</div>}}
 	
 	\if{html}{\out{<hr>}}
 	\if{html}{\out{<a id="method-api-versionInformation"></a>}}
@@ -210,7 +208,6 @@ html2pdfr::JavaApi$versionInformation()
 A list containing a set of versioning information about this package.
 		}
 	}
-	\if{html}{\out{</div>}}
 	
 	\if{html}{\out{<hr>}}
 	\if{html}{\out{<a id="method-api-get"></a>}}
@@ -239,7 +236,6 @@ J = html2pdfr::JavaApi$get()
 A R6 html2pdfr::JavaApi object containing the access point to the objects and functions defined in this package 
 		}
 	}
-	\if{html}{\out{</div>}}
 	
 	\if{html}{\out{<hr>}}
 	\if{html}{\out{<a id="method-api-changeLogLevel"></a>}}
@@ -267,7 +263,6 @@ J$changeLogLevel("DEBUG")
 nothing. used for side effects.
 		}
 	}
-	\if{html}{\out{</div>}}
 	
 	\if{html}{\out{<hr>}}
 	\if{html}{\out{<a id="method-api-reconfigreLog"></a>}}
@@ -299,7 +294,6 @@ if (fs::file_exists(prp)) {
 nothing. used for side effects.
 		}
 	}
-	\if{html}{\out{</div>}}
 	
 	\if{html}{\out{<hr>}}
 	\if{html}{\out{<a id="method-api-printMessages"></a>}}
@@ -329,7 +323,6 @@ J$printMessages()
 nothing. used for side effects.
 		}
 	}
-	\if{html}{\out{</div>}}
 	
 }
 

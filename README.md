@@ -26,7 +26,7 @@ Stable releases are preferred.
 On windows particularly build may fail if the multi-arch option is set
 
 ```R
-devtools::install_github("terminological/html2pdfr@0.4.1", build_opts = c("--no-multiarch"))
+devtools::install_github("terminological/html2pdfr@0.4.2", args = c("--no-multiarch"))
 ```
 
 Submission to CRAN is planned shortly.

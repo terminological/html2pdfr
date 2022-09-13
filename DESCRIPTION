@@ -25,4 +25,5 @@ Imports:
 	rappdirs,
 	utils,
 	magrittr
+URL: https://terminological.github.io/html2pdfr/docs
 RoxygenNote: 7.1.2
