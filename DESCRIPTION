@@ -26,7 +26,8 @@ Imports:
 	utils,
 	magrittr,
 	rlang,
-	xml2
+	xml2,
+	stringr
 URL: https://terminological.github.io/html2pdfr/docs,
 	https://github.com/terminological/html2pdfr,
 RoxygenNote: 7.1.2
