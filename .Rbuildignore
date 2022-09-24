@@ -5,7 +5,8 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^cran-comments.md$
+^cran-comments\.md$
+^LICENSE\.md$
 
 # Java maven directory layouts
 

@@ -6,7 +6,7 @@
 #'
 #' Version: 0.4.2
 #'
-#' Generated: 2022-08-18T16:04:56.602
+#' Generated: 2022-09-24T10:58:50.425
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import systemfonts
@@ -82,7 +82,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
 		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.2");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-08-18T16:04:56.603");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-09-24T10:58:50.427");
 		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.2");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
@@ -476,18 +476,7 @@ JavaApi$get = function(logLevel = "WARN") {
 
 JavaApi$rebuildDependencies = function( ... ) {
 	.startJvm()
-	# remove working directory
-	unlink(.workingDir(), recursive = TRUE)
-	# rebuild everything
-	classpath = .checkDependencies(quiet = FALSE, ...)
-	
-	# find the jars that come bundled with the library:
-	jars = list.files(.here("java"), pattern=".*\\.jar", full.names = TRUE)
-	jars = jars[!endsWith(jars,"sources.jar") & !endsWith(jars,"javadoc.jar") & !endsWith(jars,"src.jar")]
-	
-	# and add any that have been resolved and downloaded by maven:
-	jars = unique(c(jars,classpath))
-	
+	jars = .checkDependencies(nocache=TRUE, quiet=FALSE)
 	if (!all(file.exists(jars))) {
 		warning("The library has been rebuilt but there is still some missing dependencies: Out of the following")
 		warning(paste0(jars,collapse="\n"))
@@ -500,17 +489,17 @@ JavaApi$rebuildDependencies = function( ... ) {
 	return(jars)
 }
 
-
 JavaApi$installDependencies = function() {
 	.startJvm()
-	.checkDependencies(quiet=FALSE)
+	jars = .checkDependencies(nocache=FALSE, quiet=FALSE)
+	.jaddClassPath(jars)
 }
 
 JavaApi$versionInformation = function() {
 	out = list(
 		package = "html2pdfr",
 		r_package_version = "0.4.2",
-		r_package_generated = "2022-08-18T16:04:56.638",
+		r_package_generated = "2022-09-24T10:58:50.476",
 		java_library_version = "io.github.terminological:html2pdfr:0.4.2",
 		maintainer = "rob.challen@bristol.ac.uk"
 	)
@@ -525,176 +514,27 @@ JavaApi$versionInformation = function() {
 # as this is generated code configuration is hard coded here
 # i.e. these functions are specific for the configuration of this package.
 
-.startJvm = function() {
-	tryCatch({
-		if (!.jniInitialized) 
-			.jinit(parameters=getOption("java.parameters"),silent = TRUE, force.init = FALSE)
-	}, error = function(e) stop("Java cannot be initialised: ",e$message))
-}
 
-
-.checkDependencies = function(...) {
+.checkDependencies = function(nocache = FALSE, ...) {
+	package_jar = .package_jars(package_name="html2pdfr",types="thin-jar")
+	package_jar = package_jar[startsWith(fs::path_file(package_jar),"html2pdfr-0.4.2")]
+	
 	# Java dependencies
 	# the main java library has been compiled but external dependencies must be resolved by maven
 	# successful resolution of the classpath libraries depends on the runtime machine and requires
 	# access to the internet at a minimum.
-	pomLoc = .extractPom()
-	classpath = .resolveDependencies(pomLoc, ...) 
+	maven_dependencies = .resolve_dependencies(artifact="io.github.terminological:html2pdfr:0.4.2", nocache=nocache, path=package_jar, ...)
+	jars = .package_jars(package_name="html2pdfr",types="thin-jar")
+	# all jars in R package and maven dependencies
+	jars = unique(c(jars,maven_dependencies))
 	
 	# find the jars that come bundled with the library:
-	jars = list.files(.here("java"), pattern=".*\\.jar", full.names = TRUE)
-	jars = jars[!endsWith(jars,"sources.jar") & !endsWith(jars,"javadoc.jar") & !endsWith(jars,"src.jar")]
-	
 	# and add any that have been resolved and downloaded by maven:
-	jars = unique(c(jars,classpath))
 	return(jars)
 }
 
-# package working directory
-.workingDir = function() {
-	tmp = path.expand(rappdirs::user_cache_dir("html2pdfr-0.4.2"))
-	fs::dir_create(tmp)
-	return(tmp)
-}
 
-# package installation directory
-.here = function(paths) {
-	path.expand(system.file(paths, package="html2pdfr"))
-}
-
-# loads a maven wrapper distribution from the internet and unzips it into the package working directory
-.loadMavenWrapper = function() {
-	dir = .workingDir()
-	if (!file.exists(paste0(dir,"/mvnw"))) {
-		destfile = paste0(dir,"/wrapper.zip")
-		message("Bootstrapping maven wrapper.")
-		utils::download.file(
-			"https://repo1.maven.org/maven2/org/apache/maven/wrapper/maven-wrapper-distribution/3.1.1/maven-wrapper-distribution-3.1.1-bin.zip",
-			destfile = destfile,
-			quiet = TRUE
-		)
-		utils::unzip(destfile,exdir=dir)
-		unlink(destfile)
-		if(!file.exists(paste0(dir,"/mvnw"))) stop("downloading maven wrapper has not been successful")
-	}
-	if(.Platform$OS.type == "windows") {
-		mvnPath = paste0(dir,"/mvnw.cmd")
-	} else {
-		mvnPath = paste0(dir,"/mvnw")
-	}
-	write(c(
-		"distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.3.9/apache-maven-3.3.9-bin.zip",
-		"wrapperUrl=https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.1.1/maven-wrapper-3.1.1.jar"
-	), paste0(dir,"/.mvn/wrapper/maven-wrapper.properties"))
-	Sys.chmod(mvnPath)
-	return(mvnPath)
-}
-
-# detect if `test` file exists and is newer that `original`
-.fileNewer = function(original, test) {
-	if (!file.exists(original)) stop("source file doesn't exist")
-	if (!file.exists(test)) return(FALSE)
-	as.POSIXct(file.info(original)$mtime) < as.POSIXct(file.info(test)$mtime)
-}
-
-# gets the pom.xml file for io.github.terminological:html2pdfr:0.4.2 from a thin jar
-.extractPom = function() {
-	dir = .workingDir()
-	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.4.2\\.jar", full.names = TRUE)
-	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.4.2")
-	jarLoc = jarLoc[[1]]
-	pomPath = paste0(dir,"/pom.xml")
-	if (!.fileNewer(jarLoc, pomPath)) {
-		utils::unzip(jarLoc, files = "META-INF/maven/io.github.terminological/html2pdfr/pom.xml", junkpaths = TRUE, exdir = dir)
-		if (!file.exists(pomPath)) stop("couldn't extract META-INF/maven/io.github.terminological/html2pdfr/pom.xml from ",jarLoc)
-	}
-	return(pomPath)
-}
-
-# gets the pom.xml file for io.github.terminological:html2pdfr:0.4.2 which is the library version we exepct to be bundled in the 
-.extractSources = function() {
-	dir = .workingDir()
-	jarLoc = list.files(.here(c("inst/java","java")), pattern = "html2pdfr-0.4.2-src\\.jar", full.names = TRUE)
-	if (length(jarLoc)==0) stop("couldn't find jar for artifact: html2pdfr-0.4.2-src.jar")
-	jarLoc = jarLoc[[1]]
-	pomPath = paste0(dir,"/html2pdfr-0.4.2/pom.xml")
-	if (!.fileNewer(jarLoc, pomPath)) {
-		utils::unzip(jarLoc, exdir = dir)
-		if (!file.exists(pomPath)) stop("couldn't extract source files from ",jarLoc)
-	}
-	return(pomPath)
-}
-
-# executes maven assembly plugin and relocates resulting fat jar into java library directory
-.compileFatJar = function(pomPath, ...) {
-	fatJarFinal = fs::path(.here("java"),"html2pdfr-0.4.2-jar-with-dependencies.jar")
-	if (!.fileNewer(pomPath, fatJarFinal)) {
-		message("Compiling java library and downloading dependencies, please be patient.")
-		.executeMaven(
-			pomPath, 
-			goal = c("compile","assembly:single","package"),
-			opts = c(
-				"-DdescriptorId=jar-with-dependencies",
-				"-Dmaven.test.skip=true"
-			),
-			...
-		)
-		message("Compilation complete")
-		fatJar = fs::path_norm(fs::path(pomPath, "../target/html2pdfr-0.4.2-jar-with-dependencies.jar"))
-		fs::file_move(fatJar, fatJarFinal)
-	}
-	return(fatJarFinal)
-}
-
-# execute a `dependency:build-classpath` maven goal on the `pom.xml`
-.resolveDependencies = function(pomPath, ...) {
-	classpathLoc = paste0(.workingDir(), "/classpath.txt" )
-	# If the classpath file is already there we need to check that the entries on the class path are indeed available on this machine
-	# as they may have been moved or deleted
-	if(file.exists(classpathLoc)) {
-		classpathString = unique(readLines(classpathLoc,warn = FALSE))
-		if (!all(file.exists(classpathString))) {
-			# we need to rebuild the classpath file as some dependencies are not available
-			unlink(classpathLoc)
-		}
-	} 
-	if(!.fileNewer(pomPath,classpathLoc)) {
-		message("Calculating classpath and updating dependencies, please be patient.")
-		.executeMaven(
-			pomPath, 
-			goal = "dependency:build-classpath",		
-			opts = c(
-				paste0("-Dmdep.outputFile=classpath.txt"),
-				paste0("-DincludeScope=runtime")
-			),
-			...
-		)
-		message("Dependencies updated")
-	}
-	
-	if(.Platform$OS.type == "windows") {
-	  classpathString = unique(scan(classpathLoc, what = "character", sep=";", quiet=TRUE))
-	} else {
-	  classpathString = unique(scan(classpathLoc, what = "character", sep=":", quiet=TRUE))
-	}
-	
-	if (!all(file.exists(classpathString))) 
-		stop("For some inexplicable reason, Maven cannot determine the classpaths of the dependencies of this library on this machine. You can try html2pdfr::JavaApi$rebuildDependencies()")
-	return(classpathString)
-}
-
-# executes a maven goal plus or minus info or debugging
-.executeMaven = function(pomPath, goal, opts = c(), quiet=TRUE, debug=FALSE, ...) {
-	mvnPath = .loadMavenWrapper()
-	args = c(goal, opts) #, paste0("-f '",pomPath,"'"))
-	if (quiet) args = c(args, "-q")
-	if (debug) args = c(args, "-X")
-	java_home = rJava::.jcall( 'java/lang/System', 'S', 'getProperty', 'java.home' )
-	Sys.setenv(JAVA_HOME=java_home)
-	# required due to an issue in Mvnw.cmd on windows.
-	wd = getwd()
-	setwd(fs::path_dir(pomPath))
-	system2(mvnPath, args)
-	setwd(wd)
+.startJvm = function() {
+	.start_jvm(debug=FALSE)
 }
 

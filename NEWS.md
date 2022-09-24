@@ -11,8 +11,13 @@
 * remove dependency on extrafont (for sysfont)
 * Bug: cannot generate png files without pdfs
 
-# html2pdfr 0.4.1.9000
+# html2pdfr 0.4.2
 
 * Fix bug: cannot generate png files without pdfs
+* Reduce verbosity of logging.
+* Updated to use r6-generator:0.5.5 
+
+# html2pdfr unstable
+
 * TODO: check whether java's font detection can be used.
 * possibly including Google fonts.

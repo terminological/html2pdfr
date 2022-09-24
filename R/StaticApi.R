@@ -3,15 +3,13 @@
 # and serves as an alternative R centric entry point of the html2pdfr generated R library.
 
 # Version: 0.4.2
-# Generated: 2022-08-18T16:04:56.644
+# Generated: 2022-09-24T10:58:50.478
 # Contact: rob.challen@bristol.ac.uk
 
 # HtmlConverter class static methods ----
 
 
-#' htmlConverter:
-#' 
-#' Create a new HtmlConverter 
+#' htmlConverter: Create a new HtmlConverter 
 #' 
 #' for creating PDF and PNG files from HTML. In general this will be created automatically.
 #' but if you have specific fonts you want to use then you may need to pass them to this
@@ -33,9 +31,7 @@ html_converter = function(fontfiles=systemfonts::system_fonts()$path, update=FAL
 }
 
 
-#' urlToPdf:
-#' 
-#' Convert HTML document from a URL to a PDF document. 
+#' urlToPdf: Convert HTML document from a URL to a PDF document. 
 #' 
 #' The URL is assumed to be a complete document. 
 #' The resulting PDF size will be controlled by page media directives within the HTML, 
@@ -69,9 +65,7 @@ url_to_pdf = function(htmlUrl, outFile=tempfile('html2pdfr_'), cssSelector=NA_ch
 }
 
 
-#' fileToPdf:
-#' 
-#' Convert HTML document from a local file to a PDF document. 
+#' fileToPdf: Convert HTML document from a local file to a PDF document. 
 #' 
 #' The HTML in `inFile` is assumed to be a complete document. Relative references are resolved
 #' with reference to the HTML file on the file system, so correctly located images etc whould be 
@@ -109,9 +103,7 @@ file_to_pdf = function(inFile, outFile=tempfile('html2pdfr_'), cssSelector=NA_ch
 }
 
 
-#' htmlDocumentToPdf:
-#' 
-#' Convert HTML document from a string to a PDF document. 
+#' htmlDocumentToPdf: Convert HTML document from a string to a PDF document. 
 #' 
 #' The HTML in `html` is assumed to be a complete document. Relative references are resolved
 #' with reference to `baseUri` if it is given (which could be a `file://` URI).
@@ -149,9 +141,7 @@ html_document_to_pdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA
 }
 
 
-#' htmlFragmentToPdf:
-#' 
-#' Render HTML fragment from a string to a PDF image.
+#' htmlFragmentToPdf: Render HTML fragment from a string to a PDF image.
 #' 
 #' This is the simple rendering function that will output a PDF file (potentially many pages) and a set of PNG files from HTML content. 
 #' This is primarily used to render HTML content (e.g. a table) that is being included in a larger document.

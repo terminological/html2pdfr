@@ -42,7 +42,7 @@
 <meta property="og:title" content="R Wrapper For Openhtmltopdf Java Library — JavaApi" />
 <meta property="og:description" content="HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).
 Version: 0.4.2
-Generated: 2022-08-18T16:04:56.563" />
+Generated: 2022-09-24T10:58:50.374" />
 
 
 
@@ -97,7 +97,12 @@ Generated: 2022-08-18T16:04:56.563" />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/terminological/html2pdfr/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -119,7 +124,7 @@ Generated: 2022-08-18T16:04:56.563" />
     <div class="ref-description">
     <p>HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).</p>
 <p>Version: 0.4.2</p>
-<p>Generated: 2022-08-18T16:04:56.563</p>
+<p>Generated: 2022-09-24T10:58:50.374</p>
     </div>
 
 
@@ -527,61 +532,41 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 <span class='co'>## Check library dependencies for html2pdfr</span>
 <span class='co'>## -----------------------------------</span>
 <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'>JavaApi</span><span class='op'>$</span><span class='fu'>installDependencies</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Calculating classpath and updating dependencies, please be patient.</span></div><div class='output co'>#&gt; <span class='message'>Dependencies updated</span></div><div class='output co'>#&gt;  [1] "/tmp/Rtmpg4xoww/temp_libpath29f870fbb02a/html2pdfr/java/html2pdfr-0.4.2.jar"                                                           
-#&gt;  [2] "/home/terminological/.m2/repository/org/slf4j/slf4j-api/1.7.22/slf4j-api-1.7.22.jar"                                                   
-#&gt;  [3] "/home/terminological/.m2/repository/com/openhtmltopdf/openhtmltopdf-slf4j/1.0.10/openhtmltopdf-slf4j-1.0.10.jar"                       
-#&gt;  [4] "/home/terminological/.m2/repository/io/github/terminological/r6-generator-runtime/main-SNAPSHOT/r6-generator-runtime-main-SNAPSHOT.jar"
-#&gt;  [5] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-bridge/1.14/batik-bridge-1.14.jar"                                    
-#&gt;  [6] "/home/terminological/.m2/repository/org/apache/logging/log4j/log4j-core/2.17.2/log4j-core-2.17.2.jar"                                  
-#&gt;  [7] "/home/terminological/.m2/repository/com/openhtmltopdf/openhtmltopdf-svg-support/1.0.10/openhtmltopdf-svg-support-1.0.10.jar"           
-#&gt;  [8] "/home/terminological/.m2/repository/de/rototor/pdfbox/graphics2d/0.32/graphics2d-0.32.jar"                                             
-#&gt;  [9] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-script/1.14/batik-script-1.14.jar"                                    
-#&gt; [10] "/home/terminological/.m2/repository/org/apache/pdfbox/fontbox/2.0.24/fontbox-2.0.24.jar"                                               
-#&gt; [11] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-css/1.14/batik-css-1.14.jar"                                          
-#&gt; [12] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-util/1.14/batik-util-1.14.jar"                                        
-#&gt; [13] "/home/terminological/.m2/repository/com/openhtmltopdf/openhtmltopdf-java2d/1.0.10/openhtmltopdf-java2d-1.0.10.jar"                     
-#&gt; [14] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-transcoder/1.14/batik-transcoder-1.14.jar"                            
-#&gt; [15] "/home/terminological/.m2/repository/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.jar"                                                      
-#&gt; [16] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-gvt/1.14/batik-gvt-1.14.jar"                                          
-#&gt; [17] "/home/terminological/.m2/repository/xml-apis/xml-apis-ext/1.3.04/xml-apis-ext-1.3.04.jar"                                              
-#&gt; [18] "/home/terminological/.m2/repository/com/openhtmltopdf/openhtmltopdf-core/1.0.10/openhtmltopdf-core-1.0.10.jar"                         
-#&gt; [19] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-awt-util/1.14/batik-awt-util-1.14.jar"                                
-#&gt; [20] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-shared-resources/1.14/batik-shared-resources-1.14.jar"                
-#&gt; [21] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-svggen/1.14/batik-svggen-1.14.jar"                                    
-#&gt; [22] "/home/terminological/.m2/repository/de/rototor/jeuclid/jeuclid-core/3.1.12/jeuclid-core-3.1.12.jar"                                    
-#&gt; [23] "/home/terminological/.m2/repository/com/openhtmltopdf/openhtmltopdf-rtl-support/1.0.10/openhtmltopdf-rtl-support-1.0.10.jar"           
-#&gt; [24] "/home/terminological/.m2/repository/com/openhtmltopdf/openhtmltopdf-latex-support/1.0.10/openhtmltopdf-latex-support-1.0.10.jar"       
-#&gt; [25] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-xml/1.14/batik-xml-1.14.jar"                                          
-#&gt; [26] "/home/terminological/.m2/repository/org/jsoup/jsoup/1.11.3/jsoup-1.11.3.jar"                                                           
-#&gt; [27] "/home/terminological/.m2/repository/com/openhtmltopdf/openhtmltopdf-pdfbox/1.0.10/openhtmltopdf-pdfbox-1.0.10.jar"                     
-#&gt; [28] "/home/terminological/.m2/repository/org/mozilla/rhino/1.7.13/rhino-1.7.13.jar"                                                         
-#&gt; [29] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-dom/1.14/batik-dom-1.14.jar"                                          
-#&gt; [30] "/home/terminological/.m2/repository/xalan/serializer/2.7.2/serializer-2.7.2.jar"                                                       
-#&gt; [31] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-ext/1.14/batik-ext-1.14.jar"                                          
-#&gt; [32] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-anim/1.14/batik-anim-1.14.jar"                                        
-#&gt; [33] "/home/terminological/.m2/repository/commons-io/commons-io/1.3.1/commons-io-1.3.1.jar"                                                  
-#&gt; [34] "/home/terminological/.m2/repository/org/apache/pdfbox/pdfbox/2.0.24/pdfbox-2.0.24.jar"                                                 
-#&gt; [35] "/home/terminological/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar"                                       
-#&gt; [36] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-parser/1.14/batik-parser-1.14.jar"                                    
-#&gt; [37] "/home/terminological/.m2/repository/de/rototor/snuggletex/snuggletex-core/1.3.0/snuggletex-core-1.3.0.jar"                             
-#&gt; [38] "/home/terminological/.m2/repository/xalan/xalan/2.7.2/xalan-2.7.2.jar"                                                                 
-#&gt; [39] "/home/terminological/.m2/repository/com/openhtmltopdf/openhtmltopdf-mathml-support/1.0.10/openhtmltopdf-mathml-support-1.0.10.jar"     
-#&gt; [40] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-i18n/1.14/batik-i18n-1.14.jar"                                        
-#&gt; [41] "/home/terminological/.m2/repository/org/apache/xmlgraphics/xmlgraphics-commons/2.6/xmlgraphics-commons-2.6.jar"                        
-#&gt; [42] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-codec/1.14/batik-codec-1.14.jar"                                      
-#&gt; [43] "/home/terminological/.m2/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.17.2/log4j-slf4j-impl-2.17.2.jar"                      
-#&gt; [44] "/home/terminological/.m2/repository/org/apache/logging/log4j/log4j-api/2.17.2/log4j-api-2.17.2.jar"                                    
-#&gt; [45] "/home/terminological/.m2/repository/org/apache/pdfbox/xmpbox/2.0.24/xmpbox-2.0.24.jar"                                                 
-#&gt; [46] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-constants/1.14/batik-constants-1.14.jar"                              
-#&gt; [47] "/home/terminological/.m2/repository/org/apache/xmlgraphics/batik-svg-dom/1.9/batik-svg-dom-1.9.jar"                                    
-#&gt; [48] "/home/terminological/.m2/repository/com/openhtmltopdf/openhtmltopdf-objects/1.0.10/openhtmltopdf-objects-1.0.10.jar"                   
-#&gt; [49] "/home/terminological/.m2/repository/com/ibm/icu/icu4j/59.1/icu4j-59.1.jar"                                                             </div><div class='input'>
+</div><div class='output co'>#&gt; [INFO] Scanning for projects...
+#&gt; [INFO]                                                                         
+#&gt; [INFO] ------------------------------------------------------------------------
+#&gt; [INFO] Building Java html to pdf for R 0.4.2
+#&gt; [INFO] ------------------------------------------------------------------------
+#&gt; [INFO] 
+#&gt; [INFO] --- maven-dependency-plugin:2.8:build-classpath (default-cli) @ html2pdfr ---
+#&gt; [INFO] Skipped writing classpath file '/home/terminological/.cache/rmaven/io.github.terminological_html2pdfr_0.4.2/classpath.txt'.  No changes found.
+#&gt; [INFO] ------------------------------------------------------------------------
+#&gt; [INFO] BUILD SUCCESS
+#&gt; [INFO] ------------------------------------------------------------------------
+#&gt; [INFO] Total time: 0.768 s
+#&gt; [INFO] Finished at: 2022-09-24T11:12:45+01:00
+#&gt; [INFO] Final Memory: 14M/48M
+#&gt; [INFO] ------------------------------------------------------------------------</div><div class='input'>
 <span class='co'>## -----------------------------------</span>
 <span class='co'>## Construct a html2pdfr Java API instance</span>
 <span class='co'>## -----------------------------------</span>
 
 <span class='va'>J</span> <span class='op'>=</span> <span class='fu'>html2pdfr</span><span class='fu'>::</span><span class='va'>JavaApi</span><span class='op'>$</span><span class='fu'>get</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Calculating classpath and updating dependencies, please be patient.</span></div><div class='output co'>#&gt; <span class='message'>Dependencies updated</span></div><div class='input'><span class='co'># or a more verbose configuration</span>
+</div><div class='output co'>#&gt; [INFO] Scanning for projects...
+#&gt; [INFO]                                                                         
+#&gt; [INFO] ------------------------------------------------------------------------
+#&gt; [INFO] Building Java html to pdf for R 0.4.2
+#&gt; [INFO] ------------------------------------------------------------------------
+#&gt; [INFO] 
+#&gt; [INFO] --- maven-dependency-plugin:2.8:build-classpath (default-cli) @ html2pdfr ---
+#&gt; [INFO] Skipped writing classpath file '/home/terminological/.cache/rmaven/io.github.terminological_html2pdfr_0.4.2/classpath.txt'.  No changes found.
+#&gt; [INFO] ------------------------------------------------------------------------
+#&gt; [INFO] BUILD SUCCESS
+#&gt; [INFO] ------------------------------------------------------------------------
+#&gt; [INFO] Total time: 0.739 s
+#&gt; [INFO] Finished at: 2022-09-24T11:12:47+01:00
+#&gt; [INFO] Final Memory: 14M/48M
+#&gt; [INFO] ------------------------------------------------------------------------</div><div class='input'><span class='co'># or a more verbose configuration</span>
 <span class='co'># J = html2pdfr::JavaApi$get("DEBUG")</span>
 
 
@@ -607,7 +592,7 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 <span class='co'>## -----------------------------------</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://testthat.r-lib.org'>testthat</a></span><span class='op'>)</span>
 <span class='fu'><a href='url_to_pdf.html'>url_to_pdf</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpmRtK4Z/html2pdfr_2a4e7ce9992f.pdf"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpNkAcHM/html2pdfr_75494acfd443.pdf"</div><div class='input'>
 <span class='co'>## -----------------------------------</span>
 <span class='co'>## Method `J$HtmlConverter$fileToPdf(...)`</span>
 <span class='co'>## Aliased as `html2pdfr::file_to_pdf(...)`</span>
@@ -617,7 +602,7 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 <span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='st'>'https://cran.r-project.org/banner.shtml'</span>,
  destfile <span class='op'>=</span> <span class='va'>dest</span><span class='op'>)</span>
 <span class='fu'><a href='file_to_pdf.html'>file_to_pdf</a></span><span class='op'>(</span><span class='va'>dest</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpmRtK4Z/html2pdfr_2a4e4a9874be.pdf"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpNkAcHM/html2pdfr_7549baccd3.pdf"</div><div class='input'>
 <span class='co'>## -----------------------------------</span>
 <span class='co'>## Method `J$HtmlConverter$htmlDocumentToPdf(...)`</span>
 <span class='co'>## Aliased as `html2pdfr::html_document_to_pdf(...)`</span>
@@ -629,7 +614,7 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    edition_get, local_edition</span></div><div class='input'><span class='va'>html</span> <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_file.html'>read_file</a></span><span class='op'>(</span><span class='st'>'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/'</span><span class='op'>)</span>
 <span class='fu'><a href='html_document_to_pdf.html'>html_document_to_pdf</a></span><span class='op'>(</span><span class='va'>html</span>, baseUri <span class='op'>=</span> <span class='st'>'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpmRtK4Z/html2pdfr_2a4e5702abbb.pdf"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpNkAcHM/html2pdfr_75495e02040b.pdf"</div><div class='input'>
 <span class='co'>## -----------------------------------</span>
 <span class='co'>## Method `J$HtmlConverter$htmlFragmentToPdf(...)`</span>
 <span class='co'>## Aliased as `html2pdfr::html_fragment_to_pdf(...)`</span>
@@ -649,8 +634,8 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 <span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/themes.html'>theme_article</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
 <span class='fu'>huxtable</span><span class='fu'>::</span><span class='fu'><a href='https://hughjonesd.github.io/huxtable/reference/to_html.html'>to_html</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='html_fragment_to_pdf.html'>html_fragment_to_pdf</a></span><span class='op'>(</span><span class='va'>html</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpmRtK4Z/html2pdfr_2a4e127489f6.pdf"
-#&gt; [2] "/tmp/RtmpmRtK4Z/html2pdfr_2a4e127489f6.png"</div></pre>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpNkAcHM/html2pdfr_75491f270329.pdf"
+#&gt; [2] "/tmp/RtmpNkAcHM/html2pdfr_75491f270329.png"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

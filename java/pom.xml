@@ -12,7 +12,7 @@
 		<!-- Must be Java 8 for standard rJava implementation -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<r6.version>main-SNAPSHOT</r6.version>
+		<r6.version>0.5.5</r6.version>
 		<openhtml.version>1.0.10</openhtml.version>
 		<open.batik.version>1.14</open.batik.version>
 
@@ -171,7 +171,7 @@
 						</rjavaOpts>
 						<packageName>html2pdfr</packageName>
 						<defaultLogLevel>WARN</defaultLogLevel>
-						<license>LGPL</license> <!-- to fit with openhtml2pdf -->
+						<license>LGPL-3</license> <!-- to fit with openhtml2pdf -->
 						<preCompileBinary>true</preCompileBinary>
 						<packageAllDependencies>false</packageAllDependencies>
 						<description>
