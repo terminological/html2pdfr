@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.terminological</groupId>
 	<artifactId>html2pdfr</artifactId>
-	<version>0.4.2</version>
+	<version>0.4.3</version>
 	<description>R wrapper for OpenHTMLtoPDF java library</description>
 
 	<properties>
@@ -12,14 +12,14 @@
 		<!-- Must be Java 8 for standard rJava implementation -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<r6.version>0.5.5</r6.version>
+		<r6.version>main-SNAPSHOT</r6.version>
 		<openhtml.version>1.0.10</openhtml.version>
 		<open.batik.version>1.14</open.batik.version>
 
 	    <!-- Please keep xmlgraphics-commons up to date with batik. -->
 	    <open.xmlgraphics.commons.version>2.6</open.xmlgraphics.commons.version>
 
-    	<!-- NOTE: Rhino is an optional dependency of Batik-Bridge. This version should match
+    	<!-- NB: Rhino is an optional dependency of Batik-Bridge. This version should match
          the version specified by Batik-Bridge. -->
     	<open.rhino.version>1.7.13</open.rhino.version>
 	</properties>
@@ -173,7 +173,7 @@
 						<defaultLogLevel>WARN</defaultLogLevel>
 						<license>LGPL-3</license> <!-- to fit with openhtml2pdf -->
 						<preCompileBinary>true</preCompileBinary>
-						<packageAllDependencies>false</packageAllDependencies>
+						<packageAllDependencies>true</packageAllDependencies>
 						<description>
 							HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. 
 							This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. 

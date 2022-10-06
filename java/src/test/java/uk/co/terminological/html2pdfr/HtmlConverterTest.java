@@ -16,13 +16,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import uk.co.terminological.html2pdfr.AutoFont;
 import uk.co.terminological.html2pdfr.AutoFont.CSSFont;
-import uk.co.terminological.html2pdfr.HtmlConverter;
 import uk.co.terminological.rjava.RConverter;
 import uk.co.terminological.rjava.types.RCharacter;
 import uk.co.terminological.rjava.types.RCharacterVector;
-import uk.co.terminological.rjava.types.RLogical;
 import uk.co.terminological.rjava.types.RNumeric;
 
 class HtmlConverterTest {

@@ -8,9 +8,9 @@
 #' 
 #' This is a class of the html2pdfr generated R library.
 #' 
-#' Version: 0.4.2
+#' Version: 0.4.3
 #' 
-#' Generated: 2022-09-24T10:58:50.505
+#' Generated: 2022-10-06T15:19:49.543020
 #'
 #' @details
 	#' no details

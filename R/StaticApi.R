@@ -2,8 +2,8 @@
 # This is a collection of the static methods described in the Java API
 # and serves as an alternative R centric entry point of the html2pdfr generated R library.
 
-# Version: 0.4.2
-# Generated: 2022-09-24T10:58:50.478
+# Version: 0.4.3
+# Generated: 2022-10-06T15:19:49.513013
 # Contact: rob.challen@bristol.ac.uk
 
 # HtmlConverter class static methods ----

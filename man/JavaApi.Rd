@@ -25,9 +25,9 @@
 \description{
 HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).
 
-Version: 0.4.2
+Version: 0.4.3
 
-Generated: 2022-09-24T10:58:50.374
+Generated: 2022-10-06T15:19:49.467261
 }
 
 \author{\email{rob.challen@bristol.ac.uk}}
@@ -227,7 +227,7 @@ J = html2pdfr::JavaApi$get()
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{logLevel}{The desired verbosity of the package. One of "OFF", "FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE", "ALL".}
+				\item{logLevel}{ The desired verbosity of the package. One of "OFF", "FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE", "ALL".}
 			}
 			\if{html}{\out{</div>}}
 		}
@@ -254,7 +254,7 @@ J$changeLogLevel("DEBUG")
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{logLevel}{The desired verbosity of the package. One of "OFF", "FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE", "ALL".}
+				\item{logLevel}{ The desired verbosity of the package. One of "OFF", "FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE", "ALL".}
 			}
 			\if{html}{\out{</div>}}
 		}
@@ -285,7 +285,7 @@ if (fs::file_exists(prp)) {
 		\subsection{Arguments}{
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
-				\item{log4jproperties}{a full path to a log4jproperies file}
+				\item{log4jproperties}{ a full path to a log4jproperies file}
 			}
 			\if{html}{\out{</div>}}
 		}
