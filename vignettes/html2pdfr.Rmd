@@ -8,12 +8,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as `gt` and `huxtable` within latex documents, or presentations, and which appear the same as the HTML versions of those tables. HTML content can grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters.
 
-[![R-CMD-check](https://github.com/terminological/html2pdfr/workflows/R-CMD-check/badge.svg)](https://github.com/terminological/html2pdfr/actions)
-
-[![DOI](https://zenodo.org/badge/459091655.svg)](https://zenodo.org/badge/latestdoi/459091655)
-
-The purpose of the `html2pdfr` package is to support layout and conversion of basic static HTML to PDF, and PNG. The main use case is to generate a static version of HTML tables, created by libraries such as `huxtable` or `gt`, that can be included in latex documents, or presentations, and which appear the same as the HTML versions of those tables. Such PDF images can be included in LaTeX files using an `includegraphics` directive in exactly the same way as figures. To make PDF files from HTML work well within a LaTeX document it is important to be able to specify the dimensions of a bounding box within which the HTML content will be rendered. The tight control of that bounding box is the specific purpose of this library which differentiates it from other options such as `webshot` and `webshot2`. Although focussed on tabular content, `html2pdfr` can convert other simple HTML, including SVG and MathML content, with variable success rates. 
+`html2pdfr` PDF images can be included in LaTeX files using an `includegraphics` directive in exactly the same way as figures. Although focussed on tabular content, `html2pdfr` can convert other simple HTML, including SVG and MathML content, with variable success rates.
 
 The R Package is a wrapper around the Java OpenHTML2PDF library (https://github.com/danfickle/openhtmltopdf), and requires a working installation of Java and `rJava`. All other dependencies are resolved automatically at runtime. It does not require a graphical display and would suit running on a headless server. The underlying Java library does not support javascript which would be required for D3 content or rendering shiny apps, and for which `webshot` or `webshot2` would be a better option. The library relies on locally installed fonts, and the paths to local `.ttf` files must be supplied; this is managed by the `systemfonts` package. The library can resolve local and remote CSS and image files, specified relative to the HTML and locate them without the need for a web server.
 
@@ -32,13 +29,38 @@ out = function(path) {
 }
 ```
 
-## Installing the library
+## Installation instructions
 
-`html2pdfr` is not on cran yet. Installation from this repo can be done as follows:
+`html2pdfr` is based on a java library and must have a working version of `Java` and `rJava` installed. The following commands can ensure that your `rJava` installation is working.
 
 ```R
-devtools::install_github("terminological/html2pdfr")
+install.packages("rJava")
+rJava::.jinit()
+rJava::J("java.lang.System")$getProperty("java.version")
 ```
+
+Binary packages of `html2pdfr` are available on the r-universe for
+`macOS` and `Windows`. `html2pdfr` can be installed from source on Linux.
+`html2pdfr` has been tested on R versions 3.6, 4.0, 4.1 and 4.2.
+
+```R
+options(repos = c(
+  terminological = 'https://terminological.r-universe.dev',
+  CRAN = 'https://cloud.r-project.org'))
+# Download and install html2pdfr in R
+install.packages('html2pdfr')
+# Browse the html2pdfr manual pages
+help(package = 'html2pdfr')
+```
+
+Unstable versions are available but on windows build may fail if the
+multi-arch option is set. Windows users will also need `RTools4.2`:
+
+```R
+devtools::install_github("terminological/html2pdfr", args = c("--no-multiarch"))
+```
+
+The Java libraries in `html2pdfr` are 29 Mb which are too large for CRAN.
 
 ## Initialising the library
 

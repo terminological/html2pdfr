@@ -80,22 +80,36 @@
 
     
     
-<p><a href="https://github.com/terminological/html2pdfr/actions" class="external-link"><img src="https://github.com/terminological/html2pdfr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
-<p><a href="https://zenodo.org/badge/latestdoi/459091655" class="external-link"><img src="https://zenodo.org/badge/459091655.svg" alt="DOI"></a></p>
-<p>The purpose of the <code>html2pdfr</code> package is to support layout and conversion of basic static HTML to PDF, and PNG. The main use case is to generate a static version of HTML tables, created by libraries such as <code>huxtable</code> or <code>gt</code>, that can be included in latex documents, or presentations, and which appear the same as the HTML versions of those tables. Such PDF images can be included in LaTeX files using an <code>includegraphics</code> directive in exactly the same way as figures. To make PDF files from HTML work well within a LaTeX document it is important to be able to specify the dimensions of a bounding box within which the HTML content will be rendered. The tight control of that bounding box is the specific purpose of this library which differentiates it from other options such as <code>webshot</code> and <code>webshot2</code>. Although focussed on tabular content, <code>html2pdfr</code> can convert other simple HTML, including SVG and MathML content, with variable success rates.</p>
+<p>HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as <code>gt</code> and <code>huxtable</code> within latex documents, or presentations, and which appear the same as the HTML versions of those tables. HTML content can grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters.</p>
+<p><code>html2pdfr</code> PDF images can be included in LaTeX files using an <code>includegraphics</code> directive in exactly the same way as figures. Although focussed on tabular content, <code>html2pdfr</code> can convert other simple HTML, including SVG and MathML content, with variable success rates.</p>
 <p>The R Package is a wrapper around the Java OpenHTML2PDF library (<a href="https://github.com/danfickle/openhtmltopdf" class="external-link uri">https://github.com/danfickle/openhtmltopdf</a>), and requires a working installation of Java and <code>rJava</code>. All other dependencies are resolved automatically at runtime. It does not require a graphical display and would suit running on a headless server. The underlying Java library does not support javascript which would be required for D3 content or rendering shiny apps, and for which <code>webshot</code> or <code>webshot2</code> would be a better option. The library relies on locally installed fonts, and the paths to local <code>.ttf</code> files must be supplied; this is managed by the <code>systemfonts</code> package. The library can resolve local and remote CSS and image files, specified relative to the HTML and locate them without the need for a web server.</p>
 <div class="section level3">
-<h3 id="installing-the-library">Installing the library<a class="anchor" aria-label="anchor" href="#installing-the-library"></a>
+<h3 id="installation-instructions">Installation instructions<a class="anchor" aria-label="anchor" href="#installation-instructions"></a>
 </h3>
-<p><code>html2pdfr</code> is not on cran yet. Installation from this repo can be done as follows:</p>
+<p><code>html2pdfr</code> is based on a java library and must have a working version of <code>Java</code> and <code>rJava</code> installed. The following commands can ensure that your <code>rJava</code> installation is working.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"terminological/html2pdfr"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rJava"</span><span class="op">)</span></span>
+<span><span class="fu">rJava</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rJava/man/jinit.html" class="external-link">.jinit</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">rJava</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rJava/man/J.html" class="external-link">J</a></span><span class="op">(</span><span class="st">"java.lang.System"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProperty</span><span class="op">(</span><span class="st">"java.version"</span><span class="op">)</span></span></code></pre></div>
+<p>Binary packages of <code>html2pdfr</code> are available on the r-universe for <code>macOS</code> and <code>Windows</code>. <code>html2pdfr</code> can be installed from source on Linux. <code>html2pdfr</code> has been tested on R versions 3.6, 4.0, 4.1 and 4.2.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  terminological <span class="op">=</span> <span class="st">'https://terminological.r-universe.dev'</span>,</span>
+<span>  CRAN <span class="op">=</span> <span class="st">'https://cloud.r-project.org'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Download and install html2pdfr in R</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'html2pdfr'</span><span class="op">)</span></span>
+<span><span class="co"># Browse the html2pdfr manual pages</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/help.html" class="external-link">help</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">'html2pdfr'</span><span class="op">)</span></span></code></pre></div>
+<p>Unstable versions are available but on windows build may fail if the multi-arch option is set. Windows users will also need <code>RTools4.2</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"terminological/html2pdfr"</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"--no-multiarch"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>The Java libraries in <code>html2pdfr</code> are 29 Mb which are too large for CRAN.</p>
 </div>
 <div class="section level3">
 <h3 id="initialising-the-library">Initialising the library<a class="anchor" aria-label="anchor" href="#initialising-the-library"></a>
 </h3>
 <p>On first use the major Java library dependencies of this project must be downloaded and cached. This can take some time but only needs to be done once. The following basic initialization code sets up the library:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># this produces a verbose output which can be hidden with suppressMessages:</span></span>
 <span><span class="va">conv</span> <span class="op">=</span> <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_converter.html">html_converter</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.</span></span></code></pre></div>
@@ -105,19 +119,19 @@
 <h3 id="generating-a-pdf">Generating a PDF<a class="anchor" aria-label="anchor" href="#generating-a-pdf"></a>
 </h3>
 <p>PDF rendering of HTML can be done direct from a URL, or from a locally stored HTML file. Pulling in a URL and converting it to PDF is done like so:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span> <span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/url_to_pdf.html">url_to_pdf</a></span><span class="op">(</span></span>
 <span>   htmlUrl <span class="op">=</span> <span class="st">"https://cran.r-project.org/banner.shtml"</span>,</span>
 <span>   outFile <span class="op">=</span> <span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles/example-output.pdf"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">## [1] "/tmp/RtmpECjVAO/docs/articles/example-output.pdf"</span></span></code></pre></div>
+<span><span class="co">## [1] "/tmp/Rtmpucym6n/docs/articles/example-output.pdf"</span></span></code></pre></div>
 <p><a href="example-output.pdf">The resulting pdf</a> is here, Your success rendering HTML will vary as complex web pages (including in this example, frames) are not supported by the underlying engine. The focus of <code>html2pdfr</code> is on simpler static html content and not complex pages, for which alternatives already exist (see <code>webshot2</code> for example).</p>
 </div>
 <div class="section level3">
 <h3 id="generating-a-pdf-from-html-content">Generating a pdf from HTML content<a class="anchor" aria-label="anchor" href="#generating-a-pdf-from-html-content"></a>
 </h3>
 <p>In the following, more usual, example the HTML is generated within R (as you might find from a tabular data library such as <code>huxtable</code> or <code>gtables</code>) and passed to the converter with some target page dimensions. The converter will lay out the table within the confines of the maximum space available, overflowing to new pages, where-ever required.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">irisHtml</span> <span class="op">=</span> <span class="va">iris</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Species"</span>,<span class="st">"Sepal.Width"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/as_huxtable.html" class="external-link">as_hux</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/themes.html" class="external-link">theme_article</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/to_html.html" class="external-link">to_html</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="../reference/html_fragment_to_pdf.html">html_fragment_to_pdf</a></span><span class="op">(</span></span>
@@ -125,10 +139,10 @@
 <span>  maxWidthInches <span class="op">=</span> <span class="fl">8</span>, maxHeightInches <span class="op">=</span> <span class="fl">8</span>, </span>
 <span>  outFile <span class="op">=</span> <span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles/example-output-2.pdf"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">## [1] "/tmp/RtmpECjVAO/docs/articles/example-output-2.pdf"</span></span></code></pre></div>
+<span><span class="co">## [1] "/tmp/Rtmpucym6n/docs/articles/example-output-2.pdf"</span></span></code></pre></div>
 <p>And <a href="example-output-2.pdf">the resulting pdf</a> of the generated HTML is here. This document should not have pages any more than 8 inches high. The width in this case is determined by the content, which is much less wide than the maximum specified 8 inches. If there was very wide content, the converter would wrap content within cells to stay within the specified bounding box size. This bounding box behaviour means that we can insert the generated pdf into a latex document simply without risk of overfull boxes.</p>
 <p>The layout engine should support simple SVG and MathML content. However it does not execute javascript so is not be able to lay out D3 content. If this is something you need then using <code>webshot2</code>, which wraps a whole Chrome instance, may be a better option.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Javascript Does not work:</span></span>
 <span><span class="co"># conv$urlToPdf(</span></span>
 <span><span class="co">#   htmlUrl = "https://bl.ocks.org/mbostock/raw/1389927/?raw=true",</span></span>
@@ -140,9 +154,9 @@
 <span>  htmlUrl <span class="op">=</span> <span class="st">"https://fred-wang.github.io/MathFonts/mozilla_mathml_test/"</span>,</span>
 <span>  outFile <span class="op">=</span> <span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles/example-mathml.pdf"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">## [1] "/tmp/RtmpECjVAO/docs/articles/example-mathml.pdf"</span></span></code></pre></div>
+<span><span class="co">## [1] "/tmp/Rtmpucym6n/docs/articles/example-mathml.pdf"</span></span></code></pre></div>
 <p><a href="example-mathml.pdf">The resulting mathml</a></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"IN_PKGDOWN"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"as we are running in pkgdown and rendering the site we copy the output files to the correct location to be picked up by the pkgdown site"</span><span class="op">)</span></span>
 <span>  <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/copy.html" class="external-link">dir_copy</a></span><span class="op">(</span><span class="fu">out</span><span class="op">(</span><span class="st">"docs/articles"</span><span class="op">)</span>, <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"docs/articles"</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -153,23 +167,23 @@
 <h2 id="multipage-output">Multipage output<a class="anchor" aria-label="anchor" href="#multipage-output"></a>
 </h2>
 <p>One likely output of the package when passed a large amount of data in a table is a multipage pdf, where the pages can be designed small enough to fit into the overall flow of a latex document. This can be included into a latex document using the following approach which includes each page seperately. I this way an html table can be converted to a multipage pdf which can be embedded into a parent latex document, even possibly in landscape as here, but with consistent page furniture:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="fu">\begingroup</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">\begin</span>{<span class="ex">sidewaysfigure</span>}</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    <span class="kw">\begin</span>{<span class="ex">center</span>}</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="co">%\fbox{</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>    <span class="bu">\includegraphics</span>[page=1, width=<span class="fu">\linewidth</span>]{<span class="ex">multipageTable.pdf</span>}<span class="co">%}</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    <span class="kw">\end</span>{<span class="ex">center</span>}</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="kw">\end</span>{<span class="ex">sidewaysfigure</span>}</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="kw">\begin</span>{<span class="ex">sidewaysfigure</span>}</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>    <span class="kw">\begin</span>{<span class="ex">center</span>}</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>    <span class="co">%\fbox{</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>    <span class="bu">\includegraphics</span>[page=2, width=<span class="fu">\linewidth</span>]{<span class="ex">multipageTable.pdf</span>}<span class="co">%}</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>    <span class="fu">\captionof</span>{table}{Caption}</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>    <span class="kw">\label</span>{<span class="ex">your_label</span>}</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>    <span class="kw">\end</span>{<span class="ex">center</span>}</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a><span class="kw">\end</span>{<span class="ex">sidewaysfigure</span>}</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a><span class="fu">\endgroup</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="fu">\begingroup</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">\begin</span>{<span class="ex">sidewaysfigure</span>}</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    <span class="kw">\begin</span>{<span class="ex">center</span>}</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    <span class="co">%\fbox{</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    <span class="bu">\includegraphics</span>[page=1, width=<span class="fu">\linewidth</span>]{<span class="ex">multipageTable.pdf</span>}<span class="co">%}</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    <span class="kw">\end</span>{<span class="ex">center</span>}</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="kw">\end</span>{<span class="ex">sidewaysfigure</span>}</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="kw">\begin</span>{<span class="ex">sidewaysfigure</span>}</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>    <span class="kw">\begin</span>{<span class="ex">center</span>}</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>    <span class="co">%\fbox{</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>    <span class="bu">\includegraphics</span>[page=2, width=<span class="fu">\linewidth</span>]{<span class="ex">multipageTable.pdf</span>}<span class="co">%}</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>    <span class="fu">\captionof</span>{table}{Caption}</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>    <span class="kw">\label</span>{<span class="ex">your_label</span>}</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>    <span class="kw">\end</span>{<span class="ex">center</span>}</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a><span class="kw">\end</span>{<span class="ex">sidewaysfigure</span>}</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a><span class="fu">\endgroup</span></span></code></pre></div>
 </div>
   </div>
 
