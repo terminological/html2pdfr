@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.terminological</groupId>
 	<artifactId>html2pdfr</artifactId>
-	<version>0.4.3</version>
+	<version>0.4.4</version>
 	<description>R wrapper for OpenHTMLtoPDF java library</description>
 
 	<properties>
@@ -12,7 +12,7 @@
 		<!-- Must be Java 8 for standard rJava implementation -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<r6.version>main-SNAPSHOT</r6.version>
+		<r6.version>0.6.2-SNAPSHOT</r6.version>
 		<openhtml.version>1.0.10</openhtml.version>
 		<open.batik.version>1.14</open.batik.version>
 
@@ -25,6 +25,15 @@
 	</properties>
 
 	<name>Java html to pdf for R</name>
+
+	<developers>
+		<developer>
+			<name>Rob Challen</name>
+			<email>rob@terminological.co.uk</email>
+			<organization>terminological</organization>
+			<organizationUrl>https://www.terminological.co.uk</organizationUrl>
+		</developer>
+	</developers>
 
 	<dependencies>
 		<dependency>
@@ -114,21 +123,21 @@
 		</dependency>
 	</dependencies>
 
-	<!-- Resolve runtime library on sonatype OSSRH -->
+	<!-- Resolve runtime library on Github -->
 	<!-- not needed if you plan to use a stable r6.version of the r6-generator-runtime 
 		and r6-generator-maven-plugin rather than main-SNAPSHOT -->
 	<repositories>
 		<repository>
-			<id>Sonatype OSSRH</id>
-			<url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+			<id>github</id>
+        	<url>https://maven.pkg.github.com/terminological/m2repo</url>
 		</repository>
 	</repositories>
 
-	<!-- Resolve maven plugin on sonatype OSSRH -->
+	<!-- Resolve maven plugin on Github -->
 	<pluginRepositories>
 		<pluginRepository>
-			<id>Sonatype OSSRH</id>
-			<url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+			<id>github</id>
+        	<url>https://maven.pkg.github.com/terminological/m2repo</url>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -166,6 +175,8 @@
 						<useRoxygen2>true</useRoxygen2>
 						<usePkgdown>true</usePkgdown>
 						<useJavadoc>false</useJavadoc>
+						<useCmdCheck>true</useCmdCheck>
+						<installLocal>true</installLocal>
 						<rjavaOpts>
 							<rjavaOpt>-Xmx4096M</rjavaOpt>
 						</rjavaOpts>
@@ -175,11 +186,11 @@
 						<preCompileBinary>true</preCompileBinary>
 						<packageAllDependencies>true</packageAllDependencies>
 						<description>
-							HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. 
-							This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. 
-							It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be.
-							This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. 
-							Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).   
+HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. 
+This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. 
+It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be.
+This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. 
+Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).   
 						</description>
 						<maintainerName>Rob</maintainerName>
 						<maintainerFamilyName>Challen</maintainerFamilyName>

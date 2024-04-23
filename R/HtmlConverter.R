@@ -8,9 +8,9 @@
 #' 
 #' This is a class of the html2pdfr generated R library.
 #' 
-#' Version: 0.4.3
+#' Version: 0.4.4
 #' 
-#' Generated: 2022-10-06T16:41:27.944786
+#' Generated: 2024-04-23T15:03:26.623783223
 #'
 #' @details
 	#' no details
@@ -22,7 +22,6 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 
 	#' @field .jobj internal pointer to the rJava reference to the java object.
 	.jobj = NULL,
-
 
 	#' @description
 	#' Create a new HtmlConverter this is not for general use and instances should be created through the
@@ -41,20 +40,19 @@ HtmlConverter = R6::R6Class("HtmlConverter", public=list(
 		self$.api = api;
 	},
 	
-	
 	#' @description The output of toString() of this HtmlConverter
 	print = function() {
 		tmp_out = .jcall(self$.jobj, returnSig = "Ljava/lang/String;", method="toString");
-		self$.api$printMessages()
-		print(tmp_out)
-		invisible(self)
+		self$.api$printMessages();
+		print(tmp_out);
+		invisible(self);
 	},
 	
 	#' @description The output of equals() of this HtmlConverter
 	#' @param object The R6 instance to test for equality to this HtmlConverter  
 	equals = function(object) {
-		if (is.null(object$.jobj)) return(FALSE)
-		return(self$.jobj$equals(object$.jobj))
+		if (is.null(object$.jobj)) return(FALSE);
+		return(self$.jobj$equals(object$.jobj));
 	},
 	
 	#' @description Allow this object to be garbage collected.

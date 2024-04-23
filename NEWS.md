@@ -17,7 +17,11 @@
 * Reduce verbosity of logging.
 * Updated to use r6-generator:0.5.5 
 
-# html2pdfr unstable
+# html2pdfr 0.4.3
 
-* TODO: check whether java's font detection can be used.
-* possibly including Google fonts.
+* reverted to fat-jar as hosting on r-universe not CRAN
+
+# html2pdfr 0.4.4
+
+* Updated to recent version of r6-generator
+* 

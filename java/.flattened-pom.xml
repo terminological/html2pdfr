@@ -4,5 +4,5 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.terminological</groupId>
   <artifactId>html2pdfr</artifactId>
-  <version>0.4.3</version>
+  <version>0.4.4</version>
 </project>

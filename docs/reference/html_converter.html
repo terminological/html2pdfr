@@ -19,7 +19,7 @@ function and specify the result in the `converter` parameter of the main functio
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">html2pdfr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -61,8 +61,8 @@ function and specify the result in the `converter` parameter of the main functio
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">html_converter</span><span class="op">(</span></span>
-<span>  fontfiles<span class="op">=</span><span class="fu">systemfonts</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/systemfonts/man/system_fonts.html" class="external-link">system_fonts</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">path</span>,</span>
-<span>  update<span class="op">=</span><span class="cn">FALSE</span></span>
+<span>  <span class="va">fontfiles</span>,</span>
+<span>  <span class="va">update</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -71,10 +71,10 @@ function and specify the result in the `converter` parameter of the main functio
     <p></p>
 <p></p><div class="arguments">
 <dl><dt>fontfiles</dt>
-<dd><p>fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path) - (java expects a RCharacterVector)</p></dd>
+<dd><p>fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to `systemfonts::system_fonts()$path`) - (java expects a RCharacterVector)</p></dd>
 
 	<dt>update</dt>
-<dd><p>update - (defaulting to FALSE) - (java expects a RLogical)</p></dd>
+<dd><p>update - (defaulting to `FALSE`) - (java expects a RLogical)</p></dd>
 
 	</dl><p></p></div>
 
@@ -85,6 +85,8 @@ function and specify the result in the `converter` parameter of the main functio
     
 
 <p>R6 HtmlConverter object:</p>
+
+
     </div>
 
     <div id="ref-examples">
@@ -104,7 +106,7 @@ function and specify the result in the `converter` parameter of the main functio
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

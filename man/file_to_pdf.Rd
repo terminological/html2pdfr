@@ -5,33 +5,34 @@
 \title{Convert HTML document from a local file to a PDF document. }
 \usage{file_to_pdf(
 	inFile,
-	outFile=tempfile('html2pdfr_'),
-	cssSelector=NA_character_,
-	xMarginInches=NA_real_,
-	yMarginInches=NA_real_,
-	maxWidthInches=NA_real_,
-	maxHeightInches=NA_real_,
-	formats=c('pdf'),
-	pngDpi=300,
-	converter=html2pdfr::html_converter()
+	outFile,
+	cssSelector,
+	xMarginInches,
+	yMarginInches,
+	maxWidthInches,
+	maxHeightInches,
+	formats,
+	pngDpi,
+	converter
 )
 }
 \arguments{
 	\if{html}{\out{<div class="arguments">}}
-	\item{inFile}{inFile the full path the the HTML file - (java expects a String)}
-	\item{outFile}{outFile the full path of the output file - (defaulting to tempfile('html2pdfr_')) - (java expects a String)}
-	\item{cssSelector}{cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_) - (java expects a RCharacter)}
-	\item{xMarginInches}{xMarginInches page width margins - (defaulting to NA_real_) - (java expects a RNumeric)}
-	\item{yMarginInches}{yMarginInches page height margins - (defaulting to NA_real_) - (java expects a RNumeric)}
-	\item{maxWidthInches}{maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_) - (java expects a RNumeric)}
-	\item{maxHeightInches}{maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_) - (java expects a RNumeric)}
-	\item{formats}{formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf')) - (java expects a RCharacterVector)}
-	\item{pngDpi}{pngDpi the dots per inch for png outputs if requested - (defaulting to 300) - (java expects a RNumeric)}
-	\item{converter}{converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)}
+	\item{inFile}{inFile the full path the the HTML file - (java expects a RCharacter)}
+	\item{outFile}{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`) - (java expects a RCharacter)}
+	\item{cssSelector}{cssSelector the part of the page you want to convert to PDF. - (defaulting to `NA_character_`) - (java expects a RCharacter)}
+	\item{xMarginInches}{xMarginInches page width margins - (defaulting to `NA_real_`) - (java expects a RNumeric)}
+	\item{yMarginInches}{yMarginInches page height margins - (defaulting to `NA_real_`) - (java expects a RNumeric)}
+	\item{maxWidthInches}{maxWidthInches what is the maximum allowable width? - (defaulting to `NA_real_`) - (java expects a RNumeric)}
+	\item{maxHeightInches}{maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to `NA_real_`) - (java expects a RNumeric)}
+	\item{formats}{formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to `c('pdf')`) - (java expects a RCharacterVector)}
+	\item{pngDpi}{pngDpi the dots per inch for png outputs if requested - (defaulting to `300`) - (java expects a RNumeric)}
+	\item{converter}{converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to `html2pdfr::html_converter()`) - (java expects a HtmlConverter)}
 	\if{html}{\out{</div>}}
 }
 \value{
 RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
+
 }
 \description{
 The HTML in `inFile` is assumed to be a complete document. Relative references are resolved

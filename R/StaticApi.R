@@ -2,8 +2,8 @@
 # This is a collection of the static methods described in the Java API
 # and serves as an alternative R centric entry point of the html2pdfr generated R library.
 
-# Version: 0.4.3
-# Generated: 2022-10-06T16:41:27.907178
+# Version: 0.4.4
+# Generated: 2024-04-23T15:03:26.581637192
 # Contact: rob.challen@bristol.ac.uk
 
 # HtmlConverter class static methods ----
@@ -11,11 +11,16 @@
 
 #' htmlConverter: Create a new HtmlConverter 
 #' 
-#' for creating PDF and PNG files from HTML. In general this will be created automatically.
-#' but if you have specific fonts you want to use then you may need to pass them to this
-#' function and specify the result in the `converter` parameter of the main functions.
-#' @param fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path) - (java expects a RCharacterVector)
-#' @param update - (defaulting to FALSE) - (java expects a RLogical)
+#' for creating PDF and PNG files from HTML. In general this will be
+#'   created automatically.
+#'   but if you have specific fonts you want to use
+#'   then you may need to pass them to this
+#'   function and specify the result
+#'   in the `converter` parameter of the main functions.
+#' @param fontfiles - a character vector of font files that will be imported
+#'   into the converter. - (defaulting to
+#'   `systemfonts::system_fonts()$path`) - (java expects a RCharacterVector)
+#' @param update - (defaulting to `FALSE`) - (java expects a RLogical)
 #' @return R6 HtmlConverter object: 
 #' 
 #' @examples
@@ -34,23 +39,39 @@ html_converter = function(fontfiles=systemfonts::system_fonts()$path, update=FAL
 #' urlToPdf: Convert HTML document from a URL to a PDF document. 
 #' 
 #' The URL is assumed to be a complete document. 
-#' The resulting PDF size will be controlled by page media directives within the HTML, 
-#' unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
-#' If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
-#' In this case it is will be resized to fit within the given dimensions and shrink wrapped
-#' so that the content is smaller. If no dimensions are present this will default to A4.
-#' @param htmlUrl the URL - (java expects a String)
-#' @param outFile the full path of the output file - (defaulting to tempfile('html2pdfr_')) - (java expects a String)
-#' @param cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_) - (java expects a RCharacter)
-#' @param xMarginInches page width margins - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param yMarginInches page height margins - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf')) - (java expects a RCharacterVector)
-#' @param pngDpi the dots per inch for png outputs if requested - (defaulting to 300) - (java expects a RNumeric)
-#' @param converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)
+#'   The resulting PDF size
+#'   will be controlled by page media directives within the HTML, 
+#'   unless
+#'   explicitly given here in `maxWidthInches` and `maxHeightInches`. 
+#'   If
+#'   the `cssSelector` parameter is given the HTML fragment at that
+#'   selector will be used.
+#'   In this case it is will be resized to fit
+#'   within the given dimensions and shrink wrapped
+#'   so that the content is
+#'   smaller. If no dimensions are present this will default to A4.
+#' @param htmlUrl the URL - (java expects a RCharacter)
+#' @param outFile the full path of the output file - (defaulting to
+#'   `tempfile('html2pdfr_')`) - (java expects a RCharacter)
+#' @param cssSelector the part of the page you want to convert to PDF. -
+#'   (defaulting to `NA_character_`) - (java expects a RCharacter)
+#' @param xMarginInches page width margins - (defaulting to `NA_real_`) - (java expects a RNumeric)
+#' @param yMarginInches page height margins - (defaulting to `NA_real_`) - (java expects a RNumeric)
+#' @param maxWidthInches what is the maximum allowable width? - (defaulting to
+#'   `NA_real_`) - (java expects a RNumeric)
+#' @param maxHeightInches what is the maximum allowable height? (if the content
+#'   is larger than this then it will overflow to another page) -
+#'   (defaulting to `NA_real_`) - (java expects a RNumeric)
+#' @param formats If the outFile does not specify a file extension then you can
+#'   do so here as "png" or "pdf" or both. - (defaulting to `c('pdf')`) - (java expects a RCharacterVector)
+#' @param pngDpi the dots per inch for png outputs if requested - (defaulting to
+#'   `300`) - (java expects a RNumeric)
+#' @param converter (optional) a configured HTML converter, only needed if
+#'   manually specifying fonts. - (defaulting to
+#'   `html2pdfr::html_converter()`) - (java expects a HtmlConverter)
 #' @return RCharacterVector: 
-#' the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).
+#' the filename(s) written to (with extension '.pdf' or '.png' if outFile
+#'   did not have an extension).
 #' @examples
 #' library(testthat)
 #' url_to_pdf('https://cran.r-project.org/banner.shtml')
@@ -67,30 +88,50 @@ url_to_pdf = function(htmlUrl, outFile=tempfile('html2pdfr_'), cssSelector=NA_ch
 
 #' fileToPdf: Convert HTML document from a local file to a PDF document. 
 #' 
-#' The HTML in `inFile` is assumed to be a complete document. Relative references are resolved
-#' with reference to the HTML file on the file system, so correctly located images etc whould be 
-#' picked up without requiring a server.
-#' The resulting PDF size will be controlled by page media directives within the HTML, 
-#' unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
-#' If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
-#' In this case it is will be resized to fit within the given dimensions and shrink wrapped
-#' so that the content is smaller. If no dimensions are present this will default to A4.
-#' @param inFile the full path the the HTML file - (java expects a String)
-#' @param outFile the full path of the output file - (defaulting to tempfile('html2pdfr_')) - (java expects a String)
-#' @param cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_) - (java expects a RCharacter)
-#' @param xMarginInches page width margins - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param yMarginInches page height margins - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf')) - (java expects a RCharacterVector)
-#' @param pngDpi the dots per inch for png outputs if requested - (defaulting to 300) - (java expects a RNumeric)
-#' @param converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)
+#' The HTML in `inFile` is assumed to be a complete document. Relative
+#'   references are resolved
+#'   with reference to the HTML file on the file
+#'   system, so correctly located images etc whould be 
+#'   picked up without
+#'   requiring a server.
+#'   The resulting PDF size will be controlled by page
+#'   media directives within the HTML, 
+#'   unless explicitly given here in
+#'   `maxWidthInches` and `maxHeightInches`. 
+#'   If the `cssSelector`
+#'   parameter is given the HTML fragment at that selector will be used.
+#'   In
+#'   this case it is will be resized to fit within the given dimensions and
+#'   shrink wrapped
+#'   so that the content is smaller. If no dimensions are
+#'   present this will default to A4.
+#' @param inFile the full path the the HTML file - (java expects a RCharacter)
+#' @param outFile the full path of the output file - (defaulting to
+#'   `tempfile('html2pdfr_')`) - (java expects a RCharacter)
+#' @param cssSelector the part of the page you want to convert to PDF. -
+#'   (defaulting to `NA_character_`) - (java expects a RCharacter)
+#' @param xMarginInches page width margins - (defaulting to `NA_real_`) - (java expects a RNumeric)
+#' @param yMarginInches page height margins - (defaulting to `NA_real_`) - (java expects a RNumeric)
+#' @param maxWidthInches what is the maximum allowable width? - (defaulting to
+#'   `NA_real_`) - (java expects a RNumeric)
+#' @param maxHeightInches what is the maximum allowable height? (if the content
+#'   is larger than this then it will overflow to another page) -
+#'   (defaulting to `NA_real_`) - (java expects a RNumeric)
+#' @param formats If the outFile does not specify a file extension then you can
+#'   do so here as "png" or "pdf" or both. - (defaulting to `c('pdf')`) - (java expects a RCharacterVector)
+#' @param pngDpi the dots per inch for png outputs if requested - (defaulting to
+#'   `300`) - (java expects a RNumeric)
+#' @param converter (optional) a configured HTML converter, only needed if
+#'   manually specifying fonts. - (defaulting to
+#'   `html2pdfr::html_converter()`) - (java expects a HtmlConverter)
 #' @return RCharacterVector: 
-#' the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
+#' the filename written to (with extension '.pdf' or '.png' if outFile
+#'   did not have an extension).
 #' @examples
 #' library(testthat)
 #' dest = tempfile(fileext='.html')
-#' download.file('https://cran.r-project.org/banner.shtml', destfile = dest)
+#' download.file('https://cran.r-project.org/banner.shtml', destfile =
+#'   dest)
 #' file_to_pdf(dest)
 #' @export
 file_to_pdf = function(inFile, outFile=tempfile('html2pdfr_'), cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
@@ -105,31 +146,52 @@ file_to_pdf = function(inFile, outFile=tempfile('html2pdfr_'), cssSelector=NA_ch
 
 #' htmlDocumentToPdf: Convert HTML document from a string to a PDF document. 
 #' 
-#' The HTML in `html` is assumed to be a complete document. Relative references are resolved
-#' with reference to `baseUri` if it is given (which could be a `file://` URI).
-#' The resulting PDF size will be controlled by page media directives within the HTML, 
-#' unless explicitly given here in `maxWidthInches` and `maxHeightInches`. 
-#' If the `cssSelector` parameter is given the HTML fragment at that selector will be used.
-#' In this case it is will be resized to fit within the given dimensions and shrink wrapped
-#' so that the content is smaller. If no dimensions are present this will default to A4.
-#' @param html the html document as a string - (java expects a String)
-#' @param outFile the full path of the output file - (defaulting to tempfile('html2pdfr_')) - (java expects a String)
-#' @param baseUri the URI from which to interpret relative links in the html content. - (defaulting to NA_character_) - (java expects a RCharacter)
-#' @param cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_) - (java expects a RCharacter)
-#' @param xMarginInches page width margins - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param yMarginInches page height margins - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_) - (java expects a RNumeric)
-#' @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf')) - (java expects a RCharacterVector)
-#' @param pngDpi the dots per inch for png outputs if requested - (defaulting to 300) - (java expects a RNumeric)
-#' @param converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)
+#' The HTML in `html` is assumed to be a complete document. Relative
+#'   references are resolved
+#'   with reference to `baseUri` if it is given
+#'   (which could be a `file://` URI).
+#'   The resulting PDF size will be
+#'   controlled by page media directives within the HTML, 
+#'   unless
+#'   explicitly given here in `maxWidthInches` and `maxHeightInches`. 
+#'   If
+#'   the `cssSelector` parameter is given the HTML fragment at that
+#'   selector will be used.
+#'   In this case it is will be resized to fit
+#'   within the given dimensions and shrink wrapped
+#'   so that the content is
+#'   smaller. If no dimensions are present this will default to A4.
+#' @param html the html document as a string - (java expects a RCharacter)
+#' @param outFile the full path of the output file - (defaulting to
+#'   `tempfile('html2pdfr_')`) - (java expects a RCharacter)
+#' @param baseUri the URI from which to interpret relative links in the html
+#'   content. - (defaulting to `NA_character_`) - (java expects a RCharacter)
+#' @param cssSelector the part of the page you want to convert to PDF. -
+#'   (defaulting to `NA_character_`) - (java expects a RCharacter)
+#' @param xMarginInches page width margins - (defaulting to `NA_real_`) - (java expects a RNumeric)
+#' @param yMarginInches page height margins - (defaulting to `NA_real_`) - (java expects a RNumeric)
+#' @param maxWidthInches what is the maximum allowable width? - (defaulting to
+#'   `NA_real_`) - (java expects a RNumeric)
+#' @param maxHeightInches what is the maximum allowable height? (if the content
+#'   is larger than this then it will overflow to another page) -
+#'   (defaulting to `NA_real_`) - (java expects a RNumeric)
+#' @param formats If the outFile does not specify a file extension then you can
+#'   do so here as "png" or "pdf" or both. - (defaulting to `c('pdf')`) - (java expects a RCharacterVector)
+#' @param pngDpi the dots per inch for png outputs if requested - (defaulting to
+#'   `300`) - (java expects a RNumeric)
+#' @param converter (optional) a configured HTML converter, only needed if
+#'   manually specifying fonts. - (defaulting to
+#'   `html2pdfr::html_converter()`) - (java expects a HtmlConverter)
 #' @return RCharacterVector: 
-#' the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).
+#' the filename written to (with extension '.pdf' or '.png' if outFile
+#'   did not have an extension).
 #' @examples
 #' library(testthat)
 #' library(readr)
-#' html = read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
-#' html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
+#' html =
+#'   read_file('https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
+#' html_document_to_pdf(html, baseUri =
+#'   'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')
 #' @export
 html_document_to_pdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA_character_, cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
 	# get the API singleton
@@ -143,22 +205,43 @@ html_document_to_pdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA
 
 #' htmlFragmentToPdf: Render HTML fragment from a string to a PDF image.
 #' 
-#' This is the simple rendering function that will output a PDF file (potentially many pages) and a set of PNG files from HTML content. 
-#' This is primarily used to render HTML content (e.g. a table) that is being included in a larger document.
-#' In this case the HTML fragment will not specify page dimensions which need to be provided (defaults to A4 size with 1 inch margins). 
-#' The result can be embedded into an existing page using latex's includegraphics directive exactly the same way as a graphical figure might be used. 
-#' The sizing of the output will always be smaller than the dimensions of a page, but will shrink to fit the content.
-#' @param htmlFragment a HTML fragment, e.g. usually the table element, but may be the whole page. - (java expects a String)
-#' @param outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to tempfile('html2pdfr_')) - (java expects a String)
-#' @param xMarginInches page width margins - (defaulting to 1.0) - (java expects a RNumeric)
-#' @param yMarginInches page height margins - (defaulting to 1.0) - (java expects a RNumeric)
-#' @param maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to 8.27) - (java expects a RNumeric)
-#' @param maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to 11.69) - (java expects a RNumeric)
-#' @param formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf','png')) - (java expects a RCharacterVector)
-#' @param pngDpi the dots per inch for png outputs if requested. - (defaulting to 300) - (java expects a RNumeric)
-#' @param converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)
+#' This is the simple rendering function that will output a PDF file
+#'   (potentially many pages) and a set of PNG files from HTML content.
+#'   
+#'   This is primarily used to render HTML content (e.g. a table) that is
+#'   being included in a larger document.
+#'   In this case the HTML fragment
+#'   will not specify page dimensions which need to be provided (defaults
+#'   to A4 size with 1 inch margins). 
+#'   The result can be embedded into an
+#'   existing page using latex's includegraphics directive exactly the same
+#'   way as a graphical figure might be used. 
+#'   The sizing of the output
+#'   will always be smaller than the dimensions of a page, but will shrink
+#'   to fit the content.
+#' @param htmlFragment a HTML fragment, e.g. usually the table element, but may
+#'   be the whole page. - (java expects a RCharacter)
+#' @param outFile the full path with or without extension (if no extension
+#'   specified then `formats` parameter will apply) - (defaulting to
+#'   `tempfile('html2pdfr_')`) - (java expects a RCharacter)
+#' @param xMarginInches page width margins - (defaulting to `1.0`) - (java expects a RNumeric)
+#' @param yMarginInches page height margins - (defaulting to `1.0`) - (java expects a RNumeric)
+#' @param maxWidthInches what is the maximum allowable width? (default is A4) -
+#'   (defaulting to `8.27`) - (java expects a RNumeric)
+#' @param maxHeightInches what is the maximum allowable height? (if the content
+#'   is larger than this then it will overflow to another page) -
+#'   (defaulting to `11.69`) - (java expects a RNumeric)
+#' @param formats If the outFile does not specify a file extension then you can
+#'   do so here as "png" or "pdf" or both. - (defaulting to
+#'   `c('pdf','png')`) - (java expects a RCharacterVector)
+#' @param pngDpi the dots per inch for png outputs if requested. - (defaulting
+#'   to `300`) - (java expects a RNumeric)
+#' @param converter (optional) a configured HTML converter, only needed if
+#'   manually specifying fonts. - (defaulting to
+#'   `html2pdfr::html_converter()`) - (java expects a HtmlConverter)
 #' @return RCharacterVector: 
-#' the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).
+#' the filename(s) written to (with extension '.pdf' or '.png' if outFile
+#'   did not have an extension).
 #' @examples
 #' library(testthat)
 #' library(dplyr)

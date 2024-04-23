@@ -24,7 +24,7 @@ so that the content is smaller. If no dimensions are present this will default t
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">html2pdfr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -72,15 +72,15 @@ so that the content is smaller. If no dimensions are present this will default t
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">file_to_pdf</span><span class="op">(</span></span>
 <span>  <span class="va">inFile</span>,</span>
-<span>  outFile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">'html2pdfr_'</span><span class="op">)</span>,</span>
-<span>  cssSelector<span class="op">=</span><span class="cn">NA_character_</span>,</span>
-<span>  xMarginInches<span class="op">=</span><span class="cn">NA_real_</span>,</span>
-<span>  yMarginInches<span class="op">=</span><span class="cn">NA_real_</span>,</span>
-<span>  maxWidthInches<span class="op">=</span><span class="cn">NA_real_</span>,</span>
-<span>  maxHeightInches<span class="op">=</span><span class="cn">NA_real_</span>,</span>
-<span>  formats<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'pdf'</span><span class="op">)</span>,</span>
-<span>  pngDpi<span class="op">=</span><span class="fl">300</span>,</span>
-<span>  converter<span class="op">=</span><span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="html_converter.html">html_converter</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="va">outFile</span>,</span>
+<span>  <span class="va">cssSelector</span>,</span>
+<span>  <span class="va">xMarginInches</span>,</span>
+<span>  <span class="va">yMarginInches</span>,</span>
+<span>  <span class="va">maxWidthInches</span>,</span>
+<span>  <span class="va">maxHeightInches</span>,</span>
+<span>  <span class="va">formats</span>,</span>
+<span>  <span class="va">pngDpi</span>,</span>
+<span>  <span class="va">converter</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -89,34 +89,34 @@ so that the content is smaller. If no dimensions are present this will default t
     <p></p>
 <p></p><div class="arguments">
 <dl><dt>inFile</dt>
-<dd><p>inFile the full path the the HTML file - (java expects a String)</p></dd>
+<dd><p>inFile the full path the the HTML file - (java expects a RCharacter)</p></dd>
 
 	<dt>outFile</dt>
-<dd><p>outFile the full path of the output file - (defaulting to tempfile('html2pdfr_')) - (java expects a String)</p></dd>
+<dd><p>outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`) - (java expects a RCharacter)</p></dd>
 
 	<dt>cssSelector</dt>
-<dd><p>cssSelector the part of the page you want to convert to PDF. - (defaulting to NA_character_) - (java expects a RCharacter)</p></dd>
+<dd><p>cssSelector the part of the page you want to convert to PDF. - (defaulting to `NA_character_`) - (java expects a RCharacter)</p></dd>
 
 	<dt>xMarginInches</dt>
-<dd><p>xMarginInches page width margins - (defaulting to NA_real_) - (java expects a RNumeric)</p></dd>
+<dd><p>xMarginInches page width margins - (defaulting to `NA_real_`) - (java expects a RNumeric)</p></dd>
 
 	<dt>yMarginInches</dt>
-<dd><p>yMarginInches page height margins - (defaulting to NA_real_) - (java expects a RNumeric)</p></dd>
+<dd><p>yMarginInches page height margins - (defaulting to `NA_real_`) - (java expects a RNumeric)</p></dd>
 
 	<dt>maxWidthInches</dt>
-<dd><p>maxWidthInches what is the maximum allowable width? - (defaulting to NA_real_) - (java expects a RNumeric)</p></dd>
+<dd><p>maxWidthInches what is the maximum allowable width? - (defaulting to `NA_real_`) - (java expects a RNumeric)</p></dd>
 
 	<dt>maxHeightInches</dt>
-<dd><p>maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to NA_real_) - (java expects a RNumeric)</p></dd>
+<dd><p>maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to `NA_real_`) - (java expects a RNumeric)</p></dd>
 
 	<dt>formats</dt>
-<dd><p>formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf')) - (java expects a RCharacterVector)</p></dd>
+<dd><p>formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to `c('pdf')`) - (java expects a RCharacterVector)</p></dd>
 
 	<dt>pngDpi</dt>
-<dd><p>pngDpi the dots per inch for png outputs if requested - (defaulting to 300) - (java expects a RNumeric)</p></dd>
+<dd><p>pngDpi the dots per inch for png outputs if requested - (defaulting to `300`) - (java expects a RNumeric)</p></dd>
 
 	<dt>converter</dt>
-<dd><p>converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)</p></dd>
+<dd><p>converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to `html2pdfr::html_converter()`) - (java expects a HtmlConverter)</p></dd>
 
 	</dl><p></p></div>
 
@@ -127,6 +127,8 @@ so that the content is smaller. If no dimensions are present this will default t
     
 
 <p>RCharacterVector: the filename written to (with extension '.pdf' or '.png' if outFile did not have an extension).</p>
+
+
     </div>
 
     <div id="ref-examples">
@@ -136,7 +138,7 @@ so that the content is smaller. If no dimensions are present this will default t
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="st">'https://cran.r-project.org/banner.shtml'</span>,</span></span>
 <span class="r-in"><span> destfile <span class="op">=</span> <span class="va">dest</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">file_to_pdf</span><span class="op">(</span><span class="va">dest</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmp54iTbY/html2pdfr_2cef956670165.pdf"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpG0KLOx/html2pdfr_578143aea8f9c.pdf"</span>
 </code></pre></div>
     </div>
   </div>
@@ -151,7 +153,7 @@ so that the content is smaller. If no dimensions are present this will default t
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

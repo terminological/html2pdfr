@@ -21,7 +21,7 @@ The sizing of the output will always be smaller than the dimensions of a page, b
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">html2pdfr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.4</span>
       </span>
     </div>
 
@@ -66,14 +66,14 @@ The sizing of the output will always be smaller than the dimensions of a page, b
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">html_fragment_to_pdf</span><span class="op">(</span></span>
 <span>  <span class="va">htmlFragment</span>,</span>
-<span>  outFile<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">'html2pdfr_'</span><span class="op">)</span>,</span>
-<span>  xMarginInches<span class="op">=</span><span class="fl">1.0</span>,</span>
-<span>  yMarginInches<span class="op">=</span><span class="fl">1.0</span>,</span>
-<span>  maxWidthInches<span class="op">=</span><span class="fl">8.27</span>,</span>
-<span>  maxHeightInches<span class="op">=</span><span class="fl">11.69</span>,</span>
-<span>  formats<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'pdf'</span>,<span class="st">'png'</span><span class="op">)</span>,</span>
-<span>  pngDpi<span class="op">=</span><span class="fl">300</span>,</span>
-<span>  converter<span class="op">=</span><span class="fu">html2pdfr</span><span class="fu">::</span><span class="fu"><a href="html_converter.html">html_converter</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="va">outFile</span>,</span>
+<span>  <span class="va">xMarginInches</span>,</span>
+<span>  <span class="va">yMarginInches</span>,</span>
+<span>  <span class="va">maxWidthInches</span>,</span>
+<span>  <span class="va">maxHeightInches</span>,</span>
+<span>  <span class="va">formats</span>,</span>
+<span>  <span class="va">pngDpi</span>,</span>
+<span>  <span class="va">converter</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -82,31 +82,31 @@ The sizing of the output will always be smaller than the dimensions of a page, b
     <p></p>
 <p></p><div class="arguments">
 <dl><dt>htmlFragment</dt>
-<dd><p>htmlFragment a HTML fragment, e.g. usually the table element, but may be the whole page. - (java expects a String)</p></dd>
+<dd><p>htmlFragment a HTML fragment, e.g. usually the table element, but may be the whole page. - (java expects a RCharacter)</p></dd>
 
 	<dt>outFile</dt>
-<dd><p>outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to tempfile('html2pdfr_')) - (java expects a String)</p></dd>
+<dd><p>outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to `tempfile('html2pdfr_')`) - (java expects a RCharacter)</p></dd>
 
 	<dt>xMarginInches</dt>
-<dd><p>xMarginInches page width margins - (defaulting to 1.0) - (java expects a RNumeric)</p></dd>
+<dd><p>xMarginInches page width margins - (defaulting to `1.0`) - (java expects a RNumeric)</p></dd>
 
 	<dt>yMarginInches</dt>
-<dd><p>yMarginInches page height margins - (defaulting to 1.0) - (java expects a RNumeric)</p></dd>
+<dd><p>yMarginInches page height margins - (defaulting to `1.0`) - (java expects a RNumeric)</p></dd>
 
 	<dt>maxWidthInches</dt>
-<dd><p>maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to 8.27) - (java expects a RNumeric)</p></dd>
+<dd><p>maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to `8.27`) - (java expects a RNumeric)</p></dd>
 
 	<dt>maxHeightInches</dt>
-<dd><p>maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to 11.69) - (java expects a RNumeric)</p></dd>
+<dd><p>maxHeightInches what is the maximum allowable height? (if the content is larger than this then it will overflow to another page) - (defaulting to `11.69`) - (java expects a RNumeric)</p></dd>
 
 	<dt>formats</dt>
-<dd><p>formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to c('pdf','png')) - (java expects a RCharacterVector)</p></dd>
+<dd><p>formats If the outFile does not specify a file extension then you can do so here as "png" or "pdf" or both. - (defaulting to `c('pdf','png')`) - (java expects a RCharacterVector)</p></dd>
 
 	<dt>pngDpi</dt>
-<dd><p>pngDpi the dots per inch for png outputs if requested. - (defaulting to 300) - (java expects a RNumeric)</p></dd>
+<dd><p>pngDpi the dots per inch for png outputs if requested. - (defaulting to `300`) - (java expects a RNumeric)</p></dd>
 
 	<dt>converter</dt>
-<dd><p>converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to html2pdfr::html_converter()) - (java expects a HtmlConverter)</p></dd>
+<dd><p>converter (optional) a configured HTML converter, only needed if manually specifying fonts. - (defaulting to `html2pdfr::html_converter()`) - (java expects a HtmlConverter)</p></dd>
 
 	</dl><p></p></div>
 
@@ -117,6 +117,8 @@ The sizing of the output will always be smaller than the dimensions of a page, b
     
 
 <p>RCharacterVector: the filename(s) written to (with extension '.pdf' or '.png' if outFile did not have an extension).</p>
+
+
     </div>
 
     <div id="ref-examples">
@@ -129,8 +131,8 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 <span class="r-in"><span><span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/themes.html" class="external-link">theme_article</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span><span class="fu">huxtable</span><span class="fu">::</span><span class="fu"><a href="https://hughjonesd.github.io/huxtable/reference/to_html.html" class="external-link">to_html</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">html_fragment_to_pdf</span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmp54iTbY/html2pdfr_2cef9598f12b0.pdf"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "/tmp/Rtmp54iTbY/html2pdfr_2cef9598f12b0.png"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpG0KLOx/html2pdfr_5781455d48e9.pdf"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "/tmp/RtmpG0KLOx/html2pdfr_5781455d48e9.png"</span>
 </code></pre></div>
     </div>
   </div>
@@ -145,7 +147,7 @@ The sizing of the output will always be smaller than the dimensions of a page, b
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

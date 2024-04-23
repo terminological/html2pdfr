@@ -4,18 +4,19 @@
 \alias{html_converter}
 \title{Create a new HtmlConverter }
 \usage{html_converter(
-	fontfiles=systemfonts::system_fonts()$path,
-	update=FALSE
+	fontfiles,
+	update
 )
 }
 \arguments{
 	\if{html}{\out{<div class="arguments">}}
-	\item{fontfiles}{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to systemfonts::system_fonts()$path) - (java expects a RCharacterVector)}
-	\item{update}{update - (defaulting to FALSE) - (java expects a RLogical)}
+	\item{fontfiles}{fontfiles - a character vector of font files that will be imported into the converter. - (defaulting to `systemfonts::system_fonts()$path`) - (java expects a RCharacterVector)}
+	\item{update}{update - (defaulting to `FALSE`) - (java expects a RLogical)}
 	\if{html}{\out{</div>}}
 }
 \value{
 R6 HtmlConverter object: 
+
 }
 \description{
 for creating PDF and PNG files from HTML. In general this will be created automatically.

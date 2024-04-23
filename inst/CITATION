@@ -2,8 +2,8 @@
 c(
 	bibentry(bibtype = "Manual",
 		title = "html2pdfr: R Wrapper For Openhtmltopdf Java Library",
-		year = 2022,
-		note = "R package version 0.4.3; Maven artifact: io.github.terminological:html2pdfr:0.4.3",
+		year = 2024,
+		note = "R package version 0.4.4; Maven artifact: io.github.terminological:html2pdfr:0.4.4",
 		url = "https://terminological.github.io/html2pdfr/docs/index.html",
 		doi = "10.5281/zenodo.6576088",
 		author = c(
@@ -12,7 +12,7 @@ c(
 	bibentry(bibtype = "Manual",
 		title = "r6-generator: Code Generation Framework for using Java within R",
 		author = person(given="Rob", family="Challen",role="aut",email="rob.challen@bristol.ac.uk",comment = structure("0000-0002-5504-7768", .Names = "ORCID")),
-		note = "Maven plugin artifact: io.github.terminological:r6-generator-maven-plugin:main-SNAPSHOT",
+		note = "Maven plugin artifact: io.github.terminological:r6-generator-maven-plugin:0.6.2-SNAPSHOT",
 		year = 2022,
 		url = "https://github.com/terminological/r6-generator",
 		doi = "10.5281/zenodo.6644970"

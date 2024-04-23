@@ -4,9 +4,9 @@
 #' @description
 #' R Wrapper For Openhtmltopdf Java Library
 #'
-#' Version: 0.4.3
+#' Version: 0.4.4
 #'
-#' Generated: 2022-10-06T16:41:27.889838
+#' Generated: 2024-04-23T15:03:26.548900904
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import R6
@@ -23,7 +23,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 	.toJava = NULL,
 	#' @field .reg the list of references to java objects created by this API 
 	.reg = list(),
-	#' @field HtmlConverter the HtmlConverter class contructors and static methods
+	#' @field HtmlConverter the HtmlConverter class constructors and static methods
 	HtmlConverter = NULL,
 
 	#' @description
@@ -82,9 +82,9 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		  .jcall(self$.log,returnSig = "V",method = "debug", jar)
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.3");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2022-10-06T16:41:27.890021");
-		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.3");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.4");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2024-04-23T15:03:26.549307870");
+		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.4");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
 		self$printMessages()
@@ -104,13 +104,13 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RDate'))
 				if (length(rObj) > 1) stop('input too long')
 			   if (rObj<'0001-01-01') message('dates smaller than 0001-01-01 will be converted to NA')
-				tmp = as.character(rObj,format='%C%y-%m-%d')[[1]]
+				tmp = format(rObj,format='%C%y-%m-%d')[[1]]
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RDate',tmp))
 			},
 			RDateVector=function(rObj) {
 				if (is.null(rObj)) return(rJava::.new('uk/co/terminological/rjava/types/RDateVector'))
 				if (any(na.omit(rObj)<'0001-01-01')) message('dates smaller than 0001-01-01 will be converted to NA')
-				tmp = as.character(rObj,format='%C%y-%m-%d')
+				tmp = format(rObj,format='%C%y-%m-%d')
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RDateVector',rJava::.jarray(tmp)))
 			},
 			RCharacterVector=function(rObj) {
@@ -311,7 +311,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			RLogicalVector=function(jObj) as.logical(rJava::.jcall(jObj,returnSig='[I',method='rPrimitive')),
 			RCharacter=function(jObj) as.character(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rPrimitive')),
 			String=function(jObj) return(as.character(jObj)),
-			HtmlConverter=function(jObj) return(jObj),
+			HtmlConverter=function(jObj) return(HtmlConverter$new(jObj,self)),
 			void=function(jObj) invisible(NULL),
 			double=function(jObj) return(as.numeric(jObj)),
 			RList=function(jObj) {
@@ -357,7 +357,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				.jcheck() 
 				# convert result back to R (should be a identity conversion)
 				tmp_r6 = HtmlConverter$new(
-					self$.fromJava$HtmlConverter(tmp_out),
+					tmp_out,
 					self
 				);
 				return(tmp_r6)
@@ -366,21 +366,26 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				# copy parameters
 				tmp_fontfiles = self$.toJava$RCharacterVector(fontfiles);
 				tmp_update = self$.toJava$RLogical(update);
-				#execute static call
-				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/html2pdfr/HtmlConverter;", method="htmlConverter" , tmp_fontfiles, tmp_update, check=FALSE);
+				# execute static call
+				tmp_out = .jcall(
+					"uk/co/terminological/html2pdfr/HtmlConverter", 
+					returnSig = "Luk/co/terminological/html2pdfr/HtmlConverter;", 
+					method = "htmlConverter",
+					tmp_fontfiles,
+					tmp_update, 
+					check = FALSE);
 				self$printMessages()
-				.jcheck() 
-				# wrap return java object in R6 class 
-				out = HtmlConverter$new(
-					self$.fromJava$HtmlConverter(tmp_out),
-					self
-				);
+				.jcheck()
+				# static methods cannot return themselves fluently, so this does not need to be checked for.
+				# convert java object back to R. Wrapping in an R6 class as needed
+				out = self$.fromJava$HtmlConverter(tmp_out);
+				if(is.null(out)) return(invisible(out))
 				return(out)
 			},
 			urlToPdf = function(htmlUrl, outFile=tempfile('html2pdfr_'), cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
 				# copy parameters
-				tmp_htmlUrl = self$.toJava$String(htmlUrl);
-				tmp_outFile = self$.toJava$String(outFile);
+				tmp_htmlUrl = self$.toJava$RCharacter(htmlUrl);
+				tmp_outFile = self$.toJava$RCharacter(outFile);
 				tmp_cssSelector = self$.toJava$RCharacter(cssSelector);
 				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
 				tmp_yMarginInches = self$.toJava$RNumeric(yMarginInches);
@@ -389,19 +394,34 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				tmp_formats = self$.toJava$RCharacterVector(formats);
 				tmp_pngDpi = self$.toJava$RNumeric(pngDpi);
 				tmp_converter = self$.toJava$HtmlConverter(converter);
-				#execute static call
-				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="urlToPdf" , tmp_htmlUrl, tmp_outFile, tmp_cssSelector, tmp_xMarginInches, tmp_yMarginInches, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi, tmp_converter, check=FALSE);
+				# execute static call
+				tmp_out = .jcall(
+					"uk/co/terminological/html2pdfr/HtmlConverter", 
+					returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", 
+					method = "urlToPdf",
+					tmp_htmlUrl,
+					tmp_outFile,
+					tmp_cssSelector,
+					tmp_xMarginInches,
+					tmp_yMarginInches,
+					tmp_maxWidthInches,
+					tmp_maxHeightInches,
+					tmp_formats,
+					tmp_pngDpi,
+					tmp_converter, 
+					check = FALSE);
 				self$printMessages()
-				.jcheck() 
-				# convert java object back to R
+				.jcheck()
+				# static methods cannot return themselves fluently, so this does not need to be checked for.
+				# convert java object back to R. Wrapping in an R6 class as needed
 				out = self$.fromJava$RCharacterVector(tmp_out);
 				if(is.null(out)) return(invisible(out))
 				return(out)
 			},
 			fileToPdf = function(inFile, outFile=tempfile('html2pdfr_'), cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
 				# copy parameters
-				tmp_inFile = self$.toJava$String(inFile);
-				tmp_outFile = self$.toJava$String(outFile);
+				tmp_inFile = self$.toJava$RCharacter(inFile);
+				tmp_outFile = self$.toJava$RCharacter(outFile);
 				tmp_cssSelector = self$.toJava$RCharacter(cssSelector);
 				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
 				tmp_yMarginInches = self$.toJava$RNumeric(yMarginInches);
@@ -410,19 +430,34 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				tmp_formats = self$.toJava$RCharacterVector(formats);
 				tmp_pngDpi = self$.toJava$RNumeric(pngDpi);
 				tmp_converter = self$.toJava$HtmlConverter(converter);
-				#execute static call
-				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="fileToPdf" , tmp_inFile, tmp_outFile, tmp_cssSelector, tmp_xMarginInches, tmp_yMarginInches, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi, tmp_converter, check=FALSE);
+				# execute static call
+				tmp_out = .jcall(
+					"uk/co/terminological/html2pdfr/HtmlConverter", 
+					returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", 
+					method = "fileToPdf",
+					tmp_inFile,
+					tmp_outFile,
+					tmp_cssSelector,
+					tmp_xMarginInches,
+					tmp_yMarginInches,
+					tmp_maxWidthInches,
+					tmp_maxHeightInches,
+					tmp_formats,
+					tmp_pngDpi,
+					tmp_converter, 
+					check = FALSE);
 				self$printMessages()
-				.jcheck() 
-				# convert java object back to R
+				.jcheck()
+				# static methods cannot return themselves fluently, so this does not need to be checked for.
+				# convert java object back to R. Wrapping in an R6 class as needed
 				out = self$.fromJava$RCharacterVector(tmp_out);
 				if(is.null(out)) return(invisible(out))
 				return(out)
 			},
 			htmlDocumentToPdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA_character_, cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
 				# copy parameters
-				tmp_html = self$.toJava$String(html);
-				tmp_outFile = self$.toJava$String(outFile);
+				tmp_html = self$.toJava$RCharacter(html);
+				tmp_outFile = self$.toJava$RCharacter(outFile);
 				tmp_baseUri = self$.toJava$RCharacter(baseUri);
 				tmp_cssSelector = self$.toJava$RCharacter(cssSelector);
 				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
@@ -432,19 +467,35 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				tmp_formats = self$.toJava$RCharacterVector(formats);
 				tmp_pngDpi = self$.toJava$RNumeric(pngDpi);
 				tmp_converter = self$.toJava$HtmlConverter(converter);
-				#execute static call
-				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="htmlDocumentToPdf" , tmp_html, tmp_outFile, tmp_baseUri, tmp_cssSelector, tmp_xMarginInches, tmp_yMarginInches, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi, tmp_converter, check=FALSE);
+				# execute static call
+				tmp_out = .jcall(
+					"uk/co/terminological/html2pdfr/HtmlConverter", 
+					returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", 
+					method = "htmlDocumentToPdf",
+					tmp_html,
+					tmp_outFile,
+					tmp_baseUri,
+					tmp_cssSelector,
+					tmp_xMarginInches,
+					tmp_yMarginInches,
+					tmp_maxWidthInches,
+					tmp_maxHeightInches,
+					tmp_formats,
+					tmp_pngDpi,
+					tmp_converter, 
+					check = FALSE);
 				self$printMessages()
-				.jcheck() 
-				# convert java object back to R
+				.jcheck()
+				# static methods cannot return themselves fluently, so this does not need to be checked for.
+				# convert java object back to R. Wrapping in an R6 class as needed
 				out = self$.fromJava$RCharacterVector(tmp_out);
 				if(is.null(out)) return(invisible(out))
 				return(out)
 			},
 			htmlFragmentToPdf = function(htmlFragment, outFile=tempfile('html2pdfr_'), xMarginInches=1.0, yMarginInches=1.0, maxWidthInches=8.27, maxHeightInches=11.69, formats=c('pdf','png'), pngDpi=300, converter=html2pdfr::html_converter()) {
 				# copy parameters
-				tmp_htmlFragment = self$.toJava$String(htmlFragment);
-				tmp_outFile = self$.toJava$String(outFile);
+				tmp_htmlFragment = self$.toJava$RCharacter(htmlFragment);
+				tmp_outFile = self$.toJava$RCharacter(outFile);
 				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
 				tmp_yMarginInches = self$.toJava$RNumeric(yMarginInches);
 				tmp_maxWidthInches = self$.toJava$RNumeric(maxWidthInches);
@@ -452,11 +503,25 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				tmp_formats = self$.toJava$RCharacterVector(formats);
 				tmp_pngDpi = self$.toJava$RNumeric(pngDpi);
 				tmp_converter = self$.toJava$HtmlConverter(converter);
-				#execute static call
-				tmp_out = .jcall("uk/co/terminological/html2pdfr/HtmlConverter", returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", method="htmlFragmentToPdf" , tmp_htmlFragment, tmp_outFile, tmp_xMarginInches, tmp_yMarginInches, tmp_maxWidthInches, tmp_maxHeightInches, tmp_formats, tmp_pngDpi, tmp_converter, check=FALSE);
+				# execute static call
+				tmp_out = .jcall(
+					"uk/co/terminological/html2pdfr/HtmlConverter", 
+					returnSig = "Luk/co/terminological/rjava/types/RCharacterVector;", 
+					method = "htmlFragmentToPdf",
+					tmp_htmlFragment,
+					tmp_outFile,
+					tmp_xMarginInches,
+					tmp_yMarginInches,
+					tmp_maxWidthInches,
+					tmp_maxHeightInches,
+					tmp_formats,
+					tmp_pngDpi,
+					tmp_converter, 
+					check = FALSE);
 				self$printMessages()
-				.jcheck() 
-				# convert java object back to R
+				.jcheck()
+				# static methods cannot return themselves fluently, so this does not need to be checked for.
+				# convert java object back to R. Wrapping in an R6 class as needed
 				out = self$.fromJava$RCharacterVector(tmp_out);
 				if(is.null(out)) return(invisible(out))
 				return(out)
@@ -499,9 +564,9 @@ JavaApi$installDependencies = function() {
 JavaApi$versionInformation = function() {
 	out = list(
 		package = "html2pdfr",
-		r_package_version = "0.4.3",
-		r_package_generated = "2022-10-06T16:41:27.904694",
-		java_library_version = "io.github.terminological:html2pdfr:0.4.3",
+		r_package_version = "0.4.4",
+		r_package_generated = "2024-04-23T15:03:26.578389920",
+		java_library_version = "io.github.terminological:html2pdfr:0.4.4",
 		maintainer = "rob.challen@bristol.ac.uk"
 	)
 	# try and get complilation information if library is loaded
@@ -518,7 +583,7 @@ JavaApi$versionInformation = function() {
 
 .checkDependencies = function(nocache = FALSE, ...) {
 	package_jar = .package_jars(package_name="html2pdfr",types="fat-jar")
-	package_jar = package_jar[startsWith(fs::path_file(package_jar),"html2pdfr-0.4.3")]
+	package_jar = package_jar[startsWith(fs::path_file(package_jar),"html2pdfr-0.4.4")]
 	
 	# Java dependencies
 	# all java library code and dependencies have already been bundled into a single fat jar

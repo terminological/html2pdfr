@@ -3,6 +3,7 @@
 export("%>%")
 export(HtmlConverter)
 export(JavaApi)
+export(RFuture)
 export(file_to_pdf)
 export(html_converter)
 export(html_document_to_pdf)

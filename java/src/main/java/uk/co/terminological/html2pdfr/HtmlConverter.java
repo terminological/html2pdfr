@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,8 +79,8 @@ public class HtmlConverter {
 	W3CDom w3cDom = new W3CDom();
 
 	private static HtmlConverter instance = null;
-	
-	
+
+
 	/**
 	 * Create a new HtmlConverter 
 	 * 
@@ -95,7 +96,7 @@ public class HtmlConverter {
 	public static HtmlConverter htmlConverter(
 			@RDefault(rCode = "systemfonts::system_fonts()$path") RCharacterVector fontfiles,
 			@RDefault(rCode = "FALSE") RLogical update
-	) {
+			) {
 		if (instance == null || update.get().booleanValue()) {
 			XRLog.setLoggerImpl(new Slf4jLogger());
 			XRLog.setLoggingEnabled(false);
@@ -103,37 +104,39 @@ public class HtmlConverter {
 		}
 		return instance;
 	}
-	
-	public HtmlConverter(String[] fontfiles) {
-		
-		System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
-				
-		Arrays.asList(fontfiles).stream()
-			.flatMap(ff -> AutoFont.fromFontPath(ff))
-			.forEach(fonts::add);
 
+	public HtmlConverter(String[] fontfiles) {
+		System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
+		Arrays.asList(fontfiles).stream()
+		.flatMap(ff -> AutoFont.fromFontPath(ff))
+		.forEach(fonts::add);
 	}
-	
+
 	@RFinalize
 	public void close() throws IOException {
 		svg.close();
 		mathMl.close();
 	}
 
-	
+	private static String resolvePath(String outFile) throws IOException {
+		Path tmp = Paths.get(outFile);
+		Files.createDirectories(tmp.getParent());
+		return tmp.getParent().toRealPath().resolve(tmp.getFileName()).toString();
+	}
+
 	// An internal number, should stay the same.
 	private static final int PDF_DOTS_PER_PIXEL = 20;
 	private static final int PIXELS_PER_INCH = 96;
-	
+
 	private static final double A4_INCH_WIDTH = 8.25D; //96 DPI
 	private static final double A4_INCH_HEIGHT = 11.75;
-	
-//	private static final int A4_PIXEL_WIDTH = 793; //96 DPI
-//	private static final int A4_PIXEL_HEIGHT = 1122;
-//	
-//	private static final float PDF_POINT_WIDTH_A4 = 595f; // 72 DPI (pdf pt per inch)
-//	private static final float PDF_POINT_HEIGHT_A4 = 841.88f;
-	
+
+	//	private static final int A4_PIXEL_WIDTH = 793; //96 DPI
+	//	private static final int A4_PIXEL_HEIGHT = 1122;
+	//	
+	//	private static final float PDF_POINT_WIDTH_A4 = 595f; // 72 DPI (pdf pt per inch)
+	//	private static final float PDF_POINT_HEIGHT_A4 = 841.88f;
+
 	private Document resizeHtml(Document doc, int width, int height, int padding) {
 		// padding implemented as margin on body, with page size as width and height.
 		Document doc2 = doc.clone();
@@ -148,13 +151,13 @@ public class HtmlConverter {
 		styleSpec = styleSpec.replaceAll("@page\\s+\\{[^}]+\\}", "").replaceAll("body\\s+\\{[^}]+\\}", "");
 		String newStyleSpec = "@page { size: "+width+"px "+height+"px; margin: "+padding+"px; } body { margin: 0px; } "+styleSpec;
 		style.text(newStyleSpec);
-		
+
 		return doc2;
 	}
-	
+
 	// Shrinks HTML content so that it is smaller that maxWidth, and shorter than (or equal to) maxWidth by paging when it gets too long.
 	// This will basically shrink to content unless that gets bigger than outer box.
-	// The result is guaranteed to be no larger than maxWidth and no one page longer than maxHeight.
+	// The result is guaranteed to be no larger than maxWidth with no single page longer than maxHeight.
 	// Content will overflow to fill multiple pages.
 	private Document shrinkWrap(Document doc, URI htmlBaseUrl, int maxWidth, int maxHeight, int padding) throws IOException {
 		// figure out dimensions on full page.
@@ -182,12 +185,12 @@ public class HtmlConverter {
 		// shrink image to fit rendered size (plus padding)
 		return resizeHtml(doc,newWidth,newHeight,padding); 
 	}
-	
+
 	// for testing
 	public List<String> renderHtmlToFitA4(String html, String outFile, double marginInInches) throws IOException {
 		return renderHtml(html, null, outFile, new String[] {"pdf","png"}, true, A4_INCH_WIDTH-2*marginInInches, A4_INCH_HEIGHT-2*marginInInches, 1.0/16, true, 300D);
 	}
-	
+
 	/**
 	 * Convert HTML document from a URL to a PDF document. 
 	 * 
@@ -215,8 +218,8 @@ public class HtmlConverter {
 			"url_to_pdf('https://cran.r-project.org/banner.shtml')"
 	})
 	public static RCharacterVector urlToPdf(
-			String htmlUrl, 
-			@RDefault(rCode = "tempfile('html2pdfr_')") String outFile,
+			RCharacter htmlUrl, 
+			@RDefault(rCode = "tempfile('html2pdfr_')") RCharacter outFile,
 			@RDefault(rCode = "NA_character_") RCharacter cssSelector,
 			@RDefault(rCode = "NA_real_") RNumeric xMarginInches, 
 			@RDefault(rCode = "NA_real_") RNumeric yMarginInches,
@@ -225,26 +228,26 @@ public class HtmlConverter {
 			@RDefault(rCode = "c('pdf')") RCharacterVector formats,
 			@RDefault(rCode = "300") RNumeric pngDpi,
 			@RDefault(rCode = "html2pdfr::html_converter()") HtmlConverter converter
-	) throws IOException {
-		Scanner s = new Scanner(new URL(htmlUrl).openStream(), "UTF-8");
+			) throws IOException {
+		Scanner s = new Scanner(new URL(htmlUrl.get()).openStream(), "UTF-8");
 		String html = s.useDelimiter("\\A").next();
 		s.close();
-		URI uri = URI.create(htmlUrl);
+		URI uri = URI.create(htmlUrl.get());
 		Double x = maxWidthInches.opt().map(w -> w-2*xMarginInches.opt().orElse(0D)).orElse(null);
 		Double y = maxHeightInches.opt().map(w -> w-2*yMarginInches.opt().orElse(0D)).orElse(null);
 		boolean resize = !(maxWidthInches.isNa() || maxHeightInches.isNa());
 		boolean shrink = !cssSelector.isNa();
 		List<String> saved = converter.renderHtmlWithSelector(html, uri, 
-			outFile, formats.rPrimitive(), 
-			resize, x, y, 
-			1.0/16, 
-			shrink, 
-			pngDpi.opt().orElse(300D),
-			cssSelector.get());
+				outFile.get(), formats.rPrimitive(), 
+				resize, x, y, 
+				1.0/16, 
+				shrink, 
+				pngDpi.opt().orElse(300D),
+				cssSelector.get());
 		return using(stringCollector()).convert(saved);
 	}
-	
-		
+
+
 	/**
 	 * Convert HTML document from a local file to a PDF document. 
 	 * 
@@ -276,8 +279,8 @@ public class HtmlConverter {
 			"file_to_pdf(dest)"
 	})
 	public static RCharacterVector fileToPdf(
-			String inFile, 
-			@RDefault(rCode = "tempfile('html2pdfr_')") String outFile,
+			RCharacter inFile, 
+			@RDefault(rCode = "tempfile('html2pdfr_')") RCharacter outFile,
 			@RDefault(rCode = "NA_character_") RCharacter cssSelector,
 			@RDefault(rCode = "NA_real_") RNumeric xMarginInches, 
 			@RDefault(rCode = "NA_real_") RNumeric yMarginInches,
@@ -286,25 +289,25 @@ public class HtmlConverter {
 			@RDefault(rCode = "c('pdf')") RCharacterVector formats,
 			@RDefault(rCode = "300") RNumeric pngDpi,
 			@RDefault(rCode = "html2pdfr::html_converter()") HtmlConverter converter
-	) throws IOException {
-		Scanner s = new Scanner(new FileInputStream(new File(inFile)), "UTF-8");
+			) throws IOException {
+		Scanner s = new Scanner(new FileInputStream(new File(inFile.get())), "UTF-8");
 		String html = s.useDelimiter("\\A").next();
-		URI uri = Paths.get(inFile).getParent().toUri();
+		URI uri = Paths.get(inFile.get()).getParent().toUri();
 		s.close();
 		Double x = maxWidthInches.opt().map(w -> w-2*xMarginInches.opt().orElse(0D)).orElse(null);
 		Double y = maxHeightInches.opt().map(w -> w-2*yMarginInches.opt().orElse(0D)).orElse(null);
 		boolean resize = !(maxWidthInches.isNa() || maxHeightInches.isNa());
 		boolean shrink = !cssSelector.isNa();
 		List<String> saved = converter.renderHtmlWithSelector(html, uri, 
-			outFile, formats.rPrimitive(), 
-			resize, x, y, 
-			1.0/16, 
-			shrink, 
-			pngDpi.opt().orElse(300D),
-			cssSelector.get());
+				outFile.get(), formats.rPrimitive(), 
+				resize, x, y, 
+				1.0/16, 
+				shrink, 
+				pngDpi.opt().orElse(300D),
+				cssSelector.get());
 		return using(stringCollector()).convert(saved);
 	}
-	
+
 	/**
 	 * Convert HTML document from a string to a PDF document. 
 	 * 
@@ -336,8 +339,8 @@ public class HtmlConverter {
 			"html_document_to_pdf(html, baseUri = 'https://fred-wang.github.io/MathFonts/mozilla_mathml_test/')"
 	})
 	public static RCharacterVector htmlDocumentToPdf(
-			String html, 
-			@RDefault(rCode = "tempfile('html2pdfr_')") String outFile, 
+			RCharacter html, 
+			@RDefault(rCode = "tempfile('html2pdfr_')") RCharacter outFile, 
 			@RDefault(rCode = "NA_character_") RCharacter baseUri,
 			@RDefault(rCode = "NA_character_") RCharacter cssSelector,
 			@RDefault(rCode = "NA_real_") RNumeric xMarginInches, 
@@ -347,7 +350,7 @@ public class HtmlConverter {
 			@RDefault(rCode = "c('pdf')") RCharacterVector formats,
 			@RDefault(rCode = "300") RNumeric pngDpi,
 			@RDefault(rCode = "html2pdfr::html_converter()") HtmlConverter converter
-	) throws IOException {
+			) throws IOException {
 		URI uri;
 		if (baseUri.isNa()) {
 			uri = null;
@@ -358,16 +361,16 @@ public class HtmlConverter {
 		Double y = maxHeightInches.opt().map(w -> w-2*yMarginInches.opt().orElse(0D)).orElse(null);
 		boolean resize = !(maxWidthInches.isNa() || maxHeightInches.isNa());
 		boolean shrink = !cssSelector.isNa();
-		List<String> saved = converter.renderHtmlWithSelector(html, uri, 
-			outFile, formats.rPrimitive(), 
-			resize, x, y, 
-			1.0/16, 
-			shrink, 
-			pngDpi.opt().orElse(300D),
-			cssSelector.get());
+		List<String> saved = converter.renderHtmlWithSelector(html.get(), uri, 
+				outFile.get(), formats.rPrimitive(), 
+				resize, x, y, 
+				1.0/16, 
+				shrink, 
+				pngDpi.opt().orElse(300D),
+				cssSelector.get());
 		return using(stringCollector()).convert(saved);
 	}
-	
+
 	/**
 	 * Render HTML fragment from a string to a PDF image.
 	 * 
@@ -399,8 +402,8 @@ public class HtmlConverter {
 			"html_fragment_to_pdf(html)"
 	})
 	public static RCharacterVector htmlFragmentToPdf(
-			String htmlFragment, 
-			@RDefault(rCode = "tempfile('html2pdfr_')") String outFile, 
+			RCharacter htmlFragment, 
+			@RDefault(rCode = "tempfile('html2pdfr_')") RCharacter outFile, 
 			@RDefault(rCode = "1.0") RNumeric xMarginInches, 
 			@RDefault(rCode = "1.0") RNumeric yMarginInches,
 			@RDefault(rCode = "8.27") RNumeric maxWidthInches, 
@@ -408,17 +411,17 @@ public class HtmlConverter {
 			@RDefault(rCode = "c('pdf','png')") RCharacterVector formats,
 			@RDefault(rCode = "300") RNumeric pngDpi,
 			@RDefault(rCode = "html2pdfr::html_converter()") HtmlConverter converter
-	) throws IOException {
+			) throws IOException {
 		Double x = maxWidthInches.opt().map(w -> w-2*xMarginInches.opt().orElse(0D)).orElse(null);
 		Double y = maxHeightInches.opt().map(w -> w-2*yMarginInches.opt().orElse(0D)).orElse(null);
 		List<String> saved = converter.renderHtml(
-				htmlFragment, null, 
-				outFile, formats.rPrimitive(), 
+				htmlFragment.get(), null, 
+				outFile.get(), formats.rPrimitive(), 
 				true, x, y, 
 				1.0/16, true, pngDpi.opt().orElse(300D));
 		return using(stringCollector()).convert(saved);
 	}
-	
+
 	private PdfRendererBuilder configuredBuilder() {
 		PdfRendererBuilder builder = new PdfRendererBuilder();
 		AutoFont.toBuilder(builder, fonts);
@@ -430,15 +433,29 @@ public class HtmlConverter {
 		builder.addDOMMutator(LaTeXDOMMutator.INSTANCE);
 		return builder;
 	}
-	
-	public List<String> renderHtml(String html, URI htmlBaseUrl, String outFile, String[] formats, boolean resize,  Double widthInches, Double heightInches, Double paddingInches, boolean shrinkWrap, double pngDotsPerInch) throws IOException {
-		return renderHtmlWithSelector(html, htmlBaseUrl, outFile, formats, resize, widthInches, heightInches, paddingInches, shrinkWrap, pngDotsPerInch, null);
+
+	public List<String> renderHtml(
+			String html, URI htmlBaseUrl, 
+			String outFile, String[] formats, boolean resize,  
+			Double widthInches, Double heightInches, Double paddingInches, 
+			boolean shrinkWrap, double pngDotsPerInch
+			) throws IOException {
+		return renderHtmlWithSelector(html, htmlBaseUrl, outFile, formats, 
+				resize, widthInches, heightInches, paddingInches, shrinkWrap, 
+				pngDotsPerInch, null);
 	}
 	// main function 
-	public List<String> renderHtmlWithSelector(String html, URI htmlBaseUrl, String outFile, String[] formats, boolean resize,  Double widthInches, Double heightInches, Double paddingInches, boolean shrinkWrap, double pngDotsPerInch, String cssSelector) throws IOException {
-		
-		// clean up html
+	public List<String> renderHtmlWithSelector(
+			String html, URI htmlBaseUrl, 
+			String outFile, String[] formats, boolean resize,  
+			Double widthInches, Double heightInches, Double paddingInches, 
+			boolean shrinkWrap, double pngDotsPerInch, String cssSelector
+			) throws IOException {
 
+		// resolve symbolic links.
+		outFile = resolvePath(outFile);
+
+		// clean up html
 		Document doc = Jsoup.parse(html);
 		doc.outputSettings(new OutputSettings().syntax(Syntax.xml));
 		if (cssSelector != null) {
@@ -450,15 +467,20 @@ public class HtmlConverter {
 		}
 
 		List<String> saved = new ArrayList<String>();
-		
-		
+
+
 		Document doc2;
 		if (resize) {
 			// resize page to content 
 			if (shrinkWrap) {
-				doc2 = shrinkWrap(doc, htmlBaseUrl, (int) (widthInches * PIXELS_PER_INCH), (int) (heightInches * PIXELS_PER_INCH), (int) (paddingInches*PIXELS_PER_INCH));
+				doc2 = shrinkWrap(doc, htmlBaseUrl, 
+						(int) (widthInches * PIXELS_PER_INCH), 
+						(int) (heightInches * PIXELS_PER_INCH), 
+						(int) (paddingInches*PIXELS_PER_INCH));
 			} else {
-				doc2 = resizeHtml(doc, (int) (widthInches * PIXELS_PER_INCH), (int) (heightInches * PIXELS_PER_INCH), (int) (paddingInches*PIXELS_PER_INCH));
+				doc2 = resizeHtml(doc, (int) (widthInches * PIXELS_PER_INCH), 
+						(int) (heightInches * PIXELS_PER_INCH), 
+						(int) (paddingInches*PIXELS_PER_INCH));
 			}
 		} else {
 			// assume size supplied as @page css (or default to A4) 
@@ -466,37 +488,35 @@ public class HtmlConverter {
 		}
 		doc2.outputSettings(new OutputSettings().syntax(Syntax.xml));
 		doc2.outputSettings().escapeMode(EscapeMode.xhtml);
-		
+
 		// System.out.println(doc2.outerHtml());
-		
+
 		// decide on formats
 		String extn = FilenameUtils.getExtension(outFile);
 		if(extn != "") formats = new String[] {extn};
 		outFile = FilenameUtils.removeExtension(outFile);
-		
-		Files.createDirectories(Paths.get(outFile).getParent());
-		
+
 		PdfRendererBuilder builder = configuredBuilder();
-		
+
 		builder.withW3cDocument(w3cDom.fromJsoup(doc2), htmlBaseUrl == null ? null : htmlBaseUrl.toString());
 		// builder.withHtmlContent(doc2.outerHtml(), htmlBaseUrl == null ? null : htmlBaseUrl.toString());
-		
+
 		PdfBoxRenderer pdfrender = builder.buildPdfRenderer();
-		//TODO:; pdfrender.getRootBox(). get box model layout as another function
+		//pdfrender.getRootBox(). get box model layout as another function
 		pdfrender.layout();
 		try {
 			pdfrender.createPDFWithoutClosing();
 		} catch (Exception e) {
 			throw new IOException("HTML renderer did not complete normally. This usually means the HTML contains unsupported features, (e.g. some types of form fields.)",e);
 		}
-		
-		
-		
+
+
+
 		PDDocument pdfdoc = pdfrender.getPdfDocument();
 		boolean write = false;
-		
+
 		if(Arrays.asList(formats).contains("pdf")) {
-			
+
 			File pdfFile = new File(outFile+".pdf"); 
 			pdfdoc.save(pdfFile);
 			write = true;
@@ -506,18 +526,18 @@ public class HtmlConverter {
 			pdfdoc.save(new NullOutputStream());
 		}
 
-		
+
 		if(Arrays.asList(formats).contains("png")) {
 			if (pdfdoc.getNumberOfPages() == 1) {
-				
+
 				BufferedImage buffGraph = new PDFRenderer(pdfdoc).renderImage(0,((float) pngDotsPerInch)/72.0F);
 				File pngFile = new File(outFile+".png");
 				saveImage(buffGraph, pngFile, pngDotsPerInch);
 				saved.add(pngFile.toString());
-				
+
 			} else {
 				for (int i=0; i<pdfdoc.getNumberOfPages(); i++) {
-					
+
 					BufferedImage buffGraph = new PDFRenderer(pdfdoc).renderImage(i,((float) pngDotsPerInch)/72.0F);
 					File pngFile = new File(outFile+"_"+(i+1)+".png");
 					saveImage(buffGraph, pngFile, pngDotsPerInch);
@@ -526,19 +546,18 @@ public class HtmlConverter {
 			}
 			write = true;
 		} 
-		
+
 		pdfdoc.close();
 		pdfrender.close();
-		
+
 		if (!write) {
 			throw new IOException("Formats not supported: "+Stream.of(formats).collect(Collectors.joining(", ")));
 		}
-		
-		
+
+
 		return saved;
 	}
 
-	
 	private  static final float INCH_2_CM = 2.54F;
 
 	private static void saveImage(BufferedImage image, File output, double dotsPerInch) throws IOException {
