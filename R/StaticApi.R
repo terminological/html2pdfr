@@ -2,8 +2,8 @@
 # This is a collection of the static methods described in the Java API
 # and serves as an alternative R centric entry point of the html2pdfr generated R library.
 
-# Version: 0.4.4
-# Generated: 2024-04-23T15:03:26.581637192
+# Version: 0.4.5
+# Generated: 2024-04-24T15:58:01.246415657
 # Contact: rob.challen@bristol.ac.uk
 
 # HtmlConverter class static methods ----
@@ -52,7 +52,7 @@ html_converter = function(fontfiles=systemfonts::system_fonts()$path, update=FAL
 #'   smaller. If no dimensions are present this will default to A4.
 #' @param htmlUrl the URL - (java expects a RCharacter)
 #' @param outFile the full path of the output file - (defaulting to
-#'   `tempfile('html2pdfr_')`) - (java expects a RCharacter)
+#'   `tempfile('html2pdfr_')`) - (java expects a RFile)
 #' @param cssSelector the part of the page you want to convert to PDF. -
 #'   (defaulting to `NA_character_`) - (java expects a RCharacter)
 #' @param xMarginInches page width margins - (defaulting to `NA_real_`) - (java expects a RNumeric)
@@ -107,7 +107,7 @@ url_to_pdf = function(htmlUrl, outFile=tempfile('html2pdfr_'), cssSelector=NA_ch
 #'   present this will default to A4.
 #' @param inFile the full path the the HTML file - (java expects a RCharacter)
 #' @param outFile the full path of the output file - (defaulting to
-#'   `tempfile('html2pdfr_')`) - (java expects a RCharacter)
+#'   `tempfile('html2pdfr_')`) - (java expects a RFile)
 #' @param cssSelector the part of the page you want to convert to PDF. -
 #'   (defaulting to `NA_character_`) - (java expects a RCharacter)
 #' @param xMarginInches page width margins - (defaulting to `NA_real_`) - (java expects a RNumeric)
@@ -163,7 +163,7 @@ file_to_pdf = function(inFile, outFile=tempfile('html2pdfr_'), cssSelector=NA_ch
 #'   smaller. If no dimensions are present this will default to A4.
 #' @param html the html document as a string - (java expects a RCharacter)
 #' @param outFile the full path of the output file - (defaulting to
-#'   `tempfile('html2pdfr_')`) - (java expects a RCharacter)
+#'   `tempfile('html2pdfr_')`) - (java expects a RFile)
 #' @param baseUri the URI from which to interpret relative links in the html
 #'   content. - (defaulting to `NA_character_`) - (java expects a RCharacter)
 #' @param cssSelector the part of the page you want to convert to PDF. -
@@ -223,7 +223,7 @@ html_document_to_pdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA
 #'   be the whole page. - (java expects a RCharacter)
 #' @param outFile the full path with or without extension (if no extension
 #'   specified then `formats` parameter will apply) - (defaulting to
-#'   `tempfile('html2pdfr_')`) - (java expects a RCharacter)
+#'   `tempfile('html2pdfr_')`) - (java expects a RFile)
 #' @param xMarginInches page width margins - (defaulting to `1.0`) - (java expects a RNumeric)
 #' @param yMarginInches page height margins - (defaulting to `1.0`) - (java expects a RNumeric)
 #' @param maxWidthInches what is the maximum allowable width? (default is A4) -

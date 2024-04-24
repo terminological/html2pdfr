@@ -19,7 +19,7 @@
 \arguments{
 	\if{html}{\out{<div class="arguments">}}
 	\item{htmlUrl}{htmlUrl the URL - (java expects a RCharacter)}
-	\item{outFile}{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`) - (java expects a RCharacter)}
+	\item{outFile}{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`) - (java expects a RFile)}
 	\item{cssSelector}{cssSelector the part of the page you want to convert to PDF. - (defaulting to `NA_character_`) - (java expects a RCharacter)}
 	\item{xMarginInches}{xMarginInches page width margins - (defaulting to `NA_real_`) - (java expects a RNumeric)}
 	\item{yMarginInches}{yMarginInches page height margins - (defaulting to `NA_real_`) - (java expects a RNumeric)}

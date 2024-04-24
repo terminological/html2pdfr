@@ -3,7 +3,7 @@ c(
 	bibentry(bibtype = "Manual",
 		title = "html2pdfr: R Wrapper For Openhtmltopdf Java Library",
 		year = 2024,
-		note = "R package version 0.4.4; Maven artifact: io.github.terminological:html2pdfr:0.4.4",
+		note = "R package version 0.4.5; Maven artifact: io.github.terminological:html2pdfr:0.4.5",
 		url = "https://terminological.github.io/html2pdfr/docs/index.html",
 		doi = "10.5281/zenodo.6576088",
 		author = c(

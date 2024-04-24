@@ -18,7 +18,7 @@
 \arguments{
 	\if{html}{\out{<div class="arguments">}}
 	\item{htmlFragment}{htmlFragment a HTML fragment, e.g. usually the table element, but may be the whole page. - (java expects a RCharacter)}
-	\item{outFile}{outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to `tempfile('html2pdfr_')`) - (java expects a RCharacter)}
+	\item{outFile}{outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to `tempfile('html2pdfr_')`) - (java expects a RFile)}
 	\item{xMarginInches}{xMarginInches page width margins - (defaulting to `1.0`) - (java expects a RNumeric)}
 	\item{yMarginInches}{yMarginInches page height margins - (defaulting to `1.0`) - (java expects a RNumeric)}
 	\item{maxWidthInches}{maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to `8.27`) - (java expects a RNumeric)}

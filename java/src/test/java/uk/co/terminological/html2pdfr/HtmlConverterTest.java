@@ -20,6 +20,7 @@ import uk.co.terminological.html2pdfr.AutoFont.CSSFont;
 import uk.co.terminological.rjava.RConverter;
 import uk.co.terminological.rjava.types.RCharacter;
 import uk.co.terminological.rjava.types.RCharacterVector;
+import uk.co.terminological.rjava.types.RFile;
 import uk.co.terminological.rjava.types.RNumeric;
 
 class HtmlConverterTest {
@@ -39,14 +40,14 @@ class HtmlConverterTest {
 		return getContent("/test"+i+".html");
 	}
 
-	private RCharacter out(String name) {
+	private RFile out(String name) {
 		Path p = Paths.get(System.getProperty("user.home"),"tmp",name);
 		try {
 			Files.createDirectories(p.getParent());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		return RCharacter.from(p.toString());
+		return RFile.from(p);
 	}
 
 	@Test
@@ -61,7 +62,9 @@ class HtmlConverterTest {
 				new String[] {
 						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
 				"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
-		cov.renderHtmlToFitA4(html.get(), out("test4").get(),1);
+		cov.renderHtmlToFitA4(html.get(), 
+				out("test4").get().toString(),
+				1);
 	}
 
 	@Test
@@ -131,7 +134,7 @@ class HtmlConverterTest {
 				new String[] {
 						"/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 
 				"/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"});
-		cov.renderHtmlToFitA4(html.get(), out("svg").get(), 1);
+		cov.renderHtmlToFitA4(html.get(), out("svg").get().toString(), 1);
 	}
 
 	@Test

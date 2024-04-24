@@ -5,6 +5,7 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^data-raw$
 ^cran-comments\.md$
 ^LICENSE\.md$
 

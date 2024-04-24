@@ -20,7 +20,7 @@
 \arguments{
 	\if{html}{\out{<div class="arguments">}}
 	\item{html}{html the html document as a string - (java expects a RCharacter)}
-	\item{outFile}{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`) - (java expects a RCharacter)}
+	\item{outFile}{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`) - (java expects a RFile)}
 	\item{baseUri}{baseUri the URI from which to interpret relative links in the html content. - (defaulting to `NA_character_`) - (java expects a RCharacter)}
 	\item{cssSelector}{cssSelector the part of the page you want to convert to PDF. - (defaulting to `NA_character_`) - (java expects a RCharacter)}
 	\item{xMarginInches}{xMarginInches page width margins - (defaulting to `NA_real_`) - (java expects a RNumeric)}

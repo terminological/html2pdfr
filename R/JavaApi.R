@@ -4,9 +4,9 @@
 #' @description
 #' R Wrapper For Openhtmltopdf Java Library
 #'
-#' Version: 0.4.4
+#' Version: 0.4.5
 #'
-#' Generated: 2024-04-23T15:03:26.548900904
+#' Generated: 2024-04-24T15:58:01.226904971
 #'
 #' Contact: rob.challen@bristol.ac.uk
 #' @import R6
@@ -82,9 +82,9 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 		  .jcall(self$.log,returnSig = "V",method = "debug", jar)
 		}
 		.jcall(self$.log,returnSig = "V",method = "info","Initialised html2pdfr");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.4");
-		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2024-04-23T15:03:26.549307870");
-		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.4");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package version: 0.4.5");
+		.jcall(self$.log,returnSig = "V",method = "debug","R package generated: 2024-04-24T15:58:01.227152270");
+		.jcall(self$.log,returnSig = "V",method = "debug","Java library version: io.github.terminological:html2pdfr:0.4.5");
 		.jcall(self$.log,returnSig = "V",method = "debug",paste0("Java library compiled: ",buildDate));
 		.jcall(self$.log,returnSig = "V",method = "debug","Contact: rob.challen@bristol.ac.uk");
 		self$printMessages()
@@ -251,6 +251,13 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				if (is.null(rObj)) return(rJava::.new('uk/co/terminological/rjava/types/RUntypedNaVector'))
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RUntypedNaVector',length(rObj)))
 			},
+			RFile=function(rObj) {
+				if (is.na(rObj)) return(rJava::.jnew('uk/co/terminological/rjava/types/RFile'))
+				if (length(rObj) > 1) stop('input too long')
+				if (!is.character(rObj)) stop('input must be a character representing a file path')
+				tmp = fs::path_abs(fs::path_expand(rObj),getwd())
+				return(rJava::.jnew('uk/co/terminological/rjava/types/RFile',tmp))
+			},
 			RUntypedNa=function(rObj) {
 				return(rJava::.jnew('uk/co/terminological/rjava/types/RUntypedNa'))
 			},
@@ -333,6 +340,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 				return(dplyr::group_by(convDf(jObj),!!!sapply(groups,as.symbol)))
 			},
 			RUntypedNaVector=function(jObj) rep(NA, rJava::.jcall(jObj,returnSig='I',method='size')),
+			RFile=function(jObj) {	fs::path(rJava::.jcall(jObj,returnSig='Ljava/lang/String;',method='rPrimitive'))},
 			RUntypedNa=function(jObj) return(NA),
 			RFactorVector=function(jObj) ordered(
 				x = rJava::.jcall(jObj,returnSig='[I',method='rValues'),
@@ -385,7 +393,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			urlToPdf = function(htmlUrl, outFile=tempfile('html2pdfr_'), cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
 				# copy parameters
 				tmp_htmlUrl = self$.toJava$RCharacter(htmlUrl);
-				tmp_outFile = self$.toJava$RCharacter(outFile);
+				tmp_outFile = self$.toJava$RFile(outFile);
 				tmp_cssSelector = self$.toJava$RCharacter(cssSelector);
 				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
 				tmp_yMarginInches = self$.toJava$RNumeric(yMarginInches);
@@ -421,7 +429,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			fileToPdf = function(inFile, outFile=tempfile('html2pdfr_'), cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
 				# copy parameters
 				tmp_inFile = self$.toJava$RCharacter(inFile);
-				tmp_outFile = self$.toJava$RCharacter(outFile);
+				tmp_outFile = self$.toJava$RFile(outFile);
 				tmp_cssSelector = self$.toJava$RCharacter(cssSelector);
 				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
 				tmp_yMarginInches = self$.toJava$RNumeric(yMarginInches);
@@ -457,7 +465,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			htmlDocumentToPdf = function(html, outFile=tempfile('html2pdfr_'), baseUri=NA_character_, cssSelector=NA_character_, xMarginInches=NA_real_, yMarginInches=NA_real_, maxWidthInches=NA_real_, maxHeightInches=NA_real_, formats=c('pdf'), pngDpi=300, converter=html2pdfr::html_converter()) {
 				# copy parameters
 				tmp_html = self$.toJava$RCharacter(html);
-				tmp_outFile = self$.toJava$RCharacter(outFile);
+				tmp_outFile = self$.toJava$RFile(outFile);
 				tmp_baseUri = self$.toJava$RCharacter(baseUri);
 				tmp_cssSelector = self$.toJava$RCharacter(cssSelector);
 				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
@@ -495,7 +503,7 @@ JavaApi = R6::R6Class("JavaApi", public=list(
 			htmlFragmentToPdf = function(htmlFragment, outFile=tempfile('html2pdfr_'), xMarginInches=1.0, yMarginInches=1.0, maxWidthInches=8.27, maxHeightInches=11.69, formats=c('pdf','png'), pngDpi=300, converter=html2pdfr::html_converter()) {
 				# copy parameters
 				tmp_htmlFragment = self$.toJava$RCharacter(htmlFragment);
-				tmp_outFile = self$.toJava$RCharacter(outFile);
+				tmp_outFile = self$.toJava$RFile(outFile);
 				tmp_xMarginInches = self$.toJava$RNumeric(xMarginInches);
 				tmp_yMarginInches = self$.toJava$RNumeric(yMarginInches);
 				tmp_maxWidthInches = self$.toJava$RNumeric(maxWidthInches);
@@ -564,9 +572,9 @@ JavaApi$installDependencies = function() {
 JavaApi$versionInformation = function() {
 	out = list(
 		package = "html2pdfr",
-		r_package_version = "0.4.4",
-		r_package_generated = "2024-04-23T15:03:26.578389920",
-		java_library_version = "io.github.terminological:html2pdfr:0.4.4",
+		r_package_version = "0.4.5",
+		r_package_generated = "2024-04-24T15:58:01.243185960",
+		java_library_version = "io.github.terminological:html2pdfr:0.4.5",
 		maintainer = "rob.challen@bristol.ac.uk"
 	)
 	# try and get complilation information if library is loaded
@@ -583,7 +591,7 @@ JavaApi$versionInformation = function() {
 
 .checkDependencies = function(nocache = FALSE, ...) {
 	package_jar = .package_jars(package_name="html2pdfr",types="fat-jar")
-	package_jar = package_jar[startsWith(fs::path_file(package_jar),"html2pdfr-0.4.4")]
+	package_jar = package_jar[startsWith(fs::path_file(package_jar),"html2pdfr-0.4.5")]
 	
 	# Java dependencies
 	# all java library code and dependencies have already been bundled into a single fat jar

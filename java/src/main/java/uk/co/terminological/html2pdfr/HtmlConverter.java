@@ -67,6 +67,7 @@ import uk.co.terminological.rjava.RFinalize;
 import uk.co.terminological.rjava.RMethod;
 import uk.co.terminological.rjava.types.RCharacter;
 import uk.co.terminological.rjava.types.RCharacterVector;
+import uk.co.terminological.rjava.types.RFile;
 import uk.co.terminological.rjava.types.RLogical;
 import uk.co.terminological.rjava.types.RNumeric;
 
@@ -219,7 +220,7 @@ public class HtmlConverter {
 	})
 	public static RCharacterVector urlToPdf(
 			RCharacter htmlUrl, 
-			@RDefault(rCode = "tempfile('html2pdfr_')") RCharacter outFile,
+			@RDefault(rCode = "tempfile('html2pdfr_')") RFile outFile,
 			@RDefault(rCode = "NA_character_") RCharacter cssSelector,
 			@RDefault(rCode = "NA_real_") RNumeric xMarginInches, 
 			@RDefault(rCode = "NA_real_") RNumeric yMarginInches,
@@ -238,7 +239,8 @@ public class HtmlConverter {
 		boolean resize = !(maxWidthInches.isNa() || maxHeightInches.isNa());
 		boolean shrink = !cssSelector.isNa();
 		List<String> saved = converter.renderHtmlWithSelector(html, uri, 
-				outFile.get(), formats.rPrimitive(), 
+				outFile.get().toString(), 
+				formats.rPrimitive(), 
 				resize, x, y, 
 				1.0/16, 
 				shrink, 
@@ -280,7 +282,7 @@ public class HtmlConverter {
 	})
 	public static RCharacterVector fileToPdf(
 			RCharacter inFile, 
-			@RDefault(rCode = "tempfile('html2pdfr_')") RCharacter outFile,
+			@RDefault(rCode = "tempfile('html2pdfr_')") RFile outFile,
 			@RDefault(rCode = "NA_character_") RCharacter cssSelector,
 			@RDefault(rCode = "NA_real_") RNumeric xMarginInches, 
 			@RDefault(rCode = "NA_real_") RNumeric yMarginInches,
@@ -299,7 +301,8 @@ public class HtmlConverter {
 		boolean resize = !(maxWidthInches.isNa() || maxHeightInches.isNa());
 		boolean shrink = !cssSelector.isNa();
 		List<String> saved = converter.renderHtmlWithSelector(html, uri, 
-				outFile.get(), formats.rPrimitive(), 
+				outFile.get().toString(), 
+				formats.rPrimitive(), 
 				resize, x, y, 
 				1.0/16, 
 				shrink, 
@@ -340,7 +343,7 @@ public class HtmlConverter {
 	})
 	public static RCharacterVector htmlDocumentToPdf(
 			RCharacter html, 
-			@RDefault(rCode = "tempfile('html2pdfr_')") RCharacter outFile, 
+			@RDefault(rCode = "tempfile('html2pdfr_')") RFile outFile, 
 			@RDefault(rCode = "NA_character_") RCharacter baseUri,
 			@RDefault(rCode = "NA_character_") RCharacter cssSelector,
 			@RDefault(rCode = "NA_real_") RNumeric xMarginInches, 
@@ -362,7 +365,8 @@ public class HtmlConverter {
 		boolean resize = !(maxWidthInches.isNa() || maxHeightInches.isNa());
 		boolean shrink = !cssSelector.isNa();
 		List<String> saved = converter.renderHtmlWithSelector(html.get(), uri, 
-				outFile.get(), formats.rPrimitive(), 
+				outFile.get().toString(), 
+				formats.rPrimitive(), 
 				resize, x, y, 
 				1.0/16, 
 				shrink, 
@@ -403,7 +407,7 @@ public class HtmlConverter {
 	})
 	public static RCharacterVector htmlFragmentToPdf(
 			RCharacter htmlFragment, 
-			@RDefault(rCode = "tempfile('html2pdfr_')") RCharacter outFile, 
+			@RDefault(rCode = "tempfile('html2pdfr_')") RFile outFile, 
 			@RDefault(rCode = "1.0") RNumeric xMarginInches, 
 			@RDefault(rCode = "1.0") RNumeric yMarginInches,
 			@RDefault(rCode = "8.27") RNumeric maxWidthInches, 
@@ -416,7 +420,8 @@ public class HtmlConverter {
 		Double y = maxHeightInches.opt().map(w -> w-2*yMarginInches.opt().orElse(0D)).orElse(null);
 		List<String> saved = converter.renderHtml(
 				htmlFragment.get(), null, 
-				outFile.get(), formats.rPrimitive(), 
+				outFile.get().toString(), 
+				formats.rPrimitive(), 
 				true, x, y, 
 				1.0/16, true, pngDpi.opt().orElse(300D));
 		return using(stringCollector()).convert(saved);

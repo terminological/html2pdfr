@@ -25,9 +25,9 @@
 \description{
 HTML and CSS do a good job at automatically laying out and styling content particularly in tables, however it is not natively designed for pagination. This library converts HTML content into PDF and PNG formats for embedding into LaTeX documents, within the constraints of page sizes. It allows use of HTML table layout from HTML first libraries such as 'gt' and 'huxtable' within latex documents. It allows HTML content to grow in width up to the page dimensions, but preventing it from overflowing, and without forcing table layout to be wider than it would normally be. This heurisitic calculation of the output size up to fit within set limits is one of the differentiators between this and other HTML to PDF converters. Although the focus is on tables, any basic HTML content can be rendered, including simple SVG and MathML, up to the support of the underlying HTML rendering engine (https://github.com/danfickle/openhtmltopdf).
 
-Version: 0.4.4
+Version: 0.4.5
 
-Generated: 2024-04-23T15:03:26.516147329
+Generated: 2024-04-24T15:58:01.201546101
 }
 
 \author{\email{rob.challen@bristol.ac.uk}}
@@ -428,7 +428,7 @@ html2pdfr::url_to_pdf(htmlUrl, outFile, cssSelector, xMarginInches, yMarginInche
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
 				\item{htmlUrl the URL}{ - (java expects a RCharacter)}
-				\item{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`)}{ - (java expects a RCharacter)}
+				\item{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`)}{ - (java expects a RFile)}
 				\item{cssSelector the part of the page you want to convert to PDF. - (defaulting to `NA_character_`)}{ - (java expects a RCharacter)}
 				\item{xMarginInches page width margins - (defaulting to `NA_real_`)}{ - (java expects a RNumeric)}
 				\item{yMarginInches page height margins - (defaulting to `NA_real_`)}{ - (java expects a RNumeric)}
@@ -485,7 +485,7 @@ html2pdfr::file_to_pdf(inFile, outFile, cssSelector, xMarginInches, yMarginInche
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
 				\item{inFile the full path the the HTML file}{ - (java expects a RCharacter)}
-				\item{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`)}{ - (java expects a RCharacter)}
+				\item{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`)}{ - (java expects a RFile)}
 				\item{cssSelector the part of the page you want to convert to PDF. - (defaulting to `NA_character_`)}{ - (java expects a RCharacter)}
 				\item{xMarginInches page width margins - (defaulting to `NA_real_`)}{ - (java expects a RNumeric)}
 				\item{yMarginInches page height margins - (defaulting to `NA_real_`)}{ - (java expects a RNumeric)}
@@ -544,7 +544,7 @@ html2pdfr::html_document_to_pdf(html, outFile, baseUri, cssSelector, xMarginInch
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
 				\item{html the html document as a string}{ - (java expects a RCharacter)}
-				\item{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`)}{ - (java expects a RCharacter)}
+				\item{outFile the full path of the output file - (defaulting to `tempfile('html2pdfr_')`)}{ - (java expects a RFile)}
 				\item{baseUri the URI from which to interpret relative links in the html content. - (defaulting to `NA_character_`)}{ - (java expects a RCharacter)}
 				\item{cssSelector the part of the page you want to convert to PDF. - (defaulting to `NA_character_`)}{ - (java expects a RCharacter)}
 				\item{xMarginInches page width margins - (defaulting to `NA_real_`)}{ - (java expects a RNumeric)}
@@ -601,7 +601,7 @@ html2pdfr::html_fragment_to_pdf(htmlFragment, outFile, xMarginInches, yMarginInc
 			\if{html}{\out{<div class="arguments">}}
 			\itemize{
 				\item{htmlFragment a HTML fragment, e.g. usually the table element, but may be the whole page.}{ - (java expects a RCharacter)}
-				\item{outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to `tempfile('html2pdfr_')`)}{ - (java expects a RCharacter)}
+				\item{outFile the full path with or without extension (if no extension specified then `formats` parameter will apply) - (defaulting to `tempfile('html2pdfr_')`)}{ - (java expects a RFile)}
 				\item{xMarginInches page width margins - (defaulting to `1.0`)}{ - (java expects a RNumeric)}
 				\item{yMarginInches page height margins - (defaulting to `1.0`)}{ - (java expects a RNumeric)}
 				\item{maxWidthInches what is the maximum allowable width? (default is A4) - (defaulting to `8.27`)}{ - (java expects a RNumeric)}
